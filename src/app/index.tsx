@@ -1,26 +1,6 @@
-import { Link } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Redirect } from 'expo-router';
 
-import { AppText } from '@/components/app-text';
-
+// 로그인 기능이 생기면 로그인 여부에 따라 /intro 또는 /map 으로 보낸다
 export default function Index() {
-  return (
-    <View style={styles.container}>
-      <AppText variant="heading01">가까이</AppText>
-      <Link href="/design-system">
-        <AppText variant="button01" color="primary">
-          디자인 시스템 보기
-        </AppText>
-      </Link>
-    </View>
-  );
+  return <Redirect href="/intro" />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 16,
-  },
-});

@@ -49,12 +49,17 @@ Docs: https://docs.expo.dev/eas/index.md
 - 색은 `src/constants/colors.ts`의 `colors`(용도별 이름)를 쓴다. 꼭 필요할 때만 `palette`를 쓴다. `#FB8C00` 같은 hex 값을 화면에 직접 쓰지 않는다.
 - 글씨는 React Native `Text` 대신 `src/components/app-text.tsx`의 `AppText`를 쓰고, `variant`로 스타일을 고른다. `fontSize`, `fontFamily`를 직접 쓰지 않는다.
 - 디자인 시스템에 없는 값이 필요하면 화면에 임시로 넣지 말고 `src/constants/`에 이름을 붙여 추가한다.
+- 간격과 모서리는 `src/constants/layout.ts`의 `spacing`, `radius`를 쓴다.
+- 화면은 `src/components/`의 공통 부품(`ScreenContainer`, `ScreenHeader`, `Button`, `TextField`, `Checkbox`, `Icon`, `PhotoPlaceholder`, `Chip`, `Badge`, `IconButton`, `SegmentedToggle`, `Radio`, `MapPlaceholder`)으로 먼저 조립하고, 없을 때만 새로 만든다.
 - Figma 파일: `https://www.figma.com/design/yPo9TnNjD86Gedi8oPqgWt/Design` (디자인 시스템, 와이어 프레임, GUI 디자인 페이지)
 
 ### 폴더
 
 - `src/app/`: 화면 파일만 둔다. 화면 파일은 짧게 유지하고, 실제 UI와 로직은 `features/`에서 가져온다.
-- `src/features/<기능>/`: 기능별 코드 (`map`, `upload`, `auth`, `record`, `notification`). 그 기능에서만 쓰는 부품, 훅, 함수는 여기에 둔다.
+- `src/features/<기능>/`: 기능별 코드 (`auth`, `map`, `record`, `upload`, `my`, `notification`). 화면은 `screens/`에 두고, 그 기능에서만 쓰는 부품, 훅, 함수도 이 폴더에 둔다.
+- `src/app/`의 라우트 파일은 `export { XxxScreen as default } from '@/features/...'` 한 줄만 둔다.
+- 모든 화면은 와이어프레임 기준 회색 배치(mid-fidelity)로 되어 있다. GUI 디자인을 입힐 때는 배치와 화면 이동은 유지하고 색·그림·간격만 바꾼다.
+- 가짜 데이터는 `src/mock/`와 `features/*/constants/preview-*.ts`에 있다. 화면 안에 가짜 값을 직접 쓰지 않는다.
 - `src/components/`: 두 개 이상의 기능이 같이 쓰는 부품만 둔다.
 - `src/hooks/`, `src/utils/`, `src/api/`, `src/mock/`, `src/types/`: 여러 기능이 같이 쓰는 훅, 순수 함수, 서버 요청, 가짜 데이터, 데이터 타입.
 - 지도 담당은 주로 `features/map`, 화면 담당은 그 외 기능 폴더에서 작업해서 Git 충돌을 줄인다.

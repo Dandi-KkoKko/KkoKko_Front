@@ -58,6 +58,19 @@ export const colors = {
   warning: palette.warning[1],
   success: palette.success[1],
   information: palette.information[1],
+
+  // 아래는 Figma 디자인 시스템에 없지만 와이어프레임에 쓰여서 추가한 값. GUI 디자인이 나오면 맞춘다.
+  selectedBackground: palette.primary[50],
+  disabledBackground: palette.gray[100],
+  placeholderBox: palette.gray[200],
+  kakao: '#FEE500', // 카카오 로그인 버튼 (카카오 브랜드 가이드 색)
+
+  // 진짜 지도를 붙이기 전 회색 지도 자리 (와이어프레임 지도 색)
+  mapBackground: palette.gray[100],
+  mapRoad: palette.gray.white,
+  mapBlock: palette.gray[200],
+  // 위치 권한 안내처럼 지도 위를 흐리게 덮을 때
+  dimWhite: 'rgba(255, 255, 255, 0.7)',
 } as const;
 
 export type ColorName = keyof typeof colors;
