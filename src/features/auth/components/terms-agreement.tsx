@@ -1,11 +1,11 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
-import { Checkbox } from '@/components/checkbox';
-import { colors } from '@/constants/colors';
-import { radius, spacing } from '@/constants/layout';
+import { Icon } from '@/components/icon';
+import { Radio } from '@/components/radio';
+import { spacing } from '@/constants/layout';
 
-export const requiredTerms = ['이용약관', '개인정보 수집·이용', '위치기반 서비스 이용'] as const;
+export const requiredTerms = ['이용약관', '개인정보 수집·이용', '위치기반 서비스 이용', '만 14세 이상이에요'] as const;
 export type TermName = (typeof requiredTerms)[number];
 
 type TermsAgreementProps = {
@@ -13,62 +13,49 @@ type TermsAgreementProps = {
   onChange: (agreed: TermName[]) => void;
 };
 
-/** 회원가입의 약관 동의 상자. 전체 동의를 누르면 모든 항목이 같이 바뀐다. */
+/**
+ * 회원가입 마지막 단계의 약관 동의 목록. 모두 필수라 전부 골라야 다음으로 간다.
+ * 오른쪽 화살표는 약관 전문 화면이 생기면 연결한다.
+ */
 export function TermsAgreement({ agreed, onChange }: TermsAgreementProps) {
-  const allAgreed = agreed.length === requiredTerms.length;
-
-  const toggleAll = () => onChange(allAgreed ? [] : [...requiredTerms]);
   const toggle = (term: TermName) =>
     onChange(agreed.includes(term) ? agreed.filter((item) => item !== term) : [...agreed, term]);
 
   return (
-    <View style={styles.box}>
-      <AppText variant="caption04" color="textTertiary">
-        약관 동의
-      </AppText>
-
-      <Pressable style={[styles.row, styles.allRow]} onPress={toggleAll}>
-        <Checkbox checked={allAgreed} size={24} />
-        <AppText variant="subtitle03">전체 동의</AppText>
-      </Pressable>
-
-      {requiredTerms.map((term) => (
-        <Pressable key={term} style={styles.row} onPress={() => toggle(term)}>
-          <Checkbox checked={agreed.includes(term)} />
-          <AppText variant="body02" style={styles.termLabel}>
-            [필수] {term}
-          </AppText>
-          <AppText variant="caption04" color="textTertiary" style={styles.underline}>
-            보기
-          </AppText>
-        </Pressable>
-      ))}
+    <View>
+      {requiredTerms.map((term) => {
+        const selected = agreed.includes(term);
+        return (
+          <Pressable
+            key={term}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: selected }}
+            onPress={() => toggle(term)}
+            style={styles.row}>
+            <View style={styles.label}>
+              <Radio selected={selected} />
+              <AppText variant="body01" color={selected ? 'textPrimary' : 'textTertiary'}>
+                [필수] {term}
+              </AppText>
+            </View>
+            <Icon name="forwardSmall" />
+          </Pressable>
+        );
+      })}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  box: {
-    padding: spacing.md,
-    borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.disabledBackground,
-    gap: spacing.sm,
-  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
+    justifyContent: 'space-between',
+    paddingVertical: spacing.sm,
   },
-  allRow: {
-    paddingBottom: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.disabledBackground,
-  },
-  termLabel: {
-    flex: 1,
-  },
-  underline: {
-    textDecorationLine: 'underline',
+  label: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
   },
 });

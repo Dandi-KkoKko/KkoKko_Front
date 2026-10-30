@@ -4,18 +4,21 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/app-text';
 import { sectionGap, spacing } from '@/constants/layout';
 
-type SurveyTitleProps = {
+type StepTitleProps = {
   title: string;
-  description: ReactNode;
+  description?: ReactNode;
 };
 
-export function SurveyTitle({ title, description }: SurveyTitleProps) {
+/** 설문·회원가입 단계마다 맨 위에 두는 큰 제목과 한 줄 설명 */
+export function StepTitle({ title, description }: StepTitleProps) {
   return (
     <View style={styles.container}>
       <AppText variant="heading02">{title}</AppText>
-      <AppText variant="body01" color="textTertiary">
-        {description}
-      </AppText>
+      {description && (
+        <AppText variant="body01" color="textTertiary">
+          {description}
+        </AppText>
+      )}
     </View>
   );
 }

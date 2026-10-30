@@ -44,8 +44,12 @@ export function TextField({
   const bottomText = error ?? helper;
 
   return (
-    <View style={styles.container}>
-      {label && <AppText variant="subtitle04">{label}</AppText>}
+    <View>
+      {label && (
+        <AppText variant="caption01" color="textSecondary" style={styles.label}>
+          {label}
+        </AppText>
+      )}
       <View style={styles.row}>
         <View style={[styles.box, isFocused && styles.focusedBox, error !== undefined && styles.errorBox]}>
           <TextInput
@@ -75,11 +79,11 @@ export function TextField({
       </View>
       {(bottomText || count) && (
         <View style={styles.bottomRow}>
-          <AppText variant="caption04" color={error !== undefined ? 'error' : 'textTertiary'} style={styles.helper}>
+          <AppText variant="caption02" color={error !== undefined ? 'error' : 'textTertiary'} style={styles.helper}>
             {bottomText}
           </AppText>
           {count && (
-            <AppText variant="caption04" color="textTertiary">
+            <AppText variant="caption02" color="textTertiary">
               {count}
             </AppText>
           )}
@@ -90,8 +94,10 @@ export function TextField({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    gap: spacing.xs,
+  // Figma inputfield: 이름 → 칸은 8, 칸 → 안내 문구는 4 띄우고, 이름과 안내 문구는 안쪽으로 8 들여 쓴다
+  label: {
+    marginBottom: spacing.xs,
+    paddingLeft: spacing.xs,
   },
   row: {
     flexDirection: 'row',
@@ -129,6 +135,8 @@ const styles = StyleSheet.create({
     color: colors.error,
   },
   bottomRow: {
+    marginTop: spacing.xxs,
+    paddingHorizontal: spacing.xs,
     flexDirection: 'row',
     gap: spacing.xs,
   },
