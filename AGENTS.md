@@ -45,7 +45,7 @@ Docs: https://docs.expo.dev/eas/index.md
 - Expo Go로 QR 테스트를 계속해야 하므로 **Expo Go에 포함된 모듈만** 쓴다. Expo SDK 공식 모듈을 먼저 찾고, 없으면 React Native Directory에서 Expo Go 지원 표시가 있는 것을 고른다.
 - 라이선스는 MIT, Apache-2.0, BSD, ISC만 쓴다. GPL·AGPL·라이선스 없음은 쓰지 않는다.
 - 설치는 `npx expo install`로 하고, README의 기술 스택 표에 추가한다.
-- 푸시 알림은 하지 않는다 (앱 안 알림 목록만). `expo-notifications`를 넣지 않고 휴대폰 알림 권한도 묻지 않는다.
+- 푸시 알림은 1차에서 하지 않는다 (앱 안 알림 목록만). `expo-notifications`는 온보딩 알림 권한 요청에만 쓴다. Android Expo Go에서 불러오기만 해도 경고가 뜨므로 파일 맨 위에서 import하지 않고 쓰는 곳에서 `await import()`로 불러온다.
 
 ## 우리 팀 규칙 (KkoKko_Front)
 

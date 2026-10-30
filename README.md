@@ -74,6 +74,7 @@ npx tsc --noEmit
 | 이미지 | expo-image |
 | 위치 | expo-location |
 | 카메라 | expo-camera |
+| 알림 권한 | expo-notifications (권한 요청만. 푸시 알림은 아직 없음) |
 | 글꼴 | Pretendard (SIL Open Font License 1.1) |
 | 코드 검사 | ESLint (eslint-config-expo), TypeScript 타입 검사 |
 
@@ -202,7 +203,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 ### 화면 담당
 
 - [ ] 카메라 연결 (`expo-camera`): 촬영, 카메라 전환 → `features/upload/components/camera-viewfinder.tsx`, `features/upload/screens/camera-screen.tsx`
-- [x] 권한 안내 화면에서 실제 위치·카메라 권한 요청 → `features/auth/utils/request-app-permissions.ts`
+- [x] 권한 안내 화면에서 실제 위치·카메라·알림 권한 요청 → `features/auth/utils/request-app-permissions.ts`
 - [ ] 로그인 여부에 따라 첫 화면 정하기 (지금은 항상 소개 화면) → `src/app/index.tsx`
 - [ ] 설정의 권한 상태를 실제 값으로 → `features/my/screens/settings-screen.tsx`
 - [ ] 화면이 없는 메뉴: 내 신고 내역, 이용약관·개인정보 처리방침, 회원 탈퇴, 비밀번호 찾기
@@ -232,7 +233,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 
 ### 정해야 할 것
 
-- [x] 푸시 알림은 하지 않고, 앱 안 알림 목록(`/my/notifications`)만 둔다. 그래서 휴대폰 알림 권한은 묻지 않는다.
+- [x] 푸시 알림은 1차에서 하지 않고, 앱 안 알림 목록(`/my/notifications`)만 둔다. 나중에 푸시를 붙일 수 있게 온보딩에서 알림 권한은 미리 묻는다.
 - [ ] `develop` 브랜치를 쓸지 (백엔드 레포와 맞추기)
 
 ## 디자인 시스템
