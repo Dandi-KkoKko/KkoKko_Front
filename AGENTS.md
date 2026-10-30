@@ -53,6 +53,19 @@ Docs: https://docs.expo.dev/eas/index.md
 - 화면은 `src/components/`의 공통 부품(`ScreenContainer`, `ScreenHeader`, `Button`, `TextField`, `Checkbox`, `Icon`, `PhotoPlaceholder`, `Chip`, `Badge`, `IconButton`, `SegmentedToggle`, `Radio`, `MapPlaceholder`)으로 먼저 조립하고, 없을 때만 새로 만든다.
 - Figma 파일: `https://www.figma.com/design/yPo9TnNjD86Gedi8oPqgWt/Design` (디자인 시스템, 와이어 프레임, GUI 디자인 페이지)
 
+### Figma 수치 옮기기
+
+Figma(Dev Mode, MCP)의 값은 390 너비 아이폰 화면 기준이다. 폰마다 화면 크기가 다르므로 값을 그대로 복사하지 않고 아래처럼 나눠서 옮긴다.
+
+- **그대로 쓰는 값**: 글씨, 여백·간격, 모서리, 테두리, 버튼·입력창·아이콘 크기, 색. 숫자를 직접 쓰지 말고 `colors.ts`, `typography.ts`, `layout.ts`의 이름으로 바꿔서 쓴다. 맞는 이름이 없으면 그 파일에 추가한다.
+- **그대로 쓰지 않는 값**: 화면 너비(390), 화면을 기준으로 한 고정 너비·높이, 화면 위치(`top`, `left`), 버튼을 아래로 밀기 위한 큰 빈 공간(`padding-bottom: 362px` 등). 아래 방식으로 바꾼다.
+  - 화면·부모 너비에 맞추기: `flex`, `alignSelf: 'stretch'`, 퍼센트
+  - 두세 칸 나누기: `flexDirection: 'row'` + `flex: 1` 또는 `flexWrap`
+  - 화면 아래 버튼: `ScreenContainer`의 `footer`
+  - 노치·아래 바 피하기: `ScreenContainer`, `useSafeAreaInsets`
+- **기준 화면**: 폰 세로 화면. 너비 360~430에서 넘치거나 겹치지 않게 한다. 태블릿·가로 화면은 신경 쓰지 않는다.
+- **아이콘·이미지**: Figma에서 SVG·PNG로 받아 `assets/`에 넣고 쓴다. Figma 임시 주소(7일 뒤 만료)를 코드에 남기지 않는다.
+
 ### 폴더
 
 - `src/app/`: 화면 파일만 둔다. 화면 파일은 짧게 유지하고, 실제 UI와 로직은 `features/`에서 가져온다.

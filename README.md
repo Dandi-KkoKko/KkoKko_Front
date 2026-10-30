@@ -19,15 +19,21 @@ QR을 폰으로 찍어 Expo Go에서 열리는지 확인해요. → [실행 방�
 
 **2. 내 브랜치에서 작업하기**
 
-`main`에서 바로 작업하지 않아요. 최신 `main`을 받은 뒤 기능별 브랜치를 만들어요.
+| 브랜치 | 들어 있는 것 |
+|---|---|
+| `main` | 시연·제출용. 보여줘도 되는 것만 |
+| `develop` | 팀 작업을 모으는 곳. 덜 완성됐어도 **앱이 안 깨지는** 것만 |
+| `feature/이름-작업` | 각자 작업하는 곳. 예: `feature/yelim-common-components`, `feature/jonggyun-map-home` |
+
+최신 `develop`에서 내 브랜치를 만들어요.
 
 ```bash
-git checkout main
-git pull origin main
-git checkout -b feature/작업이름
+git checkout develop
+git pull origin develop
+git checkout -b feature/이름-작업
 ```
 
-작업이 끝나면 PR을 올려서 `main`에 합쳐요. PR 올리기 전에도 `git pull origin main`으로 최신 내용을 한 번 받아요.
+작업이 끝나면 PR을 올려서 **`develop`에 합쳐요.** PR 올리기 전에 `git pull origin develop`으로 최신 내용을 한 번 받아요. `develop`을 `main`에 합치는 건 시연·제출 전에 둘이 확인하고 해요.
 
 **3. 내 폴더에서 작업하기**
 
@@ -44,6 +50,8 @@ git checkout -b feature/작업이름
 - 글씨는 `AppText` 쓰기 (`Text` ❌)
 
 어기면 VS Code에 노란 줄이 떠요. → [디자인 시스템](#디자인-시스템)
+
+Figma Dev Mode 값은 **글씨·여백·모서리·색은 그대로**, **화면 너비(390)·고정 위치는 폰 크기에 맞게** 바꿔서 옮겨요. 자세한 기준은 `AGENTS.md`의 "Figma 수치 옮기기"에 있어요.
 
 **5. 끝나면 검사하고 PR 올리기**
 
