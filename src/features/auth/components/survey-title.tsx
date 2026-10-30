@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
-import { spacing } from '@/constants/layout';
+import { sectionGap, spacing } from '@/constants/layout';
 
 type SurveyTitleProps = {
   title: string;
@@ -12,8 +12,8 @@ type SurveyTitleProps = {
 export function SurveyTitle({ title, description }: SurveyTitleProps) {
   return (
     <View style={styles.container}>
-      <AppText variant="heading03">{title}</AppText>
-      <AppText variant="caption02" color="textTertiary">
+      <AppText variant="heading02">{title}</AppText>
+      <AppText variant="body01" color="textTertiary">
         {description}
       </AppText>
     </View>
@@ -22,7 +22,7 @@ export function SurveyTitle({ title, description }: SurveyTitleProps) {
 
 const styles = StyleSheet.create({
   container: {
-    gap: spacing.xs,
-    marginBottom: spacing.xxl,
+    gap: spacing.xxs,
+    marginBottom: sectionGap,
   },
 });

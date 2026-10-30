@@ -12,21 +12,21 @@ type PermissionCardProps = {
   required: boolean;
 };
 
-/** 권한 하나를 왜 쓰는지 설명하는 카드. 필수 권한은 아이콘 배경을 강조한다. */
+/** 권한 하나를 왜 쓰는지 설명하는 카드. 필수 권한은 아이콘 배경과 '필수' 글자를 주황으로 강조한다. */
 export function PermissionCard({ icon, title, description, required }: PermissionCardProps) {
   return (
     <View style={styles.card}>
       <View style={[styles.iconCircle, required && styles.requiredIcon]}>
-        <Icon name={icon} size={20} />
+        <Icon name={icon} />
       </View>
       <View style={styles.texts}>
         <View style={styles.titleRow}>
           <AppText variant="subtitle03">{title}</AppText>
-          <AppText variant="caption03" color={required ? 'primary' : 'textTertiary'}>
+          <AppText variant="button05" color={required ? 'primaryText' : 'textDeactivated'}>
             {required ? '필수' : '선택'}
           </AppText>
         </View>
-        <AppText variant="body02" color="textSecondary">
+        <AppText variant="caption02" color="textSecondary">
           {description}
         </AppText>
       </View>
@@ -37,21 +37,22 @@ export function PermissionCard({ icon, title, description, required }: Permissio
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    gap: spacing.sm,
+    alignItems: 'center',
+    gap: spacing.md,
     padding: spacing.md,
     borderRadius: radius.lg,
     backgroundColor: colors.background02,
   },
   iconCircle: {
-    width: 44,
-    height: 44,
+    width: 48,
+    height: 48,
     borderRadius: radius.full,
-    backgroundColor: colors.disabledBackground,
+    backgroundColor: colors.placeholderBox,
     alignItems: 'center',
     justifyContent: 'center',
   },
   requiredIcon: {
-    backgroundColor: colors.selectedBackground,
+    backgroundColor: colors.primarySoft,
   },
   texts: {
     flex: 1,
@@ -60,6 +61,6 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.xxs,
+    gap: spacing.xs,
   },
 });

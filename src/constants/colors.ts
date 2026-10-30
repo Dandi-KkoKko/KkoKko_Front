@@ -75,6 +75,12 @@ export const colors = {
   pressedOverlay: 'rgba(0, 0, 0, 0.2)',
   // 아이콘·체크박스 테두리 (Figma Gray/800)
   iconStroke: palette.gray[800],
+  // 권한 '필수'처럼 주황 배경 없이 글자만 강조할 때 (Figma Primary/900)
+  primaryText: palette.primary[900],
+  // 필수 권한 아이콘 동그라미 배경 (Figma Primary/100)
+  primarySoft: palette.primary[100],
+  // 흐린 사진 중 '내 취향' 사진의 주황 테두리 (Figma Primary/300)
+  photoHighlightFrame: palette.primary[300],
 } as const;
 
 export type ColorName = keyof typeof colors;

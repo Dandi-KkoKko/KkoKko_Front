@@ -17,7 +17,7 @@ const mockNickname = '벤치지킴이';
 const mockNearbySpotCount = 12;
 
 /**
- * 와이어프레임 ⓪ 시작: 온보딩 설문.
+ * 시작: 온보딩 설문.
  * 1/3~3/3과 완료 화면을 한 화면에서 단계(step)만 바꿔 보여준다. step이 totalSteps보다 크면 완료 화면.
  */
 export function SurveyScreen() {
@@ -48,6 +48,7 @@ export function SurveyScreen() {
       footer={
         <Button
           label={step === totalSteps ? '완료' : '다음'}
+          variant="primary"
           disabled={!canGoNext}
           onPress={() => setStep(step + 1)}
         />

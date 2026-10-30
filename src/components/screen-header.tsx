@@ -30,7 +30,7 @@ export function ScreenHeader({ title, centerText, right, showBack = true, onBack
       </View>
 
       {centerText && (
-        <AppText variant="caption03" color="textTertiary" style={styles.center}>
+        <AppText variant="subtitle04" color="textTertiary" style={styles.center}>
           {centerText}
         </AppText>
       )}

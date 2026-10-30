@@ -23,7 +23,7 @@ export function PlaceStep({ value, onChange }: PlaceStepProps) {
         description={
           <>
             {minPlaceCount}개 이상 골라주세요 ·{' '}
-            <AppText variant="caption03">{value.length}개</AppText> 선택
+            <AppText variant="button01">{value.length}개</AppText> 선택
           </>
         }
       />
@@ -35,6 +35,7 @@ export function PlaceStep({ value, onChange }: PlaceStepProps) {
             description={option.description}
             selected={value.includes(option.hashtag)}
             onPress={() => toggle(option.hashtag)}
+            compact
             style={styles.gridItem}
           />
         ))}
@@ -47,11 +48,12 @@ const styles = StyleSheet.create({
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: spacing.sm,
+    gap: spacing.md,
   },
-  // 간격 때문에 50%는 한 줄에 두 개가 안 들어가서, 48%로 잡고 남는 폭은 flexGrow로 채운다
+  // 칸 사이 간격 때문에 50%는 한 줄에 두 개가 안 들어간다.
+  // 세 개는 못 들어가는 40%를 기본 폭으로 잡고 남는 폭은 flexGrow로 나눠 채워서 늘 두 칸이 된다.
   gridItem: {
-    width: '48%',
+    flexBasis: '40%',
     flexGrow: 1,
   },
 });

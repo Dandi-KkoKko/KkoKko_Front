@@ -1,9 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
-import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { colors } from '@/constants/colors';
-import { radius, spacing } from '@/constants/layout';
+import { radius, sectionGap, spacing } from '@/constants/layout';
+import { BlurPhoto } from '@/features/auth/components/blur-photo';
 import { relationOptions, type SurveyAnswers } from '@/features/auth/constants/survey-options';
 
 type SurveyDoneProps = {
@@ -25,31 +25,37 @@ export function SurveyDone({ answers, nickname, nearbySpotCount }: SurveyDonePro
 
   return (
     <View style={styles.container}>
-      <View style={styles.illustration}>
-        <PhotoPlaceholder width={110} height={136} style={styles.backPhoto} />
-        <PhotoPlaceholder width={110} height={136} highlighted style={styles.frontPhoto} />
+      <View style={styles.top}>
+        <View style={styles.illustration}>
+          <BlurPhoto size={126} style={styles.backPhoto} />
+          <BlurPhoto size={136} highlighted style={styles.frontPhoto} />
+        </View>
+
+        <View style={styles.texts}>
+          <AppText variant="heading01" style={styles.center}>
+            {`${nickname}님 근처에\n흐릿한 자리 ${nearbySpotCount}곳이 있어요`}
+          </AppText>
+          <AppText variant="subtitle03" color="textSecondary" style={styles.center}>
+            고른 취향에 맞는 자리부터 먼저 띄워둘게요
+          </AppText>
+        </View>
       </View>
 
-      <AppText variant="heading03" style={styles.center}>
-        {`${nickname}님 근처에\n흐릿한 자리 ${nearbySpotCount}곳이 있어요`}
-      </AppText>
-      <AppText variant="body02" color="textSecondary" style={styles.center}>
-        고른 취향에 맞는 자리부터 먼저 띄워둘게요
-      </AppText>
-
       <View style={styles.summary}>
-        {rows.map((row) => (
-          <View key={row.label} style={styles.row}>
-            <AppText variant="caption04" color="textTertiary">
-              {row.label}
-            </AppText>
-            <AppText variant="subtitle04" style={styles.value}>
-              {row.value}
-            </AppText>
-          </View>
-        ))}
-        <AppText variant="caption04" color="textTertiary">
-          마이 › 사용자 기호 수정에서 언제든 바꿀 수 있어요
+        <View style={styles.rows}>
+          {rows.map((row) => (
+            <View key={row.label} style={styles.row}>
+              <AppText variant="caption02" color="textTertiary">
+                {row.label}
+              </AppText>
+              <AppText variant="subtitle04" style={styles.value}>
+                {row.value}
+              </AppText>
+            </View>
+          ))}
+        </View>
+        <AppText variant="caption04" color="textDeactivated" style={styles.center}>
+          {'마이 > 사용자 기호 수정에서 언제든 바꿀 수 있어요'}
         </AppText>
       </View>
     </View>
@@ -58,31 +64,45 @@ export function SurveyDone({ answers, nickname, nearbySpotCount }: SurveyDonePro
 
 const styles = StyleSheet.create({
   container: {
-    gap: spacing.sm,
-  },
-  illustration: {
-    height: 200,
-    marginTop: spacing.xxl,
-    alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
+    gap: sectionGap,
+  },
+  top: {
+    alignItems: 'center',
+    gap: spacing.xxl,
+  },
+  // 사진 두 장을 서로 반대로 기울여 겹친다 (Figma -12°, +12°)
+  illustration: {
+    width: 240,
+    height: 170,
   },
   backPhoto: {
     position: 'absolute',
-    transform: [{ translateX: -36 }, { rotate: '-8deg' }],
+    left: 0,
+    top: 18,
+    transform: [{ rotate: '-12deg' }],
   },
   frontPhoto: {
     position: 'absolute',
-    transform: [{ translateX: 36 }, { rotate: '6deg' }],
+    right: 0,
+    top: 12,
+    transform: [{ rotate: '12deg' }],
+  },
+  texts: {
+    gap: spacing.md,
   },
   center: {
     textAlign: 'center',
   },
   summary: {
-    marginTop: spacing.xxl,
     padding: spacing.md,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     backgroundColor: colors.background02,
-    gap: spacing.sm,
+    gap: spacing.md,
+  },
+  rows: {
+    gap: spacing.xs,
   },
   row: {
     flexDirection: 'row',

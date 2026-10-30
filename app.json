@@ -28,9 +28,21 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#FB8C00"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "가까이 다가간 사진을 열려면 내 위치가 필요해요. 앱을 쓰는 동안에만 써요."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "그 자리의 순간을 앱 카메라로 남기려면 카메라가 필요해요.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
         }
       ]
     ],

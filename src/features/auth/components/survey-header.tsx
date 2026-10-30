@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/app-text';
 import { ScreenHeader } from '@/components/screen-header';
 import { colors } from '@/constants/colors';
-import { radius } from '@/constants/layout';
+import { radius, spacing } from '@/constants/layout';
 
 type SurveyHeaderProps = {
   step: number;
@@ -19,11 +19,11 @@ export function SurveyHeader({ step, totalSteps, onBack, onSkip }: SurveyHeaderP
   return (
     <View>
       <ScreenHeader
-        centerText={`${step} / ${totalSteps}`}
+        centerText={`${step}/${totalSteps}`}
         onBack={onBack}
         right={
           <Pressable hitSlop={12} onPress={onSkip}>
-            <AppText variant="caption02" color="textTertiary">
+            <AppText variant="subtitle04" color="textTertiary">
               건너뛰기
             </AppText>
           </Pressable>
@@ -39,12 +39,13 @@ export function SurveyHeader({ step, totalSteps, onBack, onSkip }: SurveyHeaderP
 const styles = StyleSheet.create({
   track: {
     height: 4,
-    borderRadius: radius.full,
+    marginTop: spacing.xs,
+    borderRadius: radius.xs,
     backgroundColor: colors.disabledBackground,
   },
   fill: {
     height: 4,
-    borderRadius: radius.full,
+    borderRadius: radius.xs,
     backgroundColor: colors.textPrimary,
   },
 });
