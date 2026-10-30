@@ -19,7 +19,7 @@ export function PermissionScreen() {
       footer={
         <>
           <Button label="확인하고 허용하기" variant="primary" onPress={goNext} />
-          <AppText variant="caption02" color="textTertiary" style={styles.center}>
+          <AppText variant="caption04" color="textTertiary" style={styles.center}>
             다음에 휴대폰 권한 창이 차례로 떠요
           </AppText>
         </>
@@ -52,7 +52,7 @@ export function PermissionScreen() {
         />
       </View>
 
-      <AppText variant="caption02" color="textTertiary" style={[styles.center, styles.note]}>
+      <AppText variant="caption04" color="textTertiary" style={[styles.center, styles.note]}>
         정확한 좌표 대신 반경으로 저장하고, 2~3시간 뒤에 공개해요
       </AppText>
     </ScreenContainer>

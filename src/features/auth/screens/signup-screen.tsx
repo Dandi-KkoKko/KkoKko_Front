@@ -45,8 +45,8 @@ export function SignupScreen() {
             </Pressable>
           }
         />
-        <TextField label="비밀번호" placeholder="비밀번호" secureTextEntry helper="영문·숫자 포함 8자 이상" />
-        <TextField label="비밀번호 확인" placeholder="비밀번호 확인" secureTextEntry />
+        <TextField label="비밀번호" placeholder="비밀번호" isPassword helper="영문·숫자 포함 8자 이상" />
+        <TextField label="비밀번호 확인" placeholder="비밀번호 확인" isPassword />
         <TextField
           label="닉네임"
           placeholder="벤치지킴이"

@@ -22,7 +22,7 @@ export function WalkRecommendPanel({ title, reason, stops, onStart, onShowOther 
     <BottomPanel>
       <Badge label="AI 추천 산책길" tone="highlight" />
       <AppText variant="subtitle01">{title}</AppText>
-      <AppText variant="caption01" color="textSecondary">
+      <AppText variant="caption02" color="textSecondary">
         {reason}
       </AppText>
 
@@ -37,7 +37,7 @@ export function WalkRecommendPanel({ title, reason, stops, onStart, onShowOther 
             <AppText variant="subtitle04" style={styles.hashtags}>
               {stop.hashtags.join(' ')}
             </AppText>
-            <AppText variant="caption02" color="textTertiary">
+            <AppText variant="caption04" color="textTertiary">
               {index === 0 ? '출발' : `${stop.minutesFromStart}분`}
             </AppText>
           </View>

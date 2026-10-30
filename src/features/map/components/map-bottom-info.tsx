@@ -10,7 +10,7 @@ export function CampusSummaryCard({ spotCount }: { spotCount: number }) {
   return (
     <View style={styles.card}>
       <AppText variant="subtitle03">캠퍼스에 남겨진 자리 {spotCount}곳</AppText>
-      <AppText variant="caption02" color="textSecondary">
+      <AppText variant="caption04" color="textSecondary">
         맨 앞 사진은 좋아요가 많은 1장, 나머지는 +N개로 묶여요
       </AppText>
     </View>
@@ -38,7 +38,7 @@ function LegendItem({ label, children }: { label: string; children: ReactNode })
   return (
     <View style={styles.legendItem}>
       {children}
-      <AppText variant="caption02">{label}</AppText>
+      <AppText variant="caption04">{label}</AppText>
     </View>
   );
 }

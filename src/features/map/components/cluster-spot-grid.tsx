@@ -24,7 +24,7 @@ export function ClusterSpotGrid({ spots }: { spots: ClusterSpot[] }) {
               )}
             </View>
           </PhotoPlaceholder>
-          <AppText variant="caption02">{spot.hashtag}</AppText>
+          <AppText variant="caption04">{spot.hashtag}</AppText>
         </Pressable>
       ))}
     </View>

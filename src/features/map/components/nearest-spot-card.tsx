@@ -19,11 +19,11 @@ export function NearestSpotCard({ spotId, hashtags, distanceMeters }: NearestSpo
     <Pressable style={styles.card} onPress={() => router.push(`/map/spot/${spotId}`)}>
       <PhotoPlaceholder width={64} height={64} />
       <View style={styles.texts}>
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           가장 가까운 흐릿한 자리
         </AppText>
         <AppText variant="subtitle04">{hashtags.join(' ')}</AppText>
-        <AppText variant="caption01" color="textSecondary">
+        <AppText variant="caption02" color="textSecondary">
           {distanceMeters}m · 조금 더 가까이 가 보세요
         </AppText>
       </View>

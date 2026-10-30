@@ -22,7 +22,7 @@ export function ApproachProgress({ title, hint, progressIndex }: ApproachProgres
     <View style={[styles.box, isAlmostOpen && styles.almostBox]}>
       <View style={styles.header}>
         <AppText variant="subtitle03">{title}</AppText>
-        <AppText variant="caption02" color={isAlmostOpen ? 'textPrimary' : 'textTertiary'}>
+        <AppText variant="caption04" color={isAlmostOpen ? 'textPrimary' : 'textTertiary'}>
           {hint}
         </AppText>
       </View>
@@ -47,7 +47,7 @@ export function ApproachProgress({ title, hint, progressIndex }: ApproachProgres
           return (
             <AppText
               key={label}
-              variant={isCurrent ? 'caption03' : 'caption02'}
+              variant={isCurrent ? 'caption03' : 'caption04'}
               color={isCurrent ? 'textPrimary' : 'textTertiary'}>
               {text}
             </AppText>

@@ -19,7 +19,7 @@ export function CameraViewfinder({ placeLabel }: { placeLabel: string }) {
 
       <View style={styles.location}>
         <Icon name="location" size={14} color="textInverse" />
-        <AppText variant="caption02" color="textInverse">
+        <AppText variant="caption04" color="textInverse">
           {placeLabel} · 위치 저장 켜짐
         </AppText>
       </View>

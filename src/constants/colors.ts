@@ -71,6 +71,10 @@ export const colors = {
   mapBlock: palette.gray[200],
   // 위치 권한 안내처럼 지도 위를 흐리게 덮을 때
   dimWhite: 'rgba(255, 255, 255, 0.7)',
+  // 버튼을 누르고 있을 때 덮는 막 (Figma button default_pressed: 검정 20%)
+  pressedOverlay: 'rgba(0, 0, 0, 0.2)',
+  // 아이콘·체크박스 테두리 (Figma Gray/800)
+  iconStroke: palette.gray[800],
 } as const;
 
 export type ColorName = keyof typeof colors;

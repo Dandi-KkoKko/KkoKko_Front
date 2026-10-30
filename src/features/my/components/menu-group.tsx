@@ -11,7 +11,7 @@ export function MenuGroup({ title, children }: { title?: string; children: React
   return (
     <View style={styles.groupWrapper}>
       {title && (
-        <AppText variant="caption02" color="textTertiary" style={styles.groupTitle}>
+        <AppText variant="caption04" color="textTertiary" style={styles.groupTitle}>
           {title}
         </AppText>
       )}
@@ -40,7 +40,7 @@ export function MenuRow({ label, description, icon, trailing, onPress, isLast = 
       <View style={styles.texts}>
         <AppText variant="body01">{label}</AppText>
         {description && (
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             {description}
           </AppText>
         )}

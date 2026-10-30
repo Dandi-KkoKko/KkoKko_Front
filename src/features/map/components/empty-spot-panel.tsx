@@ -27,7 +27,7 @@ export function EmptySpotPanel({ placeName, distanceMeters }: EmptySpotPanelProp
         style={styles.button}
         onPress={() => router.push('/upload/camera')}
       />
-      <AppText variant="caption02" color="textTertiary" style={styles.center}>
+      <AppText variant="caption04" color="textTertiary" style={styles.center}>
         기록은 그 자리에서 앱 카메라로만 남길 수 있어요
       </AppText>
     </BottomPanel>

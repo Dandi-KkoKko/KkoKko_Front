@@ -21,7 +21,7 @@ export function ProfileCard({ nickname, school, loginProvider }: ProfileCardProp
       </View>
       <View style={styles.profileTexts}>
         <AppText variant="subtitle01">{nickname}</AppText>
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           {school} · {loginProvider} 로그인
         </AppText>
       </View>
@@ -40,7 +40,7 @@ export function StatsCard({ stats }: StatsCardProps) {
       {stats.map((stat, index) => (
         <View key={stat.label} style={[styles.stat, index > 0 && styles.statDivider]}>
           <AppText variant="subtitle01">{stat.value}</AppText>
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             {stat.label}
           </AppText>
         </View>
@@ -57,7 +57,7 @@ export function AiReportTeaser() {
         <AppText variant="subtitle03">AI 리포트 · 숨은 좋아함</AppText>
         <Badge label="준비 중" tone="muted" />
       </View>
-      <AppText variant="caption01" color="textSecondary">
+      <AppText variant="caption02" color="textSecondary">
         “너는 사람 냄새 나는 오래된 가게를 좋아하고 있었어” 같은 리포트가 곧 찾아와요
       </AppText>
     </View>

@@ -1,12 +1,12 @@
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { ScreenContainer } from '@/components/screen-container';
 import { ScreenHeader } from '@/components/screen-header';
-import { colors } from '@/constants/colors';
+import { Toggle } from '@/components/toggle';
 import { spacing } from '@/constants/layout';
 import { MenuGroup, MenuRow } from '@/features/my/components/menu-group';
 import { mockProfile } from '@/mock/my-activity';
@@ -71,17 +71,6 @@ function Value({ text }: { text: string }) {
     <AppText variant="body02" color="textSecondary">
       {text}
     </AppText>
-  );
-}
-
-function Toggle({ value, onChange }: { value: boolean; onChange: (value: boolean) => void }) {
-  return (
-    <Switch
-      value={value}
-      onValueChange={onChange}
-      trackColor={{ false: colors.borderDeactivated, true: colors.textPrimary }}
-      thumbColor={colors.background01}
-    />
   );
 }
 

@@ -16,16 +16,16 @@ export function RecordListItem({ record }: { record: MyRecord }) {
       <View style={styles.texts}>
         {record.isPending && <Badge label="2시간 뒤 다른 지도에 건네져요" tone="highlight" />}
         <AppText variant="subtitle04">{record.oneLine}</AppText>
-        <AppText variant="caption02" color="textSecondary">
+        <AppText variant="caption04" color="textSecondary">
           {record.hashtags.join(' ')}
         </AppText>
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           {record.placeLabel} · {record.dateLabel}
         </AppText>
         {record.wasVisited && (
           <View style={styles.visited}>
             <Icon name="heart" size={12} color="textSecondary" />
-            <AppText variant="caption02" color="textSecondary">
+            <AppText variant="caption04" color="textSecondary">
               누군가 다녀갔어요
             </AppText>
           </View>

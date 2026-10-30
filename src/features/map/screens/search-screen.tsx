@@ -100,7 +100,7 @@ function SectionTitle({ title, trailing }: { title: string; trailing?: string })
     <View style={styles.sectionTitle}>
       <AppText variant="subtitle03">{title}</AppText>
       {trailing && (
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           {trailing}
         </AppText>
       )}

@@ -25,7 +25,7 @@ export function PreferencesScreen() {
       header={<ScreenHeader title="사용자 기호 수정" />}
       footer={<Button label="저장하기" variant="primary" onPress={() => router.back()} />}>
       <AppText variant="heading03">어떤 자리에 끌리나요?</AppText>
-      <AppText variant="caption01" color="textTertiary" style={styles.caption}>
+      <AppText variant="caption02" color="textTertiary" style={styles.caption}>
         고른 해시태그로 지도에 띄울 사진과 산책길을 골라요 · {selected.length}개 선택
       </AppText>
 

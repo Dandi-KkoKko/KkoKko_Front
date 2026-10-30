@@ -29,7 +29,7 @@ export function LocationPermissionCard({ onRequest, onBrowse }: LocationPermissi
         <Pressable hitSlop={8} onPress={onBrowse}>
           <AppText variant="button03">먼저 둘러보기</AppText>
         </Pressable>
-        <AppText variant="caption02" color="textTertiary" style={styles.center}>
+        <AppText variant="caption04" color="textTertiary" style={styles.center}>
           둘러보기에서는 맛보기 사진과 해시태그만 보여요
         </AppText>
       </View>

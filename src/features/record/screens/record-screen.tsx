@@ -40,7 +40,7 @@ export function RecordScreen() {
         <AppText variant="heading02">내 기록</AppText>
         <SegmentedToggle options={viewModes} selected={viewMode} onSelect={setViewMode} />
       </View>
-      <AppText variant="caption01" color="textTertiary" style={styles.summary}>
+      <AppText variant="caption02" color="textTertiary" style={styles.summary}>
         남긴 자리 <AppText variant="caption03">{mockMyRecordSummary.totalCount}곳</AppText>
         {isList ? ` · 이번 주 ${mockMyRecordSummary.thisWeekCount}곳` : ' · 마커를 누르면 그 영역 기록만 보여요'}
       </AppText>

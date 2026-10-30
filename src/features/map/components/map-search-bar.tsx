@@ -38,7 +38,7 @@ export function MapSearchBar({ query, regionLabel = '영남대' }: MapSearchBarP
         장소나 #해시태그 검색
       </AppText>
       <View style={styles.region}>
-        <AppText variant="caption02">{regionLabel}</AppText>
+        <AppText variant="caption04">{regionLabel}</AppText>
       </View>
     </Pressable>
   );

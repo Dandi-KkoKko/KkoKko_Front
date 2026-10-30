@@ -24,7 +24,7 @@ export function OpenedHistoryScreen() {
         <StatTile label="이 자리를 처음 연 사람" value={`${mockOpenedWeek.firstOpenerCount}곳`} />
         <StatTile label="걸어서 다가간 거리" value={`${mockOpenedWeek.walkedKilometers}km`} />
       </View>
-      <AppText variant="caption02" color="textTertiary">
+      <AppText variant="caption04" color="textTertiary">
         순위나 공개 경쟁 없이, 나만 보는 기록이에요
       </AppText>
 
@@ -33,7 +33,7 @@ export function OpenedHistoryScreen() {
       </AppText>
       {mockOpenedHistory.map((group) => (
         <View key={group.dateLabel} style={styles.group}>
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             {group.dateLabel}
           </AppText>
           {group.items.map((item) => (
@@ -41,7 +41,7 @@ export function OpenedHistoryScreen() {
               <PhotoPlaceholder width={52} height={52} />
               <View style={styles.itemTexts}>
                 <AppText variant="subtitle04">{item.oneLine}</AppText>
-                <AppText variant="caption02" color="textSecondary">
+                <AppText variant="caption04" color="textSecondary">
                   {item.meta}
                 </AppText>
               </View>

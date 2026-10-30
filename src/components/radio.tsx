@@ -1,35 +1,17 @@
-import { StyleSheet, View } from 'react-native';
-
-import { colors } from '@/constants/colors';
-import { radius } from '@/constants/layout';
+import { Image } from 'expo-image';
 
 type RadioProps = {
   selected: boolean;
   size?: number;
 };
 
-/** 여럿 중 하나만 고르는 동그라미. 누르는 영역은 감싸는 쪽(Pressable)이 정한다. */
-export function Radio({ selected, size = 22 }: RadioProps) {
-  return (
-    <View style={[styles.outer, { width: size, height: size }, selected && styles.selectedOuter]}>
-      {selected && <View style={[styles.inner, { width: size / 2, height: size / 2 }]} />}
-    </View>
-  );
-}
+const radioOff = require('@/assets/icons/radio-off.svg');
+const radioOn = require('@/assets/icons/radio-on.svg');
 
-const styles = StyleSheet.create({
-  outer: {
-    borderRadius: radius.full,
-    borderWidth: 1.5,
-    borderColor: colors.borderStrong,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  selectedOuter: {
-    borderColor: colors.textPrimary,
-  },
-  inner: {
-    borderRadius: radius.full,
-    backgroundColor: colors.textPrimary,
-  },
-});
+/**
+ * Figma 로그인/회원가입 checkbox의 동그라미. 여럿 중 하나 고르기(신고 사유)와 약관 동의에 같이 쓴다.
+ * 누르는 영역은 감싸는 쪽(Pressable)이 정한다.
+ */
+export function Radio({ selected, size = 24 }: RadioProps) {
+  return <Image source={selected ? radioOn : radioOff} style={{ width: size, height: size }} contentFit="contain" />;
+}

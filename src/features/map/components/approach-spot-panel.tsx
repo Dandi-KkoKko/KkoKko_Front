@@ -35,7 +35,7 @@ export function ApproachSpotPanel({ spotId, stage, info, hashtags, onNext }: App
         </PhotoPlaceholder>
 
         <View style={styles.texts}>
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             {info.caption}
           </AppText>
           <View style={styles.hashtags}>
@@ -64,7 +64,7 @@ export function ApproachSpotPanel({ spotId, stage, info, hashtags, onNext }: App
 
       <View style={styles.buttons}>
         <Pressable accessibilityLabel="신고" style={styles.reportButton} onPress={() => router.push(`/report/${spotId}`)}>
-          <Icon name="flag" size={20} />
+          <Icon name="report" size={20} />
         </Pressable>
         {isAlmostOpen ? (
           <Button label="가까이 가면 자동으로 열려요" disabled style={styles.mainButton} />
@@ -81,7 +81,7 @@ export function ApproachSpotPanel({ spotId, stage, info, hashtags, onNext }: App
 
       {info.demoNextLabel && (
         <Pressable hitSlop={8} onPress={onNext} style={styles.demoLink}>
-          <AppText variant="caption02" color="textTertiary" style={styles.underline}>
+          <AppText variant="caption04" color="textTertiary" style={styles.underline}>
             {info.demoNextLabel}
           </AppText>
         </Pressable>

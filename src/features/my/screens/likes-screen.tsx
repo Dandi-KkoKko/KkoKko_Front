@@ -28,7 +28,7 @@ export function LikesScreen() {
           right={<SegmentedToggle options={viewModes} selected={viewMode} onSelect={setViewMode} />}
         />
       }>
-      <AppText variant="caption02" color="textTertiary" style={styles.caption}>
+      <AppText variant="caption04" color="textTertiary" style={styles.caption}>
         내가 좋아요한 자리는 나만 볼 수 있어요 · {mockMyStats.likedCount}곳
       </AppText>
 
@@ -38,7 +38,7 @@ export function LikesScreen() {
             <Pressable key={spot.spotId} style={styles.gridItem} onPress={() => router.push(`/map/opened/${spot.spotId}`)}>
               <PhotoPlaceholder width="100%" height={210} />
               <AppText variant="subtitle04">{spot.hashtags.join(' ')}</AppText>
-              <AppText variant="caption02" color="textTertiary">
+              <AppText variant="caption04" color="textTertiary">
                 {spot.placeLabel}
               </AppText>
             </Pressable>

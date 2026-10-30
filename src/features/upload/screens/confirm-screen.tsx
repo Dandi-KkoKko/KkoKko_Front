@@ -45,7 +45,7 @@ export function ConfirmScreen() {
         <PhotoPlaceholder width={56} height={70} />
         <View style={styles.previewTexts}>
           <AppText variant="subtitle04">{draft.oneLine || '한 줄을 아직 쓰지 않았어요'}</AppText>
-          <AppText variant="caption02" color="textSecondary">
+          <AppText variant="caption04" color="textSecondary">
             {draft.hashtags.join(' ')}
           </AppText>
         </View>

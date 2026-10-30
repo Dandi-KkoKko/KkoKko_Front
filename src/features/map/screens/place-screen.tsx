@@ -43,7 +43,7 @@ export function PlaceScreen() {
       <BottomPanel>
         <View style={styles.titles}>
           <AppText variant="subtitle01">{place.name}</AppText>
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             {place.address} · 내 위치에서 {place.distanceMeters}m
           </AppText>
         </View>

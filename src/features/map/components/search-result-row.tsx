@@ -28,7 +28,7 @@ export function SearchResultRow({ kind, title, subtitle, query, trailing, onPres
 
       <View style={styles.texts}>
         <HighlightedText text={title} highlight={query} />
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           {subtitle}
         </AppText>
       </View>

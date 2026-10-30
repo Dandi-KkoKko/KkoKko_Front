@@ -39,7 +39,7 @@ export function TasteSpotPanel({ spotId, hashtags, placeName, distanceMeters, wa
         <Icon name="lock" size={18} color="textTertiary" />
         <View style={styles.lockedTexts}>
           <View style={styles.hiddenLine} />
-          <AppText variant="caption02" color="textSecondary">
+          <AppText variant="caption04" color="textSecondary">
             남긴 사람의 한 줄은 가까이 가야 열려요
           </AppText>
         </View>
@@ -49,7 +49,7 @@ export function TasteSpotPanel({ spotId, hashtags, placeName, distanceMeters, wa
         <AppText variant="subtitle03">
           {placeName} · {distanceMeters}m
         </AppText>
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           도보 약 {walkMinutes}분
         </AppText>
       </View>
@@ -59,7 +59,7 @@ export function TasteSpotPanel({ spotId, hashtags, placeName, distanceMeters, wa
           accessibilityLabel="신고"
           style={styles.reportButton}
           onPress={() => router.push(`/report/${spotId}`)}>
-          <Icon name="flag" size={20} />
+          <Icon name="report" size={20} />
         </Pressable>
         <Button label="걸어서 가 보기" variant="primary" style={styles.walkButton} onPress={onWalk} />
       </View>
