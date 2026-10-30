@@ -64,6 +64,8 @@ npx tsc --noEmit
 | 언어 | TypeScript |
 | 화면 이동 | Expo Router (파일 기반 라우팅) |
 | 이미지 | expo-image |
+| 지도 | 카카오맵 JavaScript SDK (react-native-webview 안에 띄움) |
+| 위치 | expo-location |
 | 글꼴 | Pretendard (SIL Open Font License 1.1) |
 | 코드 검사 | ESLint (eslint-config-expo), TypeScript 타입 검사 |
 
@@ -71,7 +73,7 @@ npx tsc --noEmit
 
 ### 준비물
 
-- Node.js 20 이상
+- Node.js 22.13 이상 (React Native 0.88이 요구해요)
 - 폰에 **Expo Go** 앱 설치 (App Store / Play 스토어)
 
 ### 실행
@@ -82,6 +84,20 @@ npx expo start
 ```
 
 > Windows PowerShell에서 `npx`가 보안 오류로 막히면 `npx.cmd expo start`로 실행해요.
+
+### 카카오맵 키 (지도 화면)
+
+키가 없어도 앱은 열려요. 지도 자리에 회색 지도가 대신 나와요. 진짜 지도를 보려면:
+
+1. [카카오 개발자 콘솔](https://developers.kakao.com)에서 앱을 만들고 **JavaScript 키**를 복사해요.
+2. 같은 앱의 **플랫폼 > Web > 사이트 도메인**에 `http://localhost`를 등록해요. 앱 안의 지도 페이지가 이 주소로 열려서, 등록하지 않으면 지도가 뜨지 않아요.
+3. 프로젝트 맨 위 폴더에 `.env.example`을 복사해 `.env`를 만들고 키를 넣어요. `.env`는 GitHub에 올라가지 않아요.
+
+```bash
+EXPO_PUBLIC_KAKAO_MAP_JS_KEY=복사한_JavaScript_키
+```
+
+4. `.env`를 바꾼 뒤에는 `npx expo start`를 껐다가 다시 켜요.
 
 터미널에 뜬 QR 코드를 폰으로 찍으면 Expo Go에서 앱이 열려요.
 
@@ -135,7 +151,18 @@ assets/
 
 가짜 데이터는 `src/mock/`와 각 기능의 `constants/preview-*.ts`에 있어요. 백엔드 API가 나오면 이 값을 서버 데이터로 바꿔요.
 
-지도 화면들과 내 기록 지도, 남기기 위치 확인은 진짜 지도 대신 회색 지도(`components/map-placeholder.tsx`)를 깔아 두었어요. 지도 API는 아직 정하지 않았어요. 정해지면 지도 담당이 이 부분만 진짜 지도로 바꾸고, 위에 올린 검색창, 버튼, 카드는 그대로 써요. 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 가짜 데이터예요.
+지도 API는 **카카오맵**이에요. Expo Go에서도 열리도록 네이티브 SDK 대신 WebView 안에 카카오맵 JavaScript SDK를 띄워요. 지금은 지도 홈(`/map`)만 카카오맵이고, 나머지 지도 화면과 내 기록 지도, 남기기 위치 확인은 아직 회색 지도(`components/map-placeholder.tsx`)예요.
+
+지도 홈은 Figma GUI 디자인(비탐색 모드)으로 바뀌었어요. 카카오맵 코드는 `features/map/kakao-map/`에 모여 있어요.
+
+| 파일 | 하는 일 |
+|---|---|
+| `kakao-map-view.tsx` | WebView에 지도를 띄우고 마커·내 위치를 보내요. 키가 없거나 지도를 못 불러오면 회색 지도를 보여줘요. |
+| `build-kakao-map-html.ts` | WebView에 넣을 지도 페이지 (카카오 SDK 불러오기, 마커 그리기) |
+| `kakao-map-styles.ts` | 마커 CSS. 마커는 HTML이라 `AppText`를 못 써서, `colors`·`typography` 값을 CSS로 바꿔 넣어요. |
+| `kakao-map-bridge.ts` | 앱과 지도 페이지가 주고받는 메시지 모양 |
+
+지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
 
 ```
 앱 시작 → 소개 → 로그인 → (회원가입) → 권한 요청 → 취향 설문 → 지도
@@ -163,9 +190,9 @@ assets/
 | `/my`, `/my/likes`, `/my/opened-history`, `/my/preferences`, `/my/settings` | `features/my/screens/` | ③ 마이 |
 | `/my/notifications` | `features/notification/screens/` | ③ 마이 |
 
-와이어프레임 여러 장이 한 화면의 여러 상태인 경우가 많아요. 예를 들어 지도 확대·축소, 맛보기, 빈 자리, 위치 권한 안내는 모두 `/map` 한 화면이고, AI 추천 산책길과 걷는 중은 `/map/walk` 한 화면이에요. 위치 권한 안내 화면을 보려면 `features/map/hooks/use-location-permission.ts`의 초기값을 `false`로 바꿔요.
+와이어프레임 여러 장이 한 화면의 여러 상태인 경우가 많아요. 예를 들어 위치 권한 안내와 탐색 모드는 `/map` 한 화면이고, AI 추천 산책길과 걷는 중은 `/map/walk` 한 화면이에요. 위치 권한 안내는 실제 권한을 따라요. 다시 보려면 폰 설정에서 Expo Go의 위치 권한을 끄면 돼요.
 
-- 지도의 `+` `−` 버튼으로 **넓게 / 기본 / 자세히** 세 단계를 볼 수 있어요. 단계마다 마커와 아래 카드가 바뀌어요.
+- 지도 홈은 손가락으로 끌고 확대·축소해요. 사진 묶음을 누르면 묶음 목록, 사진을 누르면 자리 상세로 가요.
 - 자리 상세(`/map/spot/[id]`)는 자리 종류에 따라 모양이 달라요. 맛보기 사진을 누르면 **맛보기**, 점선 `+`를 누르면 **빈 자리**, 나머지 흐린 사진을 누르면 **거리별 열림 단계**가 열려요.
 - 거리별 열림 단계는 **480m 멀리 → 120m 다가가는 중 → 25m 거의 열림 → 열렸어요(`/opening/[id]`) → 열린 자리(`/map/opened/[id]`)** 순서예요. 진짜 위치를 붙이기 전까지는 화면의 `(시연)` 버튼으로 다음 단계로 넘겨요. 단계와 거리 값은 `features/map/constants/approach-stages.ts`에 있어요.
 
@@ -175,15 +202,16 @@ assets/
 
 ### 지도 담당
 
-- [ ] **지도 API 정하기** (구글 / 카카오 / 네이버 등). Expo Go에서 되는지 먼저 확인
-- [ ] 회색 지도를 진짜 지도로 바꾸기 → `components/map-placeholder.tsx`
+- [x] **지도 API 정하기** → 카카오맵 (WebView + JavaScript SDK, Expo Go에서 동작)
+- [x] 지도 홈을 카카오맵으로 바꾸기 → `features/map/kakao-map/`
+- [ ] 나머지 지도 화면의 회색 지도를 카카오맵으로 바꾸기 → `components/map-placeholder.tsx`를 쓰는 화면들
 - [ ] 마커·경로를 화면 좌표에서 위도·경도로 바꾸기 → `features/map/constants/preview-*.ts`는 서버 데이터가 오면 지우기
-- [ ] 위치 권한 확인·요청 → `features/map/hooks/use-location-permission.ts` (지금은 항상 허용 상태)
-- [ ] 내 위치 가져오기 (`expo-location`). 남기기 화면에서도 쓰니까 `src/hooks/`에 두기
+- [x] 위치 권한 확인·요청, 내 위치 가져오기 → `features/map/hooks/use-my-location.ts`
+- [ ] 남기기 화면에서도 내 위치가 필요하면 `use-my-location.ts`를 `src/hooks/`로 옮기기
+- [ ] 지도 홈 탐색 모드 (가장 가까운 기록 카드) → `features/map/screens/map-screen.tsx`
+- [ ] 탐색 모드 스위치에 눈 아이콘 넣기 → `features/map/components/explore-mode-toggle.tsx`
 - [ ] 거리 계산 함수 → `src/utils/`
 - [ ] 거리에 따라 열림 단계가 자동으로 바뀌게 하기. 캠퍼스에서 걸어보고 거리 값 정하기 → `features/map/constants/approach-stages.ts`
-- [ ] 지도 오른쪽 버튼 연결: 확대·축소(진짜 지도 줌), 내 위치로 이동 → `features/map/components/map-controls.tsx`
-- [ ] 해시태그 필터로 지도 마커 걸러내기 (지금은 칩만 바뀜)
 - [ ] 걸어서 길 안내, AI 산책 경로 받아와서 그리기 (TMAP 보행자 경로 등)
 - [ ] 바텀시트를 손으로 끌어 올리고 내리기 (필요하면) → `features/map/components/bottom-panel.tsx`
 

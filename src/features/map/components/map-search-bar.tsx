@@ -9,12 +9,10 @@ import { floatingShadow, radius, spacing } from '@/constants/layout';
 type MapSearchBarProps = {
   /** 검색한 장소 이름. 있으면 뒤로·닫기가 붙은 '검색 결과' 모양이 된다. */
   query?: string;
-  /** 지금 보고 있는 지역 */
-  regionLabel?: string;
 };
 
 /** 지도 맨 위 검색창. 누르면 검색 화면으로 간다. */
-export function MapSearchBar({ query, regionLabel = '영남대' }: MapSearchBarProps) {
+export function MapSearchBar({ query }: MapSearchBarProps) {
   if (query) {
     return (
       <View style={styles.bar}>
@@ -33,13 +31,10 @@ export function MapSearchBar({ query, regionLabel = '영남대' }: MapSearchBarP
 
   return (
     <Pressable accessibilityRole="search" style={styles.bar} onPress={() => router.push('/map/search')}>
-      <Icon name="search" size={20} />
-      <AppText variant="body02" color="textPlaceholder" style={styles.text}>
+      <Icon name="search" size={24} color="textPlaceholder" />
+      <AppText variant="button03" color="textPlaceholder" style={styles.text}>
         장소나 #해시태그 검색
       </AppText>
-      <View style={styles.region}>
-        <AppText variant="caption02">{regionLabel}</AppText>
-      </View>
     </Pressable>
   );
 }
@@ -57,11 +52,5 @@ const styles = StyleSheet.create({
   },
   text: {
     flex: 1,
-  },
-  region: {
-    paddingHorizontal: spacing.xs,
-    paddingVertical: spacing.xxs,
-    borderRadius: radius.sm,
-    backgroundColor: colors.background02,
   },
 });

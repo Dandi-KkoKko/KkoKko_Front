@@ -26,8 +26,8 @@ export function SurveyDone({ answers, nickname, nearbySpotCount }: SurveyDonePro
   return (
     <View style={styles.container}>
       <View style={styles.illustration}>
-        <PhotoPlaceholder width={110} height={136} style={styles.backPhoto} />
-        <PhotoPlaceholder width={110} height={136} highlighted style={styles.frontPhoto} />
+        <PhotoPlaceholder width={110} height={136} bordered style={styles.backPhoto} />
+        <PhotoPlaceholder width={110} height={136} bordered highlighted style={styles.frontPhoto} />
       </View>
 
       <AppText variant="heading03" style={styles.center}>

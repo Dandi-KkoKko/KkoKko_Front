@@ -9,9 +9,9 @@ import { radius, spacing } from '@/constants/layout';
 export function IntroIllustration() {
   return (
     <View style={styles.card}>
-      <PhotoPlaceholder width={96} height={96} style={styles.photoTop} />
+      <PhotoPlaceholder width={96} height={96} bordered style={styles.photoTop} />
       <View style={styles.photoBottom}>
-        <PhotoPlaceholder width={116} height={116} />
+        <PhotoPlaceholder width={116} height={116} bordered />
         <View style={styles.hashtag}>
           <AppText variant="caption03">#말없이챙겨준</AppText>
         </View>
