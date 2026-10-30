@@ -1,4 +1,4 @@
-import type { Coordinate, HomeMapMarker } from '@/features/map/types/home-map-marker';
+import type { Coordinate, MapMarker } from '@/features/map/types/home-map-marker';
 
 /**
  * 앱과 WebView 안 지도 페이지가 주고받는 메시지.
@@ -7,17 +7,21 @@ import type { Coordinate, HomeMapMarker } from '@/features/map/types/home-map-ma
 
 /** 앱 → 지도 페이지 */
 export type MapCommand =
-  | { type: 'setMarkers'; markers: HomeMapMarker[] }
+  | { type: 'setMarkers'; markers: MapMarker[] }
   | { type: 'setMyLocation'; coordinate: Coordinate }
   /** 탐색 모드의 열림 반경 원. null이면 지운다. */
   | { type: 'setOpenRadius'; circle: { center: Coordinate; radiusMeters: number } | null }
-  | { type: 'moveTo'; coordinate: Coordinate };
+  | { type: 'moveTo'; coordinate: Coordinate }
+  /** 좌표가 모두 보이게 지도를 맞춘다. padding은 지도를 가리는 검색창·목록 높이(px)다. */
+  | { type: 'fitBounds'; coordinates: Coordinate[]; padding: MapPadding };
+
+export type MapPadding = { top: number; right: number; bottom: number; left: number };
 
 /** 지도 페이지 → 앱 */
 export type MapEvent =
   | { type: 'ready' }
   | { type: 'error'; message: string }
-  | { type: 'markerPress'; kind: HomeMapMarker['kind']; markerId: string };
+  | { type: 'markerPress'; kind: MapMarker['kind']; markerId: string };
 
 /** 지도 페이지의 `window.receiveCommand`를 부르는 코드. 끝의 `true`는 iOS에서 경고가 뜨지 않게 하려고 붙인다. */
 export function toInjectedScript(command: MapCommand) {

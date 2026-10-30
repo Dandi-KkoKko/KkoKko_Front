@@ -1,12 +1,12 @@
 import { router } from 'expo-router';
-import { useMemo } from 'react';
-import { PanResponder, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Icon } from '@/components/icon';
 import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { colors } from '@/constants/colors';
 import { floatingShadow, radius, spacing } from '@/constants/layout';
+import { useVerticalSwipe } from '@/features/map/hooks/use-vertical-swipe';
 import type { PhotoMarker } from '@/features/map/types/home-map-marker';
 
 type ExploreSheetProps = {
@@ -15,28 +15,15 @@ type ExploreSheetProps = {
   onExpandedChange: (isExpanded: boolean) => void;
 };
 
-/** 손가락을 이만큼(px) 밀어야 펼치기·접기로 본다. 살짝 건드린 것까지 잡으면 지도를 끌다가 패널이 움직인다. */
-const swipeThreshold = 24;
-
 /**
  * 탐색 모드의 아래 패널. Figma '가장 가까운 기록 표시 / 미표시' 두 상태다.
  * 손잡이를 누르거나 위아래로 밀어서 펼치고 접는다.
  */
 export function ExploreSheet({ nearestPhoto, isExpanded, onExpandedChange }: ExploreSheetProps) {
-  const swipe = useMemo(
-    () =>
-      PanResponder.create({
-        onMoveShouldSetPanResponder: (_, { dy }) => Math.abs(dy) > spacing.xs,
-        onPanResponderRelease: (_, { dy }) => {
-          if (dy < -swipeThreshold) onExpandedChange(true);
-          if (dy > swipeThreshold) onExpandedChange(false);
-        },
-      }),
-    [onExpandedChange],
-  );
+  const swipeHandlers = useVerticalSwipe(onExpandedChange);
 
   return (
-    <View style={styles.sheet} {...swipe.panHandlers}>
+    <View style={styles.sheet} {...swipeHandlers}>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={isExpanded ? '가장 가까운 기록 접기' : '가장 가까운 기록 펼치기'}

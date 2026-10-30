@@ -67,6 +67,9 @@ export const kakaoMapCss = `
   .chip-light { background: ${colors.background01}; color: ${colors.textPrimary}; }
   .chip-dark { background: ${colors.textPrimary}; color: ${colors.textInverse}; }
 
+  /* 검색결과 지도의 작은 사진 표시 */
+  .result { width: ${spacing.xl}px; height: ${spacing.xl}px; box-sizing: border-box; border: 2px solid ${colors.background01}; border-radius: ${radius.xs}px; box-shadow: ${shadow}; background: radial-gradient(circle, ${colors.lockedPhotoCenter}, ${colors.lockedPhotoEdge}); }
+
   .stack { position: relative; width: ${photoSize + spacing.xl}px; height: ${photoSize + spacing.sm}px; }
   .stack .photo { position: absolute; }
   .stack-back { left: 0; top: ${spacing.xs}px; transform: rotate(-12deg); }

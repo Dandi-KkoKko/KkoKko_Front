@@ -51,7 +51,9 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
 
     function createMarkerElement(marker) {
       var root = createElement('button', 'marker');
-      if (marker.kind === 'cluster') {
+      if (marker.kind === 'result') {
+        root.appendChild(createElement('div', 'result'));
+      } else if (marker.kind === 'cluster') {
         var stack = createElement('div', 'stack');
         ['stack-back', 'stack-middle', 'stack-front'].forEach(function (position) {
           stack.appendChild(createElement('div', 'photo photo-locked ' + position));
@@ -107,6 +109,17 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
       },
       moveTo: function (command) {
         map.panTo(toLatLng(command.coordinate));
+      },
+      fitBounds: function (command) {
+        if (command.coordinates.length === 0) return;
+        if (command.coordinates.length === 1) {
+          map.setCenter(toLatLng(command.coordinates[0]));
+          return;
+        }
+        var bounds = new kakao.maps.LatLngBounds();
+        command.coordinates.forEach(function (coordinate) { bounds.extend(toLatLng(coordinate)); });
+        var p = command.padding;
+        map.setBounds(bounds, p.top, p.right, p.bottom, p.left);
       },
     };
 

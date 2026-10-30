@@ -24,3 +24,13 @@ export type PhotoMarker = {
 };
 
 export type HomeMapMarker = ClusterMarker | PhotoMarker;
+
+/** 검색결과 지도의 작은 표시. 결과 목록과 같은 순서로 놓인다. */
+type ResultMarker = {
+  kind: 'result';
+  id: string;
+  coordinate: Coordinate;
+};
+
+/** 카카오맵에 올릴 수 있는 모든 표시 */
+export type MapMarker = HomeMapMarker | ResultMarker;
