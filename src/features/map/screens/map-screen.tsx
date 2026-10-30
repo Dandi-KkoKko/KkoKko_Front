@@ -5,11 +5,13 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { screenPaddingX, spacing } from '@/constants/layout';
 import { ExploreModeToggle } from '@/features/map/components/explore-mode-toggle';
+import { ExploreSheet } from '@/features/map/components/explore-sheet';
 import { LocationPermissionCard } from '@/features/map/components/location-permission-card';
 import { MapActionButtons } from '@/features/map/components/map-action-buttons';
 import { MapSearchBar } from '@/features/map/components/map-search-bar';
+import { openRadiusMeters } from '@/features/map/constants/map-config';
+import { useHomeMapMarkers } from '@/features/map/hooks/use-home-map-markers';
 import { useMyLocation } from '@/features/map/hooks/use-my-location';
-import { usePreviewHomeMarkers } from '@/features/map/hooks/use-preview-home-markers';
 import { KakaoMapView } from '@/features/map/kakao-map/kakao-map-view';
 import type { HomeMapMarker } from '@/features/map/types/home-map-marker';
 
@@ -19,32 +21,54 @@ function openMarker(marker: HomeMapMarker) {
 }
 
 /**
- * Figma '지도 홈 화면 UI (비탐색 모드)'. 카카오맵 위에 사진 마커, 검색창, 탐색 모드 스위치, 남기기 버튼을 올린다.
+ * Figma '지도 홈 화면 UI'. 카카오맵 위에 사진 마커, 검색창, 탐색 모드 스위치, 남기기 버튼을 올린다.
+ * 탐색 모드를 켜면 내 위치 둘레에 열림 반경을 그리고, 아래 패널에서 가장 가까운 기록을 보여준다.
  * 위치 권한이 없으면 지도 위에 권한 안내를 덮는다.
  */
 export function MapScreen() {
   const insets = useSafeAreaInsets();
   const { isChecking, isGranted, location, request } = useMyLocation();
-  const markers = usePreviewHomeMarkers(location);
-  // 탐색 모드 화면(가장 가까운 기록 카드 등)은 다음 단계에서 붙인다. 지금은 스위치 상태만 가진다.
+  const { markers, nearestPhoto } = useHomeMapMarkers(location);
   const [isExploring, setIsExploring] = useState(false);
+  // 탐색 모드를 켜면 바로 가장 가까운 기록이 보이도록 펼친 상태로 시작한다.
+  const [isSheetExpanded, setIsSheetExpanded] = useState(true);
   const [isBrowsing, setIsBrowsing] = useState(false);
 
   const showPermissionCard = !isChecking && !isGranted && !isBrowsing;
+  const isRecordVisible = isExploring && isSheetExpanded;
+
+  const changeExploring = (next: boolean) => {
+    setIsExploring(next);
+    if (next) setIsSheetExpanded(true);
+  };
 
   return (
     <View style={styles.screen}>
-      <KakaoMapView markers={markers} myLocation={location} onMarkerPress={openMarker} />
+      <KakaoMapView
+        markers={markers}
+        myLocation={location}
+        openRadiusMeters={isExploring ? openRadiusMeters : null}
+        onMarkerPress={openMarker}
+      />
 
       <View style={[styles.top, { paddingTop: insets.top + spacing.xs }]}>
         <MapSearchBar />
         <View style={styles.toggle}>
-          <ExploreModeToggle value={isExploring} onChange={setIsExploring} />
+          <ExploreModeToggle value={isExploring} onChange={changeExploring} />
         </View>
       </View>
 
-      <View style={styles.bottom}>
-        <MapActionButtons />
+      <View style={[styles.bottom, isExploring && styles.bottomWithSheet]}>
+        <View style={styles.actions}>
+          <MapActionButtons showCamera={!isRecordVisible} />
+        </View>
+        {isExploring && (
+          <ExploreSheet
+            nearestPhoto={nearestPhoto}
+            isExpanded={isSheetExpanded}
+            onExpandedChange={setIsSheetExpanded}
+          />
+        )}
       </View>
 
       {showPermissionCard && <LocationPermissionCard onRequest={request} onBrowse={() => setIsBrowsing(true)} />}
@@ -70,7 +94,17 @@ const styles = StyleSheet.create({
   },
   bottom: {
     position: 'absolute',
+    left: screenPaddingX,
     right: screenPaddingX,
     bottom: spacing.lg,
+    gap: spacing.md,
+    pointerEvents: 'box-none',
+  },
+  // Figma에서 패널은 탭 바 바로 위에 붙어 있다.
+  bottomWithSheet: {
+    bottom: spacing.xs,
+  },
+  actions: {
+    alignSelf: 'flex-end',
   },
 });

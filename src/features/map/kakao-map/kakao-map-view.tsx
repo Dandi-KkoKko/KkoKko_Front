@@ -22,6 +22,8 @@ type KakaoMapViewProps = {
   markers: HomeMapMarker[];
   /** 권한이 없거나 아직 위치를 못 받았으면 null */
   myLocation: Coordinate | null;
+  /** 내 위치 둘레에 그릴 열림 반경(m). null이면 그리지 않는다. */
+  openRadiusMeters: number | null;
   onMarkerPress: (marker: HomeMapMarker) => void;
 };
 
@@ -46,7 +48,7 @@ function sendCommand(webView: MapWebView | null, command: MapCommand) {
  * 카카오맵 JavaScript SDK를 WebView에 띄운 지도. Expo Go에서도 열리도록 네이티브 SDK 대신 이 방식을 골랐다.
  * 키가 없거나 지도를 못 불러오면 회색 지도로 대신해서, 키가 없는 팀원도 나머지 화면을 볼 수 있게 한다.
  */
-export function KakaoMapView({ markers, myLocation, onMarkerPress }: KakaoMapViewProps) {
+export function KakaoMapView({ markers, myLocation, openRadiusMeters, onMarkerPress }: KakaoMapViewProps) {
   const webViewRef = useRef<MapWebView>(null);
   const hasCenteredRef = useRef(false);
   const [status, setStatus] = useState<MapStatus>(kakaoMapJsKey ? { state: 'loading' } : missingKeyStatus);
@@ -70,6 +72,12 @@ export function KakaoMapView({ markers, myLocation, onMarkerPress }: KakaoMapVie
       sendCommand(webViewRef.current, { type: 'moveTo', coordinate: myLocation });
     }
   }, [isReady, myLocation]);
+
+  useEffect(() => {
+    if (!isReady) return;
+    const circle = myLocation && openRadiusMeters ? { center: myLocation, radiusMeters: openRadiusMeters } : null;
+    sendCommand(webViewRef.current, { type: 'setOpenRadius', circle });
+  }, [isReady, myLocation, openRadiusMeters]);
 
   const handleMessage = ({ nativeEvent }: WebViewMessageEvent) => {
     const event = parseMapEvent(nativeEvent.data);

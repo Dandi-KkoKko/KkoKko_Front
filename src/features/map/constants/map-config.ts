@@ -14,3 +14,9 @@ export const defaultMapCenter: Coordinate = { latitude: 35.8306, longitude: 128.
 
 /** 카카오맵 확대 단계. 작을수록 자세히 보이고, 3은 골목과 건물이 보이는 정도다. */
 export const defaultMapLevel = 3;
+
+/**
+ * 이 거리 안에 들어온 사진은 흐리지 않게 열린다.
+ * 기본 확대 단계에서 Figma 탐색 모드의 원 크기와 비슷해지는 값이고, 실제 값은 캠퍼스를 걸어보며 정한다.
+ */
+export const openRadiusMeters = 100;

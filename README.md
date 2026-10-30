@@ -153,7 +153,7 @@ assets/
 
 지도 API는 **카카오맵**이에요. Expo Go에서도 열리도록 네이티브 SDK 대신 WebView 안에 카카오맵 JavaScript SDK를 띄워요. 지금은 지도 홈(`/map`)만 카카오맵이고, 나머지 지도 화면과 내 기록 지도, 남기기 위치 확인은 아직 회색 지도(`components/map-placeholder.tsx`)예요.
 
-지도 홈은 Figma GUI 디자인(비탐색 모드)으로 바뀌었어요. 카카오맵 코드는 `features/map/kakao-map/`에 모여 있어요.
+지도 홈은 Figma GUI 디자인(비탐색 모드, 탐색 모드)으로 바뀌었어요. 카카오맵 코드는 `features/map/kakao-map/`에 모여 있어요.
 
 | 파일 | 하는 일 |
 |---|---|
@@ -162,7 +162,7 @@ assets/
 | `kakao-map-styles.ts` | 마커 CSS. 마커는 HTML이라 `AppText`를 못 써서, `colors`·`typography` 값을 CSS로 바꿔 넣어요. |
 | `kakao-map-bridge.ts` | 앱과 지도 페이지가 주고받는 메시지 모양 |
 
-지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
+지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 사진이 열렸는지는 내 위치에서 **열림 반경**(`features/map/constants/map-config.ts`의 `openRadiusMeters`, 지금 100m) 안에 있는지로 정해요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
 
 ```
 앱 시작 → 소개 → 로그인 → (회원가입) → 권한 요청 → 취향 설문 → 지도
@@ -193,6 +193,7 @@ assets/
 와이어프레임 여러 장이 한 화면의 여러 상태인 경우가 많아요. 예를 들어 위치 권한 안내와 탐색 모드는 `/map` 한 화면이고, AI 추천 산책길과 걷는 중은 `/map/walk` 한 화면이에요. 위치 권한 안내는 실제 권한을 따라요. 다시 보려면 폰 설정에서 Expo Go의 위치 권한을 끄면 돼요.
 
 - 지도 홈은 손가락으로 끌고 확대·축소해요. 사진 묶음을 누르면 묶음 목록, 사진을 누르면 자리 상세로 가요.
+- 오른쪽 위 **탐색 모드** 스위치를 켜면 내 위치 둘레에 열림 반경 원이 그려지고, 아래 패널에 **가장 가까운 기록**이 떠요. 패널은 손잡이를 누르거나 위아래로 밀어서 접고 펼쳐요. 펼친 동안에는 카메라 버튼이 숨어요.
 - 자리 상세(`/map/spot/[id]`)는 자리 종류에 따라 모양이 달라요. 맛보기 사진을 누르면 **맛보기**, 점선 `+`를 누르면 **빈 자리**, 나머지 흐린 사진을 누르면 **거리별 열림 단계**가 열려요.
 - 거리별 열림 단계는 **480m 멀리 → 120m 다가가는 중 → 25m 거의 열림 → 열렸어요(`/opening/[id]`) → 열린 자리(`/map/opened/[id]`)** 순서예요. 진짜 위치를 붙이기 전까지는 화면의 `(시연)` 버튼으로 다음 단계로 넘겨요. 단계와 거리 값은 `features/map/constants/approach-stages.ts`에 있어요.
 
@@ -208,7 +209,8 @@ assets/
 - [ ] 마커·경로를 화면 좌표에서 위도·경도로 바꾸기 → `features/map/constants/preview-*.ts`는 서버 데이터가 오면 지우기
 - [x] 위치 권한 확인·요청, 내 위치 가져오기 → `features/map/hooks/use-my-location.ts`
 - [ ] 남기기 화면에서도 내 위치가 필요하면 `use-my-location.ts`를 `src/hooks/`로 옮기기
-- [ ] 지도 홈 탐색 모드 (가장 가까운 기록 카드) → `features/map/screens/map-screen.tsx`
+- [x] 지도 홈 탐색 모드 (열림 반경, 가장 가까운 기록 패널) → `features/map/components/explore-sheet.tsx`
+- [ ] 열림 반경 실제 값 정하기 (캠퍼스에서 걸어보기) → `features/map/constants/map-config.ts`
 - [ ] 탐색 모드 스위치에 눈 아이콘 넣기 → `features/map/components/explore-mode-toggle.tsx`
 - [ ] 거리 계산 함수 → `src/utils/`
 - [ ] 거리에 따라 열림 단계가 자동으로 바뀌게 하기. 캠퍼스에서 걸어보고 거리 값 정하기 → `features/map/constants/approach-stages.ts`

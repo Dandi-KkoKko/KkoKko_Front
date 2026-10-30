@@ -9,6 +9,8 @@ import type { Coordinate, HomeMapMarker } from '@/features/map/types/home-map-ma
 export type MapCommand =
   | { type: 'setMarkers'; markers: HomeMapMarker[] }
   | { type: 'setMyLocation'; coordinate: Coordinate }
+  /** 탐색 모드의 열림 반경 원. null이면 지운다. */
+  | { type: 'setOpenRadius'; circle: { center: Coordinate; radiusMeters: number } | null }
   | { type: 'moveTo'; coordinate: Coordinate };
 
 /** 지도 페이지 → 앱 */

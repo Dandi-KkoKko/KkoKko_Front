@@ -8,8 +8,13 @@ import { floatingShadow, radius, spacing } from '@/constants/layout';
 const routeButtonSize = 48;
 const cameraButtonSize = 56;
 
+type MapActionButtonsProps = {
+  /** 탐색 모드에서 가장 가까운 기록을 펼치면 Figma대로 카메라 버튼을 숨긴다. */
+  showCamera?: boolean;
+};
+
 /** 지도 오른쪽 아래 버튼: 산책 경로 추천, 지금 이 자리 남기기 */
-export function MapActionButtons() {
+export function MapActionButtons({ showCamera = true }: MapActionButtonsProps) {
   return (
     <View style={styles.column}>
       <Pressable
@@ -19,13 +24,15 @@ export function MapActionButtons() {
         style={styles.routeButton}>
         <Icon name="route" size={24} />
       </Pressable>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel="지금 이 자리 남기기"
-        onPress={() => router.push('/upload/camera')}
-        style={styles.cameraButton}>
-        <Icon name="camera" size={28} color="textInverse" />
-      </Pressable>
+      {showCamera && (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel="지금 이 자리 남기기"
+          onPress={() => router.push('/upload/camera')}
+          style={styles.cameraButton}>
+          <Icon name="camera" size={28} color="textInverse" />
+        </Pressable>
+      )}
     </View>
   );
 }

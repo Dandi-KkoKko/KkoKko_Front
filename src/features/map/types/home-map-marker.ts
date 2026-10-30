@@ -13,12 +13,13 @@ type ClusterMarker = {
   moreCount: number;
 };
 
-/** 사진 하나. 가까이 와서 열린 사진(isOpen)은 흐리지 않게 보여준다. */
-type PhotoMarker = {
+/** 사진 하나. 지도에는 첫 해시태그만, 가장 가까운 기록 카드에는 전부 보여준다. */
+export type PhotoMarker = {
   kind: 'photo';
   id: string;
   coordinate: Coordinate;
-  hashtag: string;
+  hashtags: string[];
+  /** 열림 반경 안에 들어와서 흐리지 않게 보이는 사진 */
   isOpen: boolean;
 };
 

@@ -24,6 +24,16 @@ function toCssFont(variant: TypographyVariant) {
   return `font-family: Pretendard, sans-serif; font-weight: ${fontWeights[fontFamily]}; font-size: ${fontSize}px; line-height: ${lineHeight}px;`;
 }
 
+/** 열림 반경 원. 카카오 Circle은 CSS가 아니라 옵션으로 색을 받는다. */
+export const openRadiusCircleStyle = {
+  strokeWeight: 1.5,
+  strokeColor: colors.primary,
+  strokeOpacity: 1,
+  strokeStyle: 'dash',
+  fillColor: palette.primary[50],
+  fillOpacity: 0.7,
+};
+
 const shadow = `0 ${floatingShadow.shadowOffset.height}px ${floatingShadow.shadowRadius}px rgba(0, 0, 0, ${floatingShadow.shadowOpacity})`;
 
 export const kakaoMapCss = `

@@ -1,5 +1,9 @@
 import type { Coordinate } from '@/features/map/types/home-map-marker';
-import { kakaoMapCss, pretendardCssUrl } from '@/features/map/kakao-map/kakao-map-styles';
+import {
+  kakaoMapCss,
+  openRadiusCircleStyle,
+  pretendardCssUrl,
+} from '@/features/map/kakao-map/kakao-map-styles';
 
 type KakaoMapHtmlOptions = {
   appKey: string;
@@ -27,6 +31,7 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
     var map = null;
     var markerOverlays = [];
     var myLocationOverlay = null;
+    var openRadiusCircle = null;
 
     function post(event) {
       window.ReactNativeWebView.postMessage(JSON.stringify(event));
@@ -56,7 +61,7 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
         root.appendChild(createElement('span', 'cluster-more', '+' + marker.moreCount + '개 더'));
       } else {
         root.appendChild(createElement('div', 'photo ' + (marker.isOpen ? 'photo-open' : 'photo-locked')));
-        root.appendChild(createElement('span', 'chip ' + (marker.isOpen ? 'chip-dark' : 'chip-light'), marker.hashtag));
+        root.appendChild(createElement('span', 'chip ' + (marker.isOpen ? 'chip-dark' : 'chip-light'), marker.hashtags[0]));
       }
       root.addEventListener('click', function () {
         post({ type: 'markerPress', kind: marker.kind, markerId: marker.id });
@@ -87,6 +92,18 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
         dot.appendChild(createElement('div', 'my-location-dot'));
         // 내 위치가 사진 마커를 가리면 누를 수 없어서 마커(zIndex 1)보다 아래에 둔다.
         myLocationOverlay = new kakao.maps.CustomOverlay({ map: map, position: position, content: dot, zIndex: 0 });
+      },
+      setOpenRadius: function (command) {
+        if (openRadiusCircle) openRadiusCircle.setMap(null);
+        openRadiusCircle = null;
+        if (!command.circle) return;
+        var options = ${JSON.stringify(openRadiusCircleStyle)};
+        options.map = map;
+        options.center = toLatLng(command.circle.center);
+        options.radius = command.circle.radiusMeters;
+        // 원이 마커를 가리지 않도록 내 위치(0)와 마커(1)보다 아래에 둔다.
+        options.zIndex = -1;
+        openRadiusCircle = new kakao.maps.Circle(options);
       },
       moveTo: function (command) {
         map.panTo(toLatLng(command.coordinate));
