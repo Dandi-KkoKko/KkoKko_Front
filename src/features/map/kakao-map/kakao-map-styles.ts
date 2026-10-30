@@ -70,6 +70,8 @@ export const kakaoMapCss = `
   /* 검색결과 지도의 작은 사진 표시 */
   .result { width: ${spacing.xl}px; height: ${spacing.xl}px; box-sizing: border-box; border: 2px solid ${colors.background01}; border-radius: ${radius.xs}px; box-shadow: ${shadow}; background: radial-gradient(circle, ${colors.lockedPhotoCenter}, ${colors.lockedPhotoEdge}); }
 
+  .selected-ring { padding: ${spacing.xs}px; border-radius: ${radius.full}px; background: ${palette.primary[100]}; }
+
   .stack { position: relative; width: ${photoSize + spacing.xl}px; height: ${photoSize + spacing.sm}px; }
   .stack .photo { position: absolute; }
   .stack-back { left: 0; top: ${spacing.xs}px; transform: rotate(-12deg); }

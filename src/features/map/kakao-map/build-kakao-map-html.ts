@@ -58,9 +58,16 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
         ['stack-back', 'stack-middle', 'stack-front'].forEach(function (position) {
           stack.appendChild(createElement('div', 'photo photo-locked ' + position));
         });
-        root.appendChild(stack);
-        root.appendChild(createElement('span', 'cluster-label', marker.label));
-        root.appendChild(createElement('span', 'cluster-more', '+' + marker.moreCount + '개 더'));
+        if (marker.isSelected) {
+          // 이미 열어 본 묶음은 Figma처럼 이름표 없이 주황 원으로만 감싼다.
+          var ring = createElement('div', 'selected-ring');
+          ring.appendChild(stack);
+          root.appendChild(ring);
+        } else {
+          root.appendChild(stack);
+          root.appendChild(createElement('span', 'cluster-label', marker.label));
+          root.appendChild(createElement('span', 'cluster-more', '+' + marker.moreCount + '개 더'));
+        }
       } else {
         root.appendChild(createElement('div', 'photo ' + (marker.isOpen ? 'photo-open' : 'photo-locked')));
         root.appendChild(createElement('span', 'chip ' + (marker.isOpen ? 'chip-dark' : 'chip-light'), marker.hashtags[0]));
@@ -112,13 +119,15 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
       },
       fitBounds: function (command) {
         if (command.coordinates.length === 0) return;
+        var p = command.padding;
         if (command.coordinates.length === 1) {
+          // 한 곳이면 확대 단계는 그대로 두고, 가리는 영역을 뺀 남은 지도 가운데에 오도록 민다.
           map.setCenter(toLatLng(command.coordinates[0]));
+          map.panBy((p.right - p.left) / 2, (p.bottom - p.top) / 2);
           return;
         }
         var bounds = new kakao.maps.LatLngBounds();
         command.coordinates.forEach(function (coordinate) { bounds.extend(toLatLng(coordinate)); });
-        var p = command.padding;
         map.setBounds(bounds, p.top, p.right, p.bottom, p.left);
       },
     };

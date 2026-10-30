@@ -6,6 +6,7 @@
  * 서버 데이터가 오면 이 파일은 지운다.
  */
 
+import { getPreviewClusterRecords } from '@/features/map/constants/preview-cluster';
 import type { Coordinate, HomeMapMarker } from '@/features/map/types/home-map-marker';
 import { offsetCoordinate } from '@/features/map/utils/offset-coordinate';
 
@@ -13,7 +14,14 @@ export function getPreviewHomeMarkers(origin: Coordinate): HomeMapMarker[] {
   const at = (northMeters: number, eastMeters: number) => offsetCoordinate(origin, northMeters, eastMeters);
 
   return [
-    { kind: 'cluster', id: '1', coordinate: at(170, -110), label: '#단골자리 · 공강벤치', moreCount: 11 },
+    // '+N개 더'는 묶음 화면의 기록 수와 늘 같아야 해서 묶음 데이터에서 센다.
+    {
+      kind: 'cluster',
+      id: '1',
+      coordinate: at(170, -110),
+      label: '#단골자리 · 공강벤치',
+      moreCount: getPreviewClusterRecords('1').length - 1,
+    },
     { kind: 'photo', id: '2', coordinate: at(130, 90), hashtags: ['#계산밖의 호의'], isOpen: false },
     { kind: 'photo', id: '3', coordinate: at(35, 30), hashtags: ['#동물친구', '#일상속재발견'], isOpen: false },
     { kind: 'photo', id: '4', coordinate: at(-500, 150), hashtags: ['#정문앞', '#붕어빵'], isOpen: false },

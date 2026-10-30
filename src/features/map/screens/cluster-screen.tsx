@@ -1,62 +1,84 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/app-text';
-import { Chip } from '@/components/chip';
 import { IconButton } from '@/components/icon-button';
-import { MapPlaceholder } from '@/components/map-placeholder';
-import { screenPaddingX, spacing } from '@/constants/layout';
-import { BottomPanel } from '@/features/map/components/bottom-panel';
-import { ClusterSpotGrid } from '@/features/map/components/cluster-spot-grid';
-import { ClusterMarker } from '@/features/map/components/map-markers';
-import { previewCluster } from '@/features/map/constants/preview-cluster';
+import { colors } from '@/constants/colors';
+import { radius, screenPaddingX, spacing } from '@/constants/layout';
+import { ClusterRecordList } from '@/features/map/components/cluster-record-list';
+import { MapBottomSheet } from '@/features/map/components/map-bottom-sheet';
+import { getPreviewClusterRecords } from '@/features/map/constants/preview-cluster';
+import { useHomeMapMarkers } from '@/features/map/hooks/use-home-map-markers';
+import { useMyLocation } from '@/features/map/hooks/use-my-location';
+import { KakaoMapView } from '@/features/map/kakao-map/kakao-map-view';
+import type { HomeMapMarker } from '@/features/map/types/home-map-marker';
+import { openRecord } from '@/features/map/utils/open-search-result';
 
-type SortOrder = 'preference' | 'distance';
+/** Figma에서 위쪽 지도는 화면의 약 3분의 1이고, 나머지를 기록 목록이 차지한다. */
+const expandedSheetRatio = 0.62;
+/** 접었을 때 남는 손잡이와 제목 높이 */
+const collapsedSheetHeight = 84;
 
 /**
- * 와이어프레임 ①-A: 묶음 마커를 누르면 그 묶음의 자리들을 격자로 보여준다.
- * '내 취향 순'은 AI 취향 분석이 붙으면 서버가 정렬해 준다. 지금은 받은 순서 그대로다.
+ * Figma '지도 묶음 기록 표시 UI'. 지도 홈에서 사진 묶음을 누르면 온다.
+ * 위쪽 지도에는 고른 묶음을 주황 원으로 표시하고, 아래 패널에 묶음 안의 기록을 AI 추천순으로 보여준다.
  */
 export function ClusterScreen() {
+  const { id } = useLocalSearchParams<{ id: string }>();
   const insets = useSafeAreaInsets();
-  const [sortOrder, setSortOrder] = useState<SortOrder>('preference');
-  const cluster = previewCluster;
+  const { height: windowHeight } = useWindowDimensions();
+  const { location } = useMyLocation();
+  // 지도 홈과 같은 마커에서 묶음을 찾아야 홈에서 누른 자리와 같은 곳이 보인다.
+  const { markers } = useHomeMapMarkers(location);
+  const [isSheetExpanded, setIsSheetExpanded] = useState(true);
 
-  const spots = useMemo(
-    () =>
-      sortOrder === 'distance'
-        ? [...cluster.spots].sort((a, b) => a.distanceMeters - b.distanceMeters)
-        : cluster.spots,
-    [cluster.spots, sortOrder],
+  const records = getPreviewClusterRecords(id);
+  const cluster = markers.find((marker) => marker.kind === 'cluster' && marker.id === id);
+  const sheetHeight = Math.round(windowHeight * expandedSheetRatio);
+
+  const mapMarkers = useMemo<HomeMapMarker[]>(() => (cluster ? [{ ...cluster, isSelected: true }] : []), [cluster]);
+  const focus = useMemo(
+    () => ({
+      coordinates: cluster ? [cluster.coordinate] : [],
+      padding: { top: 0, right: 0, bottom: isSheetExpanded ? sheetHeight : collapsedSheetHeight, left: 0 },
+    }),
+    [cluster, isSheetExpanded, sheetHeight],
   );
 
   return (
     <View style={styles.screen}>
-      <MapPlaceholder>
-        <ClusterMarker top={70} left="62%" selected />
-      </MapPlaceholder>
+      <KakaoMapView markers={mapMarkers} myLocation={location} focus={focus} onMarkerPress={() => setIsSheetExpanded(true)} />
 
-      <View style={[styles.top, { paddingTop: insets.top + spacing.xs }]}>
-        <IconButton icon="back" accessibilityLabel="뒤로" onPress={() => router.back()} />
+      <View style={[styles.back, { top: insets.top + spacing.xs }]}>
+        <IconButton icon="back" accessibilityLabel="뒤로" size={48} onPress={() => router.back()} />
       </View>
 
-      <BottomPanel height="74%">
-        <View style={styles.titleRow}>
-          <AppText variant="heading03">이 묶음의 자리 {cluster.spots.length}개</AppText>
-          <AppText variant="caption02" color="textTertiary">
-            {cluster.areaLabel} · 약 {cluster.distanceMeters}m
+      <MapBottomSheet
+        height={sheetHeight}
+        isExpanded={isSheetExpanded}
+        onExpandedChange={setIsSheetExpanded}
+        label="묶음 기록"
+        header={
+          <View style={styles.titleRow}>
+            <AppText variant="subtitle01">이 묶음의 기록 {records.length}개</AppText>
+            {/* AI 취향 정렬은 서버가 맡는다. 받은 순서가 곧 추천순이라 고르는 버튼 없이 표시만 한다. */}
+            <View style={styles.aiBadge}>
+              <AppText variant="caption03" color="primary">
+                AI 추천순
+              </AppText>
+            </View>
+          </View>
+        }>
+        {records.length > 0 ? (
+          <ClusterRecordList records={records} onPress={(record) => openRecord(record.id)} />
+        ) : (
+          <AppText variant="caption01" color="textTertiary" style={styles.empty}>
+            이 묶음의 기록을 찾지 못했어요
           </AppText>
-        </View>
-        <View style={styles.sortRow}>
-          <Chip label="내 취향 순" selected={sortOrder === 'preference'} onPress={() => setSortOrder('preference')} />
-          <Chip label="가까운 순" selected={sortOrder === 'distance'} onPress={() => setSortOrder('distance')} />
-        </View>
-        <ScrollView contentContainerStyle={styles.gridContent}>
-          <ClusterSpotGrid spots={spots} />
-        </ScrollView>
-      </BottomPanel>
+        )}
+      </MapBottomSheet>
     </View>
   );
 }
@@ -65,24 +87,23 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  top: {
+  back: {
     position: 'absolute',
-    left: 0,
-    right: 0,
-    paddingHorizontal: screenPaddingX,
-    alignItems: 'flex-start',
+    left: screenPaddingX,
   },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  sortRow: {
-    flexDirection: 'row',
-    gap: spacing.xs,
+  aiBadge: {
+    paddingVertical: spacing.xxs,
+    paddingHorizontal: spacing.xs,
+    borderRadius: radius.sm,
+    backgroundColor: colors.selectedBackground,
   },
-  gridContent: {
-    paddingTop: spacing.xs,
-    paddingBottom: spacing.xl,
+  empty: {
+    textAlign: 'center',
+    paddingVertical: spacing.xl,
   },
 });

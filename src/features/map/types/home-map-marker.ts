@@ -11,6 +11,8 @@ type ClusterMarker = {
   coordinate: Coordinate;
   label: string;
   moreCount: number;
+  /** 묶음 화면에서 지금 열어 본 묶음. 연한 주황 원으로 감싼다. */
+  isSelected?: boolean;
 };
 
 /** 사진 하나. 지도에는 첫 해시태그만, 가장 가까운 기록 카드에는 전부 보여준다. */
