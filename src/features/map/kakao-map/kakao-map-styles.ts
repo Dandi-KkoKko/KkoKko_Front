@@ -70,6 +70,19 @@ export const kakaoMapCss = `
   /* 검색결과 지도의 작은 사진 표시 */
   .result { width: ${spacing.xl}px; height: ${spacing.xl}px; box-sizing: border-box; border: 2px solid ${colors.background01}; border-radius: ${radius.xs}px; box-shadow: ${shadow}; background: radial-gradient(circle, ${colors.lockedPhotoCenter}, ${colors.lockedPhotoEdge}); }
 
+  /* 고른 장소: 검은 물방울 핀 + 위에 검은 이름표 */
+  .pin-label {
+    padding: ${spacing.xxs}px ${spacing.xs}px; border-radius: ${radius.sm}px; white-space: nowrap;
+    background: ${colors.textPrimary}; color: ${colors.textInverse}; ${toCssFont('caption03')}
+  }
+  .pin {
+    display: flex; align-items: center; justify-content: center;
+    width: ${spacing.xxl}px; height: ${spacing.xxl}px; box-sizing: border-box;
+    border: 3px solid ${colors.background01}; border-radius: 50% 50% 50% 0; transform: rotate(-45deg);
+    background: ${colors.textPrimary}; box-shadow: ${shadow};
+  }
+  .pin-dot { width: ${spacing.sm}px; height: ${spacing.sm}px; border-radius: ${radius.full}px; background: ${colors.primary}; }
+
   .selected-ring { padding: ${spacing.xs}px; border-radius: ${radius.full}px; background: ${palette.primary[100]}; }
 
   .stack { position: relative; width: ${photoSize + spacing.xl}px; height: ${photoSize + spacing.sm}px; }

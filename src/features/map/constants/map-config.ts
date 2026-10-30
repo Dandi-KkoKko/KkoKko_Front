@@ -23,3 +23,6 @@ export const defaultMapLevel = 3;
  * 기본 확대 단계에서 Figma 탐색 모드의 원 크기와 비슷해지는 값이고, 실제 값은 캠퍼스를 걸어보며 정한다.
  */
 export const openRadiusMeters = 100;
+
+/** 고른 장소에서 이 거리 안의 기록을 '이 근처 남겨진 기록'으로 센다. 걸어서 5분 안쪽이다. */
+export const nearbyRecordRadiusMeters = 300;

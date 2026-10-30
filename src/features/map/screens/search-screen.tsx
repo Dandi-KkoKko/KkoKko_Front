@@ -13,11 +13,12 @@ import { useMyLocation } from '@/features/map/hooks/use-my-location';
 import { useRecentSearches } from '@/features/map/hooks/use-recent-searches';
 import { useSearchResults } from '@/features/map/hooks/use-search-results';
 import type { SearchResultItem } from '@/features/map/types/search-result-item';
-import { openPlace, openRecord } from '@/features/map/utils/open-search-result';
+import { openSearchResults } from '@/features/map/utils/open-search-result';
 
 /**
  * Figma '지도 검색 화면 UI'. 지도 홈 위에 흰 검색 창을 덮는다 (투명 모달이라 아래로 지도가 보인다).
  * 글자를 치는 동안 결과를 바로 보여주고 ('#'으로 시작하면 해시태그, 아니면 장소), 키보드의 검색을 누르면 검색결과 화면으로 간다.
+ * 결과 하나를 누르면 검색결과 화면을 그 결과를 고른 상태(경로 추천 카드)로 연다.
  * 검색창 아래 빈 지도를 누르면 검색을 닫는다.
  */
 export function SearchScreen() {
@@ -34,13 +35,12 @@ export function SearchScreen() {
     const keyword = query.trim();
     if (!keyword) return;
     addRecentSearch(keyword);
-    router.push({ pathname: '/map/results', params: { query: keyword } });
+    openSearchResults(keyword);
   };
 
   const openItem = (item: SearchResultItem) => {
-    addRecentSearch(item.target.type === 'place' ? item.title : query);
-    if (item.target.type === 'place') openPlace(item.target.place);
-    else openRecord(item.target.recordId);
+    addRecentSearch(item.kind === 'place' ? item.title : query);
+    openSearchResults(query.trim(), item.key);
   };
 
   return (

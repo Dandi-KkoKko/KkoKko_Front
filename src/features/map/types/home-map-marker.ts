@@ -34,5 +34,13 @@ type ResultMarker = {
   coordinate: Coordinate;
 };
 
+/** 검색결과에서 고른 한 곳. 검은 핀 위에 이름표를 단다. */
+type PinMarker = {
+  kind: 'pin';
+  id: string;
+  coordinate: Coordinate;
+  label: string;
+};
+
 /** 카카오맵에 올릴 수 있는 모든 표시 */
-export type MapMarker = HomeMapMarker | ResultMarker;
+export type MapMarker = HomeMapMarker | ResultMarker | PinMarker;

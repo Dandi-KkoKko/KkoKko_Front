@@ -53,6 +53,11 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
       var root = createElement('button', 'marker');
       if (marker.kind === 'result') {
         root.appendChild(createElement('div', 'result'));
+      } else if (marker.kind === 'pin') {
+        root.appendChild(createElement('span', 'pin-label', marker.label));
+        var pin = createElement('div', 'pin');
+        pin.appendChild(createElement('div', 'pin-dot'));
+        root.appendChild(pin);
       } else if (marker.kind === 'cluster') {
         var stack = createElement('div', 'stack');
         ['stack-back', 'stack-middle', 'stack-front'].forEach(function (position) {

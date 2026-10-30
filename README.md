@@ -128,7 +128,7 @@ src/
   app/            화면 주소와 화면 이동 구조 (Expo Router)
   features/       기능별 코드 (각 폴더의 screens/에 실제 화면)
     auth/           소개, 로그인, 회원가입, 권한, 취향 설문
-    map/            지도, 검색, 검색한 장소, 묶음 목록, 자리 상세, 열린 자리, 산책 경로, 신고
+    map/            지도, 검색, 검색결과·경로 추천, 묶음 목록, 자리 상세, 열린 자리, 산책 경로, 신고
     record/         내 기록
     upload/         남기기 (촬영, 한 줄, 위치 확인)
     my/             마이, 좋아요 내역, 연 자리 기록, 기호 수정, 설정
@@ -156,7 +156,7 @@ assets/
 
 가짜 데이터는 `src/mock/`와 각 기능의 `constants/preview-*.ts`에 있어요. 백엔드 API가 나오면 이 값을 서버 데이터로 바꿔요.
 
-지도 API는 **카카오맵**이에요. Expo Go에서도 열리도록 네이티브 SDK 대신 WebView 안에 카카오맵 JavaScript SDK를 띄워요. 지금은 지도 홈(`/map`)만 카카오맵이고, 나머지 지도 화면과 내 기록 지도, 남기기 위치 확인은 아직 회색 지도(`components/map-placeholder.tsx`)예요.
+지도 API는 **카카오맵**이에요. Expo Go에서도 열리도록 네이티브 SDK 대신 WebView 안에 카카오맵 JavaScript SDK를 띄워요. 지금은 지도 홈(`/map`), 검색결과(`/map/results`), 묶음 목록(`/map/cluster/[id]`)이 카카오맵이고, 나머지 지도 화면과 내 기록 지도, 남기기 위치 확인은 아직 회색 지도(`components/map-placeholder.tsx`)예요.
 
 지도 홈은 Figma GUI 디자인(비탐색 모드, 탐색 모드)으로 바뀌었어요. 카카오맵 코드는 `features/map/kakao-map/`에 모여 있어요.
 
@@ -172,7 +172,7 @@ assets/
 - **장소**: 카카오 로컬 API로 찾아요 (`features/map/api/search-places.ts`).
 - **해시태그**: `#`으로 시작하면 해시태그 검색이에요. 지도 홈과 같은 기록에서 해시태그를 찾고, 같은 해시태그는 가장 가까운 기록 하나로 묶어요 (`features/map/utils/search-hashtags.ts`). 동네 이름은 카카오 좌표→주소 API로 붙여요 (`features/map/api/get-region-name.ts`).
 - **최근 검색기록**은 폰에 저장돼서 앱을 꺼도 남아요. 검색 화면과 검색결과 화면이 같은 기록을 써요.
-- 장소 결과를 누르면 장소 화면(`/map/place/[id]`)으로 이름·주소·좌표를 넘기고, 해시태그 결과를 누르면 그 기록의 자리 상세로 가요.
+- 결과 하나를 누르면(목록이든 지도 표시든) 목록 대신 **경로 추천 카드**가 떠요. 지도에는 그곳만 핀으로 보이고, 카드에는 내 위치에서의 거리, 이 근처(300m) 남겨진 기록 수, 그 기록들의 해시태그가 나와요. 해시태그를 골라 '경로 추천'을 누르면 산책 경로 화면(`/map/walk`)으로 목적지와 고른 해시태그를 넘겨요. 검색 화면에서 결과를 누르면 검색결과 화면이 그 결과를 고른 채로 열려요.
 
 지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 사진이 열렸는지는 내 위치에서 **열림 반경**(`features/map/constants/map-config.ts`의 `openRadiusMeters`, 지금 100m) 안에 있는지로 정해요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
 
@@ -181,7 +181,7 @@ assets/
                 └─ 건너뛰기 ─────────────────────────────────→ 지도
 
 아래 탭
-├─ 지도  /map            → 검색 → 검색한 장소 → 걸어서 가기(자리 상세)
+├─ 지도  /map            → 검색 → 검색결과 → 경로 추천 카드 → 산책 경로
 │                         → 묶음 목록, 자리 상세 → 열린 자리 → 신고(모달)
 │                         → 산책 경로 (추천 → 걷는 중)
 ├─ 기록  /record
@@ -194,7 +194,7 @@ assets/
 | 주소 | 화면 파일 | 와이어프레임 |
 |---|---|---|
 | `/intro`, `/login`, `/signup`, `/permission`, `/survey` | `features/auth/screens/` | ⓪ 시작 |
-| `/map`, `/map/search`, `/map/results`, `/map/place/[id]`, `/map/walk` | `features/map/screens/` | ① 지도 |
+| `/map`, `/map/search`, `/map/results`, `/map/walk` | `features/map/screens/` | ① 지도 |
 | `/map/cluster/[id]` | `features/map/screens/` | ①-A |
 | `/map/spot/[id]`, `/opening/[id]`, `/map/opened/[id]`, `/report/[id]` | `features/map/screens/` | ①-A, ①-B |
 | `/record` | `features/record/screens/` | ② 기록 |
