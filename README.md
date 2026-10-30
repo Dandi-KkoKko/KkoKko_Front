@@ -167,7 +167,12 @@ assets/
 | `kakao-map-styles.ts` | 마커 CSS. 마커는 HTML이라 `AppText`를 못 써서, `colors`·`typography` 값을 CSS로 바꿔 넣어요. |
 | `kakao-map-bridge.ts` | 앱과 지도 페이지가 주고받는 메시지 모양 |
 
-검색(`/map/search`)은 지도 홈 위에 투명하게 덮이는 창이에요. 장소는 카카오 로컬 API로 찾고, 최근 검색기록은 폰에 저장돼서 앱을 꺼도 남아요. 검색결과를 누르면 장소 화면(`/map/place/[id]`)으로 장소 이름·주소·좌표를 넘겨요.
+검색(`/map/search`)은 지도 홈 위에 투명하게 덮이는 창이에요. 글자를 치는 동안 결과가 바로 나오고, 키보드의 검색을 누르면 **검색결과 화면**(`/map/results`)으로 가요. 검색결과 화면에는 장소 / 해시태그 탭, 결과 위치를 보여주는 지도, 가까운순·정확도순 목록이 있어요.
+
+- **장소**: 카카오 로컬 API로 찾아요 (`features/map/api/search-places.ts`).
+- **해시태그**: `#`으로 시작하면 해시태그 검색이에요. 지도 홈과 같은 기록에서 해시태그를 찾고, 같은 해시태그는 가장 가까운 기록 하나로 묶어요 (`features/map/utils/search-hashtags.ts`). 동네 이름은 카카오 좌표→주소 API로 붙여요 (`features/map/api/get-region-name.ts`).
+- **최근 검색기록**은 폰에 저장돼서 앱을 꺼도 남아요. 검색 화면과 검색결과 화면이 같은 기록을 써요.
+- 장소 결과를 누르면 장소 화면(`/map/place/[id]`)으로 이름·주소·좌표를 넘기고, 해시태그 결과를 누르면 그 기록의 자리 상세로 가요.
 
 지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 사진이 열렸는지는 내 위치에서 **열림 반경**(`features/map/constants/map-config.ts`의 `openRadiusMeters`, 지금 100m) 안에 있는지로 정해요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
 
@@ -189,7 +194,7 @@ assets/
 | 주소 | 화면 파일 | 와이어프레임 |
 |---|---|---|
 | `/intro`, `/login`, `/signup`, `/permission`, `/survey` | `features/auth/screens/` | ⓪ 시작 |
-| `/map`, `/map/search`, `/map/place/[id]`, `/map/walk` | `features/map/screens/` | ① 지도 |
+| `/map`, `/map/search`, `/map/results`, `/map/place/[id]`, `/map/walk` | `features/map/screens/` | ① 지도 |
 | `/map/cluster/[id]` | `features/map/screens/` | ①-A |
 | `/map/spot/[id]`, `/opening/[id]`, `/map/opened/[id]`, `/report/[id]` | `features/map/screens/` | ①-A, ①-B |
 | `/record` | `features/record/screens/` | ② 기록 |
@@ -241,7 +246,7 @@ assets/
 - [ ] 취향 설문 저장, 사용자 기호 수정 저장 → `survey-screen.tsx`, `preferences-screen.tsx`
 - [ ] 지도 주변 사진, 묶음, 자리 상세, 열린 자리 불러오기 → `features/map/`
 - [x] 장소 검색 → 카카오 로컬 API (`features/map/api/search-places.ts`)
-- [ ] 해시태그 검색 (`#`으로 시작하는 검색어) → `features/map/hooks/use-place-search.ts`는 지금 `#` 검색어를 건너뛰어요
+- [x] 해시태그 검색 → `features/map/hooks/use-hashtag-search.ts` (지금은 가짜 기록에서 찾아요. 서버가 나오면 기록만 서버 데이터로 바꿔요)
 - [ ] 좋아요, 신고 보내기 → `opened-spot-screen.tsx`, `report-screen.tsx`
 - [ ] 사진 업로드 (얼굴 감지 결과 포함) → `features/upload/screens/confirm-screen.tsx`
 - [ ] AI 해시태그 추천 → `features/upload/screens/write-screen.tsx` (지금은 정해진 2묶음)
