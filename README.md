@@ -66,6 +66,8 @@ npx tsc --noEmit
 | 이미지 | expo-image |
 | 지도 | 카카오맵 JavaScript SDK (react-native-webview 안에 띄움) |
 | 위치 | expo-location |
+| 장소 검색 | 카카오 로컬 API (키워드 검색) |
+| 기기 저장 | @react-native-async-storage/async-storage (최근 검색기록) |
 | 글꼴 | Pretendard (SIL Open Font License 1.1) |
 | 코드 검사 | ESLint (eslint-config-expo), TypeScript 타입 검사 |
 
@@ -85,19 +87,22 @@ npx expo start
 
 > Windows PowerShell에서 `npx`가 보안 오류로 막히면 `npx.cmd expo start`로 실행해요.
 
-### 카카오맵 키 (지도 화면)
+### 카카오 키 (지도, 장소 검색)
 
-키가 없어도 앱은 열려요. 지도 자리에 회색 지도가 대신 나와요. 진짜 지도를 보려면:
+키가 없어도 앱은 열려요. 지도 자리에는 회색 지도가, 검색 결과 자리에는 안내 문구가 대신 나와요. 진짜 지도와 검색을 쓰려면:
 
-1. [카카오 개발자 콘솔](https://developers.kakao.com)에서 앱을 만들고 **JavaScript 키**를 복사해요.
-2. 같은 앱의 **플랫폼 > Web > 사이트 도메인**에 `http://localhost`를 등록해요. 앱 안의 지도 페이지가 이 주소로 열려서, 등록하지 않으면 지도가 뜨지 않아요.
+1. [카카오 개발자 콘솔](https://developers.kakao.com)에서 앱을 만들고 **앱 설정 > 앱 > 플랫폼 키**에서 **JavaScript 키**(지도)와 **REST API 키**(장소 검색)를 복사해요.
+2. 같은 곳의 JavaScript 키 설정 **JavaScript SDK 도메인**에 `http://localhost`를 등록해요. 앱 안의 지도 페이지가 이 주소로 열려서, 등록하지 않으면 지도가 뜨지 않아요.
 3. 프로젝트 맨 위 폴더에 `.env.example`을 복사해 `.env`를 만들고 키를 넣어요. `.env`는 GitHub에 올라가지 않아요.
 
 ```bash
 EXPO_PUBLIC_KAKAO_MAP_JS_KEY=복사한_JavaScript_키
+EXPO_PUBLIC_KAKAO_REST_API_KEY=복사한_REST_API_키
 ```
 
 4. `.env`를 바꾼 뒤에는 `npx expo start`를 껐다가 다시 켜요.
+
+> REST API 키는 앱 안에 들어가서 누구나 꺼내 볼 수 있어요. 해커톤 시연용으로는 괜찮지만, 실제로 출시할 때는 검색 요청을 우리 서버를 거치게 바꿔요.
 
 터미널에 뜬 QR 코드를 폰으로 찍으면 Expo Go에서 앱이 열려요.
 
@@ -161,6 +166,8 @@ assets/
 | `build-kakao-map-html.ts` | WebView에 넣을 지도 페이지 (카카오 SDK 불러오기, 마커 그리기) |
 | `kakao-map-styles.ts` | 마커 CSS. 마커는 HTML이라 `AppText`를 못 써서, `colors`·`typography` 값을 CSS로 바꿔 넣어요. |
 | `kakao-map-bridge.ts` | 앱과 지도 페이지가 주고받는 메시지 모양 |
+
+검색(`/map/search`)은 지도 홈 위에 투명하게 덮이는 창이에요. 장소는 카카오 로컬 API로 찾고, 최근 검색기록은 폰에 저장돼서 앱을 꺼도 남아요. 검색결과를 누르면 장소 화면(`/map/place/[id]`)으로 장소 이름·주소·좌표를 넘겨요.
 
 지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 사진이 열렸는지는 내 위치에서 **열림 반경**(`features/map/constants/map-config.ts`의 `openRadiusMeters`, 지금 100m) 안에 있는지로 정해요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
 
@@ -233,7 +240,8 @@ assets/
 - [ ] 로그인 (카카오, 구글, 이메일), 회원가입·이메일 인증 → `features/auth/`
 - [ ] 취향 설문 저장, 사용자 기호 수정 저장 → `survey-screen.tsx`, `preferences-screen.tsx`
 - [ ] 지도 주변 사진, 묶음, 자리 상세, 열린 자리 불러오기 → `features/map/`
-- [ ] 검색 → `features/map/screens/search-screen.tsx` (지금은 검색어와 상관없이 같은 결과)
+- [x] 장소 검색 → 카카오 로컬 API (`features/map/api/search-places.ts`)
+- [ ] 해시태그 검색 (`#`으로 시작하는 검색어) → `features/map/hooks/use-place-search.ts`는 지금 `#` 검색어를 건너뛰어요
 - [ ] 좋아요, 신고 보내기 → `opened-spot-screen.tsx`, `report-screen.tsx`
 - [ ] 사진 업로드 (얼굴 감지 결과 포함) → `features/upload/screens/confirm-screen.tsx`
 - [ ] AI 해시태그 추천 → `features/upload/screens/write-screen.tsx` (지금은 정해진 2묶음)

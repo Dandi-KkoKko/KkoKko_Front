@@ -3,6 +3,9 @@ import type { Coordinate } from '@/features/map/types/home-map-marker';
 /** 카카오 개발자 콘솔의 JavaScript 키. `.env`에 넣고, 없으면 지도 대신 회색 지도를 보여준다. */
 export const kakaoMapJsKey = process.env.EXPO_PUBLIC_KAKAO_MAP_JS_KEY ?? '';
 
+/** 카카오 개발자 콘솔의 REST API 키. 장소 검색(카카오 로컬 API)에 쓴다. JavaScript 키와 다르다. */
+export const kakaoRestApiKey = process.env.EXPO_PUBLIC_KAKAO_REST_API_KEY ?? '';
+
 /**
  * WebView 안 지도 페이지의 주소.
  * 카카오는 등록된 도메인에서만 지도를 열어 주므로, 카카오 개발자 콘솔 > 플랫폼 > Web에 이 값을 등록해야 한다.
