@@ -5,8 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppText } from '@/components/app-text';
 import { IconButton } from '@/components/icon-button';
-import { colors } from '@/constants/colors';
-import { radius, screenPaddingX, spacing } from '@/constants/layout';
+import { screenPaddingX, spacing } from '@/constants/layout';
+import { AiBadge } from '@/features/map/components/ai-badge';
 import { ClusterRecordList } from '@/features/map/components/cluster-record-list';
 import { MapBottomSheet } from '@/features/map/components/map-bottom-sheet';
 import { getPreviewClusterRecords } from '@/features/map/constants/preview-cluster';
@@ -64,11 +64,7 @@ export function ClusterScreen() {
           <View style={styles.titleRow}>
             <AppText variant="subtitle01">이 묶음의 기록 {records.length}개</AppText>
             {/* AI 취향 정렬은 서버가 맡는다. 받은 순서가 곧 추천순이라 고르는 버튼 없이 표시만 한다. */}
-            <View style={styles.aiBadge}>
-              <AppText variant="caption03" color="primary">
-                AI 추천순
-              </AppText>
-            </View>
+            <AiBadge label="AI 추천순" />
           </View>
         }>
         {records.length > 0 ? (
@@ -95,12 +91,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  aiBadge: {
-    paddingVertical: spacing.xxs,
-    paddingHorizontal: spacing.xs,
-    borderRadius: radius.sm,
-    backgroundColor: colors.selectedBackground,
   },
   empty: {
     textAlign: 'center',

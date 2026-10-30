@@ -30,6 +30,8 @@ type KakaoMapViewProps<Marker extends MapMarker> = {
    * 바뀔 때마다 다시 맞추므로, 화면에서 useMemo로 넘긴다.
    */
   focus?: { coordinates: Coordinate[]; padding: MapPadding };
+  /** 산책 경로 선. 없으면 지운다. */
+  routePath?: Coordinate[] | null;
   onMarkerPress: (marker: Marker) => void;
 };
 
@@ -70,6 +72,7 @@ export function KakaoMapView<Marker extends MapMarker>({
   myLocation,
   openRadiusMeters = null,
   focus,
+  routePath = null,
   onMarkerPress,
 }: KakaoMapViewProps<Marker>) {
   const webViewRef = useRef<MapWebView>(null);
@@ -99,6 +102,10 @@ export function KakaoMapView<Marker extends MapMarker>({
   useEffect(() => {
     if (isReady && focus) sendCommand(webViewRef.current, { type: 'fitBounds', ...focus });
   }, [isReady, focus]);
+
+  useEffect(() => {
+    if (isReady) sendCommand(webViewRef.current, { type: 'setRoute', path: routePath });
+  }, [isReady, routePath]);
 
   useEffect(() => {
     if (!isReady) return;

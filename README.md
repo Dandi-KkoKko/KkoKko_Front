@@ -67,6 +67,7 @@ npx tsc --noEmit
 | 지도 | 카카오맵 JavaScript SDK (react-native-webview 안에 띄움) |
 | 위치 | expo-location |
 | 장소 검색 | 카카오 로컬 API (키워드 검색) |
+| 걷는 길 | TMAP 보행자 경로 API (키가 없으면 직선 경로로 대신) |
 | 기기 저장 | @react-native-async-storage/async-storage (최근 검색기록) |
 | 글꼴 | Pretendard (SIL Open Font License 1.1) |
 | 코드 검사 | ESLint (eslint-config-expo), TypeScript 타입 검사 |
@@ -98,6 +99,8 @@ npx expo start
 ```bash
 EXPO_PUBLIC_KAKAO_MAP_JS_KEY=복사한_JavaScript_키
 EXPO_PUBLIC_KAKAO_REST_API_KEY=복사한_REST_API_키
+# (선택) SK open API의 TMAP 앱 키. 넣으면 산책 경로가 실제 걷는 길을 따라가요. 없으면 직선으로 이어요.
+EXPO_PUBLIC_TMAP_APP_KEY=복사한_TMAP_앱_키
 ```
 
 4. `.env`를 바꾼 뒤에는 `npx expo start`를 껐다가 다시 켜요.
@@ -172,7 +175,11 @@ assets/
 - **장소**: 카카오 로컬 API로 찾아요 (`features/map/api/search-places.ts`).
 - **해시태그**: `#`으로 시작하면 해시태그 검색이에요. 지도 홈과 같은 기록에서 해시태그를 찾고, 같은 해시태그는 가장 가까운 기록 하나로 묶어요 (`features/map/utils/search-hashtags.ts`). 동네 이름은 카카오 좌표→주소 API로 붙여요 (`features/map/api/get-region-name.ts`).
 - **최근 검색기록**은 폰에 저장돼서 앱을 꺼도 남아요. 검색 화면과 검색결과 화면이 같은 기록을 써요.
-- 결과 하나를 누르면(목록이든 지도 표시든) 목록 대신 **경로 추천 카드**가 떠요. 지도에는 그곳만 핀으로 보이고, 카드에는 내 위치에서의 거리, 이 근처(300m) 남겨진 기록 수, 그 기록들의 해시태그가 나와요. 해시태그를 골라 '경로 추천'을 누르면 산책 경로 화면(`/map/walk`)으로 목적지와 고른 해시태그를 넘겨요. 검색 화면에서 결과를 누르면 검색결과 화면이 그 결과를 고른 채로 열려요.
+- 결과 하나를 누르면(목록이든 지도 표시든) 목록 대신 **경로 추천 카드**가 떠요. 지도에는 그곳만 핀으로 보이고, 카드에는 내 위치에서의 거리, 이 근처(300m) 남겨진 기록 수, 그 기록들의 해시태그가 나와요. 해시태그를 골라 '경로 추천'을 누르면 같은 화면에서 **AI 추천 경로**가 그려져요.
+  - 들를 자리: 고른 해시태그가 붙은 기록 중 내 위치→목적지 직선에서 250m 안쪽인 것을 최대 3곳, 걸어가며 만나는 순서로 골라요 (`features/map/utils/pick-route-stops.ts`). AI 추천 API가 나오면 이 규칙을 바꿔요.
+  - 경로 선: TMAP 보행자 경로 API로 실제 걷는 길을 받아요. 키가 없거나 실패하면 직선으로 이어요 (`features/map/api/get-walk-route.ts`).
+  - 카드는 손잡이로 접고 펼쳐요. '이 길로 걷기'를 누르면 산책 경로 화면(`/map/walk`)으로 목적지와 해시태그를 넘겨요.
+- 해시태그 결과를 고르면 그 해시태그가 붙은 기록마다 핀이 찍히고, 핀을 누르면 그 기록이 남겨진 장소 카드가 떠요. 검색 화면에서 결과를 누르면 검색결과 화면이 그 결과를 고른 채로 열려요.
 
 지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 사진이 열렸는지는 내 위치에서 **열림 반경**(`features/map/constants/map-config.ts`의 `openRadiusMeters`, 지금 100m) 안에 있는지로 정해요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
 

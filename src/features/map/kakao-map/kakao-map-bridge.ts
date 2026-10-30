@@ -12,6 +12,8 @@ export type MapCommand =
   /** 탐색 모드의 열림 반경 원. null이면 지운다. */
   | { type: 'setOpenRadius'; circle: { center: Coordinate; radiusMeters: number } | null }
   | { type: 'moveTo'; coordinate: Coordinate }
+  /** 산책 경로 선. null이면 지운다. */
+  | { type: 'setRoute'; path: Coordinate[] | null }
   /** 좌표가 모두 보이게 지도를 맞춘다. padding은 지도를 가리는 검색창·목록 높이(px)다. */
   | { type: 'fitBounds'; coordinates: Coordinate[]; padding: MapPadding };
 

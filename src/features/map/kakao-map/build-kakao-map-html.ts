@@ -3,6 +3,7 @@ import {
   kakaoMapCss,
   openRadiusCircleStyle,
   pretendardCssUrl,
+  routeLineStyle,
 } from '@/features/map/kakao-map/kakao-map-styles';
 
 type KakaoMapHtmlOptions = {
@@ -32,6 +33,7 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
     var markerOverlays = [];
     var myLocationOverlay = null;
     var openRadiusCircle = null;
+    var routeLine = null;
 
     function post(event) {
       window.ReactNativeWebView.postMessage(JSON.stringify(event));
@@ -54,7 +56,7 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
       if (marker.kind === 'result') {
         root.appendChild(createElement('div', 'result'));
       } else if (marker.kind === 'pin') {
-        root.appendChild(createElement('span', 'pin-label', marker.label));
+        if (marker.label) root.appendChild(createElement('span', 'pin-label', marker.label));
         var pin = createElement('div', 'pin');
         pin.appendChild(createElement('div', 'pin-dot'));
         root.appendChild(pin);
@@ -91,6 +93,8 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
             map: map,
             position: toLatLng(marker.coordinate),
             content: createMarkerElement(marker),
+            // 핀은 뾰족한 끝이 그 자리를 가리켜야 해서 아래 끝을 좌표에 맞춘다. 나머지는 가운데를 맞춘다.
+            yAnchor: marker.kind === 'pin' ? 1 : 0.5,
             clickable: true,
             zIndex: 1,
           });
@@ -118,6 +122,17 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
         // 원이 마커를 가리지 않도록 내 위치(0)와 마커(1)보다 아래에 둔다.
         options.zIndex = -1;
         openRadiusCircle = new kakao.maps.Circle(options);
+      },
+      setRoute: function (command) {
+        if (routeLine) routeLine.setMap(null);
+        routeLine = null;
+        if (!command.path) return;
+        var options = ${JSON.stringify(routeLineStyle)};
+        options.map = map;
+        options.path = command.path.map(toLatLng);
+        // 선이 핀을 가리지 않도록 마커(1)보다 아래에 둔다.
+        options.zIndex = 0;
+        routeLine = new kakao.maps.Polyline(options);
       },
       moveTo: function (command) {
         map.panTo(toLatLng(command.coordinate));

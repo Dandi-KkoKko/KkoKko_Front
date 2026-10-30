@@ -24,16 +24,21 @@ export function MapActionButtons({ showCamera = true }: MapActionButtonsProps) {
         style={styles.routeButton}>
         <Icon name="route" size={24} />
       </Pressable>
-      {showCamera && (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="지금 이 자리 남기기"
-          onPress={() => router.push('/upload/camera')}
-          style={styles.cameraButton}>
-          <Icon name="camera" size={28} color="textInverse" />
-        </Pressable>
-      )}
+      {showCamera && <CameraButton />}
     </View>
+  );
+}
+
+/** 주황 카메라 버튼: 지금 이 자리 남기기. 경로를 보는 화면에서도 따로 쓴다. */
+export function CameraButton() {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="지금 이 자리 남기기"
+      onPress={() => router.push('/upload/camera')}
+      style={styles.cameraButton}>
+      <Icon name="camera" size={28} color="textInverse" />
+    </Pressable>
   );
 }
 

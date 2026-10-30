@@ -23,6 +23,8 @@ export type PhotoMarker = {
   hashtags: string[];
   /** 열림 반경 안에 들어와서 흐리지 않게 보이는 사진 */
   isOpen: boolean;
+  /** 기록이 남겨진 장소 이름 ('영남대학교 정문'). 서버가 주는 값이다. */
+  placeName?: string;
 };
 
 export type HomeMapMarker = ClusterMarker | PhotoMarker;
@@ -34,12 +36,12 @@ type ResultMarker = {
   coordinate: Coordinate;
 };
 
-/** 검색결과에서 고른 한 곳. 검은 핀 위에 이름표를 단다. */
+/** 검색결과에서 고른 곳. 검은 핀이고, 이름표(label)가 있으면 핀 위에 단다. */
 type PinMarker = {
   kind: 'pin';
   id: string;
   coordinate: Coordinate;
-  label: string;
+  label?: string;
 };
 
 /** 카카오맵에 올릴 수 있는 모든 표시 */

@@ -34,6 +34,14 @@ export const openRadiusCircleStyle = {
   fillOpacity: 0.7,
 };
 
+/** 산책 경로 선. Figma처럼 굵은 주황 선으로 도로를 따라 그린다. */
+export const routeLineStyle = {
+  strokeWeight: 8,
+  strokeColor: colors.primary,
+  strokeOpacity: 1,
+  strokeStyle: 'solid',
+};
+
 const shadow = `0 ${floatingShadow.shadowOffset.height}px ${floatingShadow.shadowRadius}px rgba(0, 0, 0, ${floatingShadow.shadowOpacity})`;
 
 export const kakaoMapCss = `
