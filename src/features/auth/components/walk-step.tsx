@@ -29,7 +29,7 @@ export function WalkStep({ walkTimes, walkDuration, onChangeWalkTimes, onChangeW
     <View>
       <SurveyTitle title={'언제, 얼마나\n걷는 편인가요?'} description="산책길을 추천할 때 써요 · 여러 개 골라도 돼요" />
 
-      <AppText variant="subtitle04" style={styles.label}>
+      <AppText variant="subtitle03" style={styles.label}>
         주로 걷는 때
       </AppText>
       <View style={styles.list}>
@@ -47,8 +47,8 @@ export function WalkStep({ walkTimes, walkDuration, onChangeWalkTimes, onChangeW
         })}
       </View>
 
-      <AppText variant="subtitle04" style={[styles.label, styles.durationLabel]}>
-        한 번에 걷는 시간
+      <AppText variant="subtitle03" style={[styles.label, styles.durationLabel]}>
+        한번에 걷는 시간
       </AppText>
       <View style={styles.segments}>
         {walkDurationOptions.map((duration) => {
@@ -60,7 +60,7 @@ export function WalkStep({ walkTimes, walkDuration, onChangeWalkTimes, onChangeW
               accessibilityState={{ selected }}
               onPress={() => onChangeWalkDuration(duration)}
               style={[styles.segment, selected && styles.selectedSegment]}>
-              <AppText variant="button03" color={selected ? 'textInverse' : 'textPrimary'}>
+              <AppText variant="subtitle03" color={selected ? 'textInverse' : 'textPrimary'}>
                 {duration}
               </AppText>
             </Pressable>
@@ -73,24 +73,25 @@ export function WalkStep({ walkTimes, walkDuration, onChangeWalkTimes, onChangeW
 
 const styles = StyleSheet.create({
   label: {
-    marginBottom: spacing.xs,
+    marginBottom: spacing.sm,
+    paddingHorizontal: spacing.xxs,
   },
   durationLabel: {
     marginTop: spacing.xl,
   },
   list: {
-    gap: spacing.xs,
+    gap: spacing.sm,
   },
   segments: {
     flexDirection: 'row',
-    gap: spacing.xs,
+    gap: spacing.sm,
   },
+  // GUI에서 시간 버튼은 칸을 나누지 않고 글자 길이만큼만 차지한다
   segment: {
-    flex: 1,
-    height: 44,
+    padding: spacing.sm,
     borderRadius: radius.md,
-    borderWidth: 1,
-    borderColor: colors.disabledBackground,
+    borderWidth: 1.5,
+    borderColor: colors.borderDeactivated,
     alignItems: 'center',
     justifyContent: 'center',
   },

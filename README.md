@@ -129,7 +129,7 @@ src/
   types/          데이터 타입
 assets/
   fonts/          Pretendard 글꼴 파일
-  images/         앱 아이콘, 시작 화면 이미지
+  images/         앱 아이콘, 온보딩 일러스트 (onboarding/)
 ```
 
 - `src/app/`에는 **화면 파일만** 둬요. 실제 UI와 로직은 `features/`에서 가져와요.
@@ -141,13 +141,15 @@ assets/
 
 와이어프레임의 모든 화면(⓪ 시작, ① 지도, ② 기록, ③ 마이)이 **회색 배치**로 만들어져 있어요. 버튼, 입력창, 글자 위치는 와이어프레임대로 맞췄고, 사진 자리는 회색 상자예요. GUI 디자인이 나오면 각 화면 파일에서 색과 그림만 바꾸면 돼요.
 
+GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소개 3장, 권한 안내, 취향 설문 1/3~3/3과 완료.
+
 가짜 데이터는 `src/mock/`와 각 기능의 `constants/preview-*.ts`에 있어요. 백엔드 API가 나오면 이 값을 서버 데이터로 바꿔요.
 
 지도 화면들과 내 기록 지도, 남기기 위치 확인은 진짜 지도 대신 회색 지도(`components/map-placeholder.tsx`)를 깔아 두었어요. 지도 API는 아직 정하지 않았어요. 정해지면 지도 담당이 이 부분만 진짜 지도로 바꾸고, 위에 올린 검색창, 버튼, 카드는 그대로 써요. 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 가짜 데이터예요.
 
 ```
 앱 시작 → 소개 → 로그인 → (회원가입) → 권한 요청 → 취향 설문 → 지도
-                └─ 건너뛰기 ─────────────────────────────────→ 지도
+                                                  └─ 건너뛰기 → 지도
 
 아래 탭
 ├─ 지도  /map            → 검색 → 검색한 장소 → 걸어서 가기(자리 상세)
@@ -198,11 +200,11 @@ assets/
 ### 화면 담당
 
 - [ ] 카메라 연결 (`expo-camera`): 촬영, 카메라 전환 → `features/upload/components/camera-viewfinder.tsx`, `features/upload/screens/camera-screen.tsx`
-- [ ] 권한 안내 화면에서 실제 위치·카메라·알림 권한 요청 → `features/auth/screens/permission-screen.tsx`
+- [x] 권한 안내 화면에서 실제 위치·카메라 권한 요청 → `features/auth/utils/request-app-permissions.ts`
+- [ ] 알림 권한 요청 (알림 기능을 붙일 때) → `features/auth/utils/request-app-permissions.ts`
 - [ ] 로그인 여부에 따라 첫 화면 정하기 (지금은 항상 소개 화면) → `src/app/index.tsx`
 - [ ] 설정의 권한 상태를 실제 값으로 → `features/my/screens/settings-screen.tsx`
 - [ ] 화면이 없는 메뉴: 내 신고 내역, 이용약관·개인정보 처리방침, 회원 탈퇴, 비밀번호 찾기
-- [ ] 소개 화면 2·3장 문구 디자이너와 확정 (지금은 임시 문구) → `features/auth/constants/intro-slides.ts`
 
 ### 서버 연결 (백엔드·AI API가 나오면)
 
@@ -224,7 +226,8 @@ assets/
 - [ ] 흐림이 걷히는 애니메이션 → `features/map/screens/opening-screen.tsx`
 - [ ] 아래 탭 아이콘 → `src/app/(tabs)/_layout.tsx`
 - [ ] 와이어프레임 때문에 임시로 추가한 색 4개 맞추기 → `src/constants/colors.ts` 아래쪽
-- [ ] 소개 화면 일러스트, 앱 아이콘, 시작 화면(스플래시) 이미지 → `assets/images/`
+- [x] 소개 화면 일러스트, 시작 화면(스플래시) 색 → `assets/images/onboarding/`, `app.json`
+- [ ] 앱 아이콘 → `assets/images/`, `app.json`
 
 ### 정해야 할 것
 

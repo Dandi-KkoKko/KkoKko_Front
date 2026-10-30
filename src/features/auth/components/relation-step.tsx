@@ -32,6 +32,6 @@ export function RelationStep({ value, onChange }: RelationStepProps) {
 
 const styles = StyleSheet.create({
   options: {
-    gap: spacing.sm,
+    gap: spacing.md,
   },
 });
