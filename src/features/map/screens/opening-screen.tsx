@@ -41,7 +41,7 @@ export function OpeningScreen() {
 
       <View style={styles.footer}>
         <Button label="사진과 한 줄 보기" variant="primary" onPress={showOpenedSpot} />
-        <AppText variant="caption02" color="textInverse" style={styles.centerText}>
+        <AppText variant="caption04" color="textInverse" style={styles.centerText}>
           &apos;연 자리 기록&apos;에 조용히 남겨졌어요
         </AppText>
       </View>

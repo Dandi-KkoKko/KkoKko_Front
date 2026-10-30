@@ -16,20 +16,20 @@ import { mockNotificationGroups } from '@/mock/notifications';
 export function NotificationsScreen() {
   return (
     <ScreenContainer withBottomInset={false} header={<ScreenHeader title="다녀갔어요 알림" />}>
-      <AppText variant="caption02" color="textTertiary" style={styles.label}>
+      <AppText variant="caption04" color="textTertiary" style={styles.label}>
         푸시 알림 예시
       </AppText>
       <PushPreview />
 
       <View style={styles.notice}>
-        <AppText variant="caption02" color="textSecondary">
+        <AppText variant="caption04" color="textSecondary">
           누가 눌렀는지, 몇 명인지는 보이지 않아요. 내 순간이 닿았다는 것만 알려드려요.
         </AppText>
       </View>
 
       {mockNotificationGroups.map((group) => (
         <View key={group.label} style={styles.group}>
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             {group.label}
           </AppText>
           {group.items.map((notification) => (

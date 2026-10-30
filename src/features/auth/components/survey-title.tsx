@@ -13,7 +13,7 @@ export function SurveyTitle({ title, description }: SurveyTitleProps) {
   return (
     <View style={styles.container}>
       <AppText variant="heading03">{title}</AppText>
-      <AppText variant="caption01" color="textTertiary">
+      <AppText variant="caption02" color="textTertiary">
         {description}
       </AppText>
     </View>

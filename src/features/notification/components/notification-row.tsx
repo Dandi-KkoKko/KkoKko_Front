@@ -18,7 +18,7 @@ export function NotificationRow({ notification, onPress }: NotificationRowProps)
       <View style={[styles.dot, notification.isUnread && styles.unreadDot]} />
       <View style={styles.texts}>
         <AppText variant="subtitle04">{notification.title}</AppText>
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           {notification.detail}
         </AppText>
       </View>
@@ -34,7 +34,7 @@ export function PushPreview() {
       <View style={styles.appIcon} />
       <View style={styles.texts}>
         <AppText variant="subtitle04">가까이</AppText>
-        <AppText variant="caption01">누군가 당신의 순간에 다녀갔어요</AppText>
+        <AppText variant="caption02">누군가 당신의 순간에 다녀갔어요</AppText>
       </View>
       <PhotoPlaceholder width={40} height={40} />
     </View>

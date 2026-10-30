@@ -36,7 +36,7 @@ export function AiHashtagPicker({ suggestions, selected, onChange, onRefresh }: 
         <Badge label="AI" tone="highlight" />
         <AppText variant="subtitle03">한 줄을 읽고 고른 해시태그</AppText>
       </View>
-      <AppText variant="caption02" color="textTertiary">
+      <AppText variant="caption04" color="textTertiary">
         {minHashtagCount}~{maxHashtagCount}개를 골라주세요 · {selected.length}개 선택됨
       </AppText>
 
@@ -47,7 +47,7 @@ export function AiHashtagPicker({ suggestions, selected, onChange, onRefresh }: 
       </View>
 
       <Pressable hitSlop={8} onPress={onRefresh} style={styles.refresh}>
-        <AppText variant="caption02" color="textSecondary" style={styles.underline}>
+        <AppText variant="caption04" color="textSecondary" style={styles.underline}>
           다른 해시태그 추천받기
         </AppText>
       </Pressable>

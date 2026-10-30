@@ -38,12 +38,12 @@ export function CameraScreen() {
 
       <CameraViewfinder placeLabel={draft.placeLabel} />
 
-      <AppText variant="caption02" color="textInverse" style={styles.notice}>
+      <AppText variant="caption04" color="textInverse" style={styles.notice}>
         얼굴이 담기면 올릴 수 없어요 · 앱 카메라로만 남길 수 있어요
       </AppText>
 
       <View style={styles.controls}>
-        <AppText variant="caption02" color="textDeactivated" style={styles.sideControl}>
+        <AppText variant="caption04" color="textDeactivated" style={styles.sideControl}>
           {'갤러리\n사용 안 함'}
         </AppText>
         <Pressable accessibilityRole="button" accessibilityLabel="사진 찍기" onPress={takePhoto} style={styles.shutter}>
@@ -51,7 +51,7 @@ export function CameraScreen() {
         </Pressable>
         <View style={styles.sideControl}>
           <Pressable accessibilityLabel="카메라 전환" style={styles.flipButton}>
-            <Icon name="cameraSwitch" color="textInverse" />
+            <Icon name="cameraSwitch" />
           </Pressable>
         </View>
       </View>

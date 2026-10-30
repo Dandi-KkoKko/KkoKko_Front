@@ -15,18 +15,21 @@ type OptionCardProps = {
   style?: ViewStyle;
 };
 
-/** 설문 선택지 카드. 고르면 배경과 테두리가 강조된다. */
+/**
+ * 설문 선택지 카드. 고르면 연한 주황 배경에 검정 테두리.
+ * 설명이 있으면 Figma selectbox_text(두꺼운 테두리, 큰 모서리), 없으면 selectbox_check 모양이다.
+ */
 export function OptionCard({ title, description, selected, onPress, right, style }: OptionCardProps) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ selected }}
       onPress={onPress}
-      style={[styles.card, selected && styles.selected, style]}>
+      style={[styles.card, description ? styles.textCard : styles.checkCard, selected && styles.selected, style]}>
       <View style={styles.texts}>
         <AppText variant="subtitle03">{title}</AppText>
         {description && (
-          <AppText variant="caption01" color="textSecondary">
+          <AppText variant="caption02" color="textSecondary">
             {description}
           </AppText>
         )}
@@ -40,11 +43,19 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: spacing.md,
+    paddingHorizontal: spacing.md,
+    borderColor: colors.borderDeactivated,
+    backgroundColor: colors.background01,
+  },
+  textCard: {
+    paddingVertical: spacing.md,
+    borderRadius: radius.lg,
+    borderWidth: 2,
+  },
+  checkCard: {
+    paddingVertical: spacing.sm,
     borderRadius: radius.md,
     borderWidth: 1.5,
-    borderColor: colors.disabledBackground,
-    backgroundColor: colors.background01,
   },
   selected: {
     borderColor: colors.textPrimary,

@@ -253,7 +253,7 @@ Figma `디자인 시스템` 페이지의 값을 코드로 옮겨 두었어요.
 | `Button` | 큰 버튼 (`primary` 강조 / `dark` 기본 / `outline` 보조) |
 | `TextField` | 라벨이 있는 입력창 |
 | `Checkbox` | 체크박스 |
-| `Icon` | 아이콘 (iOS·Android 이름 차이를 맞춰 둠) |
+| `Icon` | Figma 아이콘 (`assets/icons`). Figma에 없는 몇 개만 기기 기본 아이콘 |
 | `PhotoPlaceholder` | 사진이 붙기 전 회색 사진 자리 |
 | `Chip` | 해시태그·필터·최근 검색어 같은 동그란 작은 버튼 |
 | `Badge` | 맛보기, 곧 열려요, AI 추천 같은 작은 상태 표시 |
@@ -261,6 +261,8 @@ Figma `디자인 시스템` 페이지의 값을 코드로 옮겨 두었어요.
 | `SegmentedToggle` | 리스트 / 지도처럼 보기 방식을 바꾸는 작은 토글 |
 | `Radio` | 여럿 중 하나만 고르는 동그라미 (신고 사유 등) |
 | `MapPlaceholder` | 진짜 지도를 붙이기 전 회색 지도 |
+| `Toggle` | 켜고 끄는 주황 스위치 (설정 등) |
+| `TabBar` | 아래 탭 바 (지도·기록·마이) |
 
 ### 사용법
 

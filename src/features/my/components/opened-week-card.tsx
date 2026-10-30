@@ -21,7 +21,7 @@ export function OpenedWeekCard({ totalCount, days }: OpenedWeekCardProps) {
         {days.map((day) => (
           <View key={day.label} style={styles.day}>
             <View style={[styles.bar, day.opened && styles.openedBar, day.isToday && styles.todayBar]} />
-            <AppText variant="caption02" color="textTertiary">
+            <AppText variant="caption04" color="textTertiary">
               {day.label}
             </AppText>
           </View>
@@ -39,7 +39,7 @@ type StatTileProps = {
 export function StatTile({ label, value }: StatTileProps) {
   return (
     <View style={styles.tile}>
-      <AppText variant="caption02" color="textTertiary">
+      <AppText variant="caption04" color="textTertiary">
         {label}
       </AppText>
       <AppText variant="subtitle01">{value}</AppText>

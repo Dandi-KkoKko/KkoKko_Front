@@ -50,7 +50,7 @@ Docs: https://docs.expo.dev/eas/index.md
 - 글씨는 React Native `Text` 대신 `src/components/app-text.tsx`의 `AppText`를 쓰고, `variant`로 스타일을 고른다. `fontSize`, `fontFamily`를 직접 쓰지 않는다.
 - 디자인 시스템에 없는 값이 필요하면 화면에 임시로 넣지 말고 `src/constants/`에 이름을 붙여 추가한다.
 - 간격과 모서리는 `src/constants/layout.ts`의 `spacing`, `radius`를 쓴다.
-- 화면은 `src/components/`의 공통 부품(`ScreenContainer`, `ScreenHeader`, `Button`, `TextField`, `Checkbox`, `Icon`, `PhotoPlaceholder`, `Chip`, `Badge`, `IconButton`, `SegmentedToggle`, `Radio`, `MapPlaceholder`)으로 먼저 조립하고, 없을 때만 새로 만든다.
+- 화면은 `src/components/`의 공통 부품(`ScreenContainer`, `ScreenHeader`, `Button`, `TextField`, `Checkbox`, `Icon`, `PhotoPlaceholder`, `Chip`, `Badge`, `IconButton`, `SegmentedToggle`, `Radio`, `MapPlaceholder`, `Toggle`, `TabBar`)으로 먼저 조립하고, 없을 때만 새로 만든다.
 - Figma 파일: `https://www.figma.com/design/yPo9TnNjD86Gedi8oPqgWt/Design` (디자인 시스템, 와이어 프레임, GUI 디자인 페이지)
 
 ### Figma 수치 옮기기

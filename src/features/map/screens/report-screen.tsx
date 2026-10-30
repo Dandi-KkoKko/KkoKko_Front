@@ -23,7 +23,7 @@ export function ReportScreen() {
       footer={
         <>
           <Button label="신고하기" disabled={reason === null} onPress={() => router.back()} />
-          <AppText variant="caption02" color="textTertiary" style={styles.center}>
+          <AppText variant="caption04" color="textTertiary" style={styles.center}>
             신고한 사람은 공개되지 않아요 · 로그인 사용자만 신고할 수 있어요
           </AppText>
         </>
@@ -34,7 +34,7 @@ export function ReportScreen() {
           <Icon name="close" size={22} />
         </Pressable>
       </View>
-      <AppText variant="caption02" color="textTertiary">
+      <AppText variant="caption04" color="textTertiary">
         하나를 골라주세요
       </AppText>
 

@@ -31,7 +31,7 @@ export function IntroScreen() {
       header={
         <View style={styles.header}>
           <Pressable hitSlop={12} onPress={goToMap}>
-            <AppText variant="caption01" color="textTertiary">
+            <AppText variant="caption02" color="textTertiary">
               건너뛰기
             </AppText>
           </Pressable>

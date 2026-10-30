@@ -24,7 +24,7 @@ export function WalkStatusCard({ routeTitle, stopCount, nextStopIndex, minutesTo
         <AppText variant="subtitle02" color="textInverse">
           다음 자리까지 {minutesToNext}분
         </AppText>
-        <AppText variant="caption02" color="textInverse">
+        <AppText variant="caption04" color="textInverse">
           {nextStopIndex + 1} / {stopCount} · 약 {metersToNext}m
         </AppText>
       </View>
@@ -40,7 +40,7 @@ export function WalkStatusCard({ routeTitle, stopCount, nextStopIndex, minutesTo
           />
         ))}
       </View>
-      <AppText variant="caption02" color="textInverse">
+      <AppText variant="caption04" color="textInverse">
         {routeTitle}
       </AppText>
     </View>
@@ -62,7 +62,7 @@ export function NextStopCard({ stop, blurLevel, onStop }: NextStopCardProps) {
       <View style={styles.nextRow}>
         <PhotoPlaceholder width={56} height={56} />
         <View style={styles.nextTexts}>
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             다음 자리 · 흐림 {blurLevel}단계
           </AppText>
           <AppText variant="subtitle04">{stop.hashtags.join(' ')}</AppText>

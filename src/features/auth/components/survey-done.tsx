@@ -40,7 +40,7 @@ export function SurveyDone({ answers, nickname, nearbySpotCount }: SurveyDonePro
       <View style={styles.summary}>
         {rows.map((row) => (
           <View key={row.label} style={styles.row}>
-            <AppText variant="caption02" color="textTertiary">
+            <AppText variant="caption04" color="textTertiary">
               {row.label}
             </AppText>
             <AppText variant="subtitle04" style={styles.value}>
@@ -48,7 +48,7 @@ export function SurveyDone({ answers, nickname, nearbySpotCount }: SurveyDonePro
             </AppText>
           </View>
         ))}
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           마이 › 사용자 기호 수정에서 언제든 바꿀 수 있어요
         </AppText>
       </View>

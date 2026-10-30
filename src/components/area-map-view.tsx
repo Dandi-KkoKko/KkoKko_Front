@@ -56,7 +56,7 @@ export function AreaMapView({ areas, selectedAreaId, onSelectArea }: AreaMapView
               {selectedArea.name} · {selectedArea.count}개
             </AppText>
             <Pressable hitSlop={8} onPress={() => onSelectArea(null)}>
-              <AppText variant="caption02" color="textTertiary">
+              <AppText variant="caption04" color="textTertiary">
                 선택 해제
               </AppText>
             </Pressable>
@@ -65,13 +65,13 @@ export function AreaMapView({ areas, selectedAreaId, onSelectArea }: AreaMapView
             {selectedArea.hashtags.map((hashtag) => (
               <View key={hashtag} style={styles.photoItem}>
                 <PhotoPlaceholder width="100%" height={140} />
-                <AppText variant="caption02">{hashtag}</AppText>
+                <AppText variant="caption04">{hashtag}</AppText>
               </View>
             ))}
           </View>
         </View>
       ) : (
-        <AppText variant="caption01" color="textTertiary" style={styles.hint}>
+        <AppText variant="caption02" color="textTertiary" style={styles.hint}>
           지도의 사진을 누르면 그 구역 사진이 여기에 보여요
         </AppText>
       )}

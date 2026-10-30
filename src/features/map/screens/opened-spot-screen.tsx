@@ -31,15 +31,15 @@ export function OpenedSpotScreen() {
           title="열린 자리"
           right={
             <Pressable style={styles.reportButton} onPress={() => router.push(`/report/${spot.id}`)}>
-              <Icon name="flag" size={14} />
-              <AppText variant="caption01">신고</AppText>
+              <Icon name="report" size={14} />
+              <AppText variant="caption02">신고</AppText>
             </Pressable>
           }
         />
       }
       footer={
         <>
-          <AppText variant="caption02" color="textTertiary" style={styles.center}>
+          <AppText variant="caption04" color="textTertiary" style={styles.center}>
             좋아요는 남긴 사람에게만 조용히 전해져요
           </AppText>
           <View style={styles.buttons}>
@@ -73,7 +73,7 @@ export function OpenedSpotScreen() {
             <Badge key={hashtag} label={hashtag} tone="muted" />
           ))}
         </View>
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           {spot.placeLabel} · 익명의 누군가가 남김
         </AppText>
       </View>

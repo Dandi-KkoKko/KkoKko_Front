@@ -12,7 +12,7 @@ type ChipProps = {
   onPress?: () => void;
 };
 
-/** 해시태그·필터·최근 검색어처럼 동그란 작은 버튼 */
+/** Figma 기록탭 hashtag. 해시태그·필터·최근 검색어처럼 동그란 작은 버튼. 고르면 검정으로 바뀐다. */
 export function Chip({ label, selected = false, icon, onPress }: ChipProps) {
   return (
     <Pressable
@@ -20,8 +20,8 @@ export function Chip({ label, selected = false, icon, onPress }: ChipProps) {
       accessibilityState={{ selected }}
       onPress={onPress}
       style={[styles.chip, selected && styles.selected]}>
-      {icon && <Icon name={icon} size={14} color={selected ? 'textInverse' : 'textPrimary'} />}
-      <AppText variant="caption03" color={selected ? 'textInverse' : 'textPrimary'}>
+      {icon && <Icon name={icon} size={16} color={selected ? 'textInverse' : undefined} />}
+      <AppText variant={selected ? 'button03' : 'button04'} color={selected ? 'textInverse' : 'textPrimary'}>
         {label}
       </AppText>
     </Pressable>
@@ -33,15 +33,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xxs,
-    paddingHorizontal: spacing.sm,
+    paddingHorizontal: spacing.md,
     paddingVertical: spacing.xs,
     borderRadius: radius.full,
-    borderWidth: 1,
-    borderColor: colors.borderDeactivated,
-    backgroundColor: colors.background01,
+    backgroundColor: colors.background02,
   },
   selected: {
     backgroundColor: colors.textPrimary,
-    borderColor: colors.textPrimary,
   },
 });

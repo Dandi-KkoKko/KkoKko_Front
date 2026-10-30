@@ -19,7 +19,7 @@ export function LoginScreen() {
   return (
     <ScreenContainer
       footer={
-        <AppText variant="caption02" color="textTertiary" style={styles.center}>
+        <AppText variant="caption04" color="textTertiary" style={styles.center}>
           신고와 내 사진 관리는 로그인한 사용자만 할 수 있어요
         </AppText>
       }>
@@ -35,7 +35,7 @@ export function LoginScreen() {
 
       <View style={styles.divider}>
         <View style={styles.line} />
-        <AppText variant="caption02" color="textTertiary">
+        <AppText variant="caption04" color="textTertiary">
           또는 이메일로
         </AppText>
         <View style={styles.line} />
@@ -48,7 +48,7 @@ export function LoginScreen() {
           keyboardType="email-address"
           autoCapitalize="none"
         />
-        <TextField label="비밀번호" placeholder="비밀번호" secureTextEntry />
+        <TextField label="비밀번호" placeholder="비밀번호" isPassword />
         <Button label="로그인" onPress={goNext} style={styles.loginButton} />
       </View>
 

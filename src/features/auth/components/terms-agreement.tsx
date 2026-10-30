@@ -23,7 +23,7 @@ export function TermsAgreement({ agreed, onChange }: TermsAgreementProps) {
 
   return (
     <View style={styles.box}>
-      <AppText variant="caption02" color="textTertiary">
+      <AppText variant="caption04" color="textTertiary">
         약관 동의
       </AppText>
 
@@ -38,7 +38,7 @@ export function TermsAgreement({ agreed, onChange }: TermsAgreementProps) {
           <AppText variant="body02" style={styles.termLabel}>
             [필수] {term}
           </AppText>
-          <AppText variant="caption02" color="textTertiary" style={styles.underline}>
+          <AppText variant="caption04" color="textTertiary" style={styles.underline}>
             보기
           </AppText>
         </Pressable>

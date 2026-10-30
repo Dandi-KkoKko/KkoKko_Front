@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, type PressableProps, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, View, type PressableProps, type ViewStyle } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Icon, type IconName } from '@/components/icon';
@@ -7,7 +7,7 @@ import { radius, spacing } from '@/constants/layout';
 
 type ButtonVariant = 'primary' | 'dark' | 'outline';
 
-type ButtonProps = Omit<PressableProps, 'style'> & {
+type ButtonProps = Omit<PressableProps, 'style' | 'children'> & {
   label: string;
   variant?: ButtonVariant;
   /** 글자 왼쪽 아이콘 */
@@ -16,43 +16,48 @@ type ButtonProps = Omit<PressableProps, 'style'> & {
 };
 
 const labelColor: Record<ButtonVariant, ColorName> = {
-  primary: 'textPrimary',
+  primary: 'textInverse',
   dark: 'textInverse',
   outline: 'textPrimary',
 };
 
-/** 화면 아래의 큰 버튼. primary는 강조, dark는 기본 진행, outline은 보조 동작. */
+/**
+ * Figma 공통 컴포넌트 button. primary(주황)는 강조, dark(검정)는 기본 진행, outline은 보조 동작.
+ * 누르고 있으면 버튼 위에 어두운 막을 덮고 글자를 회색으로 바꾼다 (Figma default_pressed, black_pressed).
+ */
 export function Button({ label, variant = 'dark', icon, disabled, style, ...rest }: ButtonProps) {
-  const textColor = disabled ? 'textDeactivated' : labelColor[variant];
-
   return (
     <Pressable
       accessibilityRole="button"
       disabled={disabled}
-      style={({ pressed }) => [
-        styles.base,
-        styles[variant],
-        disabled && styles.disabled,
-        pressed && styles.pressed,
-        style,
-      ]}
+      style={[styles.base, styles[variant], disabled && styles.disabled, style]}
       {...rest}>
-      {icon && <Icon name={icon} size={18} color={textColor} />}
-      <AppText variant="button01" color={textColor}>
-        {label}
-      </AppText>
+      {({ pressed }) => {
+        const showPressed = pressed && !disabled && variant !== 'outline';
+        const textColor: ColorName = showPressed ? 'textDeactivated' : disabled ? 'textInverse' : labelColor[variant];
+        return (
+          <>
+            {showPressed && <View style={styles.pressedOverlay} />}
+            {icon && <Icon name={icon} size={20} color={textColor} />}
+            <AppText variant="button01" color={textColor}>
+              {label}
+            </AppText>
+          </>
+        );
+      }}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   base: {
-    height: 56,
+    height: 54,
     flexDirection: 'row',
     gap: spacing.xxs,
     borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   primary: {
     backgroundColor: colors.primary,
@@ -66,10 +71,11 @@ const styles = StyleSheet.create({
     borderColor: colors.borderDeactivated,
   },
   disabled: {
-    backgroundColor: colors.disabledBackground,
+    backgroundColor: colors.borderDeactivated,
     borderWidth: 0,
   },
-  pressed: {
-    opacity: 0.8,
+  pressedOverlay: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: colors.pressedOverlay,
   },
 });

@@ -45,7 +45,7 @@ export function ClusterScreen() {
       <BottomPanel height="74%">
         <View style={styles.titleRow}>
           <AppText variant="heading03">이 묶음의 자리 {cluster.spots.length}개</AppText>
-          <AppText variant="caption02" color="textTertiary">
+          <AppText variant="caption04" color="textTertiary">
             {cluster.areaLabel} · 약 {cluster.distanceMeters}m
           </AppText>
         </View>

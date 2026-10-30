@@ -23,7 +23,7 @@ export function SurveyHeader({ step, totalSteps, onBack, onSkip }: SurveyHeaderP
         onBack={onBack}
         right={
           <Pressable hitSlop={12} onPress={onSkip}>
-            <AppText variant="caption01" color="textTertiary">
+            <AppText variant="caption02" color="textTertiary">
               건너뛰기
             </AppText>
           </Pressable>
