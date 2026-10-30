@@ -1,9 +1,8 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { ScreenHeader } from '@/components/screen-header';
-import { colors } from '@/constants/colors';
-import { radius, spacing } from '@/constants/layout';
+import { StepProgress } from '@/features/auth/components/step-progress';
 
 type SurveyHeaderProps = {
   step: number;
@@ -12,14 +11,16 @@ type SurveyHeaderProps = {
   onSkip: () => void;
 };
 
-/** 설문 위쪽: 뒤로, 단계(1 / 3), 건너뛰기, 진행 막대 */
+/** 설문 위쪽: 뒤로, 단계(1/3), 건너뛰기, 진행 막대 */
 export function SurveyHeader({ step, totalSteps, onBack, onSkip }: SurveyHeaderProps) {
-  const progress = `${(step / totalSteps) * 100}%` as const;
-
   return (
-    <View>
+    <>
       <ScreenHeader
-        centerText={`${step}/${totalSteps}`}
+        center={
+          <AppText variant="subtitle04" color="textTertiary">
+            {`${step}/${totalSteps}`}
+          </AppText>
+        }
         onBack={onBack}
         right={
           <Pressable hitSlop={12} onPress={onSkip}>
@@ -29,23 +30,7 @@ export function SurveyHeader({ step, totalSteps, onBack, onSkip }: SurveyHeaderP
           </Pressable>
         }
       />
-      <View style={styles.track}>
-        <View style={[styles.fill, { width: progress }]} />
-      </View>
-    </View>
+      <StepProgress step={step} totalSteps={totalSteps} />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  track: {
-    height: 4,
-    marginTop: spacing.xs,
-    borderRadius: radius.xs,
-    backgroundColor: colors.disabledBackground,
-  },
-  fill: {
-    height: 4,
-    borderRadius: radius.xs,
-    backgroundColor: colors.textPrimary,
-  },
-});

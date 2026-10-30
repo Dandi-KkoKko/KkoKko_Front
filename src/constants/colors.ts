@@ -63,7 +63,6 @@ export const colors = {
   selectedBackground: palette.primary[50],
   disabledBackground: palette.gray[100],
   placeholderBox: palette.gray[200],
-  kakao: '#FEE500', // 카카오 로그인 버튼 (카카오 브랜드 가이드 색)
 
   // 진짜 지도를 붙이기 전 회색 지도 자리 (와이어프레임 지도 색)
   mapBackground: palette.gray[100],

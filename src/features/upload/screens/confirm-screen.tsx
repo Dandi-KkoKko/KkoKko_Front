@@ -26,7 +26,13 @@ export function ConfirmScreen() {
 
   return (
     <ScreenContainer
-      header={<ScreenHeader centerText="3 / 3 · 위치 확인" />}
+      header={<ScreenHeader
+          center={
+            <AppText variant="subtitle04" color="textTertiary">
+              3 / 3 · 위치 확인
+            </AppText>
+          }
+        />}
       footer={<Button label="남기기 완료" variant="primary" onPress={() => router.dismissTo('/record')} />}>
       <AppText variant="heading03" style={styles.title}>
         이 자리에 남길게요

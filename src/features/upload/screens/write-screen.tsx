@@ -35,7 +35,13 @@ export function WriteScreen() {
 
   return (
     <ScreenContainer
-      header={<ScreenHeader centerText="2 / 3 · 한 줄 남기기" />}
+      header={<ScreenHeader
+          center={
+            <AppText variant="subtitle04" color="textTertiary">
+              2 / 3 · 한 줄 남기기
+            </AppText>
+          }
+        />}
       footer={
         <Button label="다음" variant="primary" disabled={!canGoNext} onPress={() => router.push('/upload/confirm')} />
       }>

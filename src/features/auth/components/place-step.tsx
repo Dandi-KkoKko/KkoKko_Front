@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { AppText } from '@/components/app-text';
 import { spacing } from '@/constants/layout';
 import { OptionCard } from '@/features/auth/components/option-card';
-import { SurveyTitle } from '@/features/auth/components/survey-title';
+import { StepTitle } from '@/features/auth/components/step-title';
 import { minPlaceCount, placeOptions } from '@/features/auth/constants/survey-options';
 
 type PlaceStepProps = {
@@ -18,7 +18,7 @@ export function PlaceStep({ value, onChange }: PlaceStepProps) {
 
   return (
     <View>
-      <SurveyTitle
+      <StepTitle
         title={'어떤 자리에\n마음이 가나요?'}
         description={
           <>

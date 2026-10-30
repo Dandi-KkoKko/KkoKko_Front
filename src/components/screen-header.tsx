@@ -8,8 +8,8 @@ import { spacing } from '@/constants/layout';
 
 type ScreenHeaderProps = {
   title?: string;
-  /** 가운데 정렬 글자 (예: 1 / 3) */
-  centerText?: string;
+  /** 가운데에 두는 것 (예: 설문 단계 '1/3', 회원가입 제목) */
+  center?: ReactNode;
   /** 오른쪽 끝 (예: 건너뛰기) */
   right?: ReactNode;
   showBack?: boolean;
@@ -17,7 +17,7 @@ type ScreenHeaderProps = {
   onBack?: () => void;
 };
 
-export function ScreenHeader({ title, centerText, right, showBack = true, onBack }: ScreenHeaderProps) {
+export function ScreenHeader({ title, center, right, showBack = true, onBack }: ScreenHeaderProps) {
   return (
     <View style={styles.container}>
       <View style={styles.left}>
@@ -29,10 +29,10 @@ export function ScreenHeader({ title, centerText, right, showBack = true, onBack
         {title && <AppText variant="subtitle03">{title}</AppText>}
       </View>
 
-      {centerText && (
-        <AppText variant="subtitle04" color="textTertiary" style={styles.center}>
-          {centerText}
-        </AppText>
+      {center && (
+        <View style={styles.center}>
+          {center}
+        </View>
       )}
 
       <View>{right}</View>
@@ -52,12 +52,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.xs,
   },
-  // 좌우 내용 길이와 상관없이 정확히 가운데 두려고 겹쳐 놓는다
+  // 좌우 내용 길이와 상관없이 정확히 가운데 두려고 겹쳐 놓고, 뒤로가기·오른쪽 버튼 누르기를 막지 않게 터치는 통과시킨다
   center: {
     position: 'absolute',
     left: 0,
     right: 0,
-    textAlign: 'center',
-    zIndex: -1,
+    alignItems: 'center',
+    pointerEvents: 'none',
   },
 });

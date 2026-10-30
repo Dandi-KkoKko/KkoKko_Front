@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { spacing } from '@/constants/layout';
 import { OptionCard } from '@/features/auth/components/option-card';
-import { SurveyTitle } from '@/features/auth/components/survey-title';
+import { StepTitle } from '@/features/auth/components/step-title';
 import { relationOptions, type RelationOption } from '@/features/auth/constants/survey-options';
 
 type RelationStepProps = {
@@ -14,7 +14,7 @@ type RelationStepProps = {
 export function RelationStep({ value, onChange }: RelationStepProps) {
   return (
     <View>
-      <SurveyTitle title={'대구·경북과 나는\n어떤 사이인가요?'} description="처음 보여줄 자리를 고르는 데 써요" />
+      <StepTitle title={'대구·경북과 나는\n어떤 사이인가요?'} description="처음 보여줄 자리를 고르는 데 써요" />
       <View style={styles.options}>
         {relationOptions.map((option) => (
           <OptionCard

@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/checkbox';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
 import { OptionCard } from '@/features/auth/components/option-card';
-import { SurveyTitle } from '@/features/auth/components/survey-title';
+import { StepTitle } from '@/features/auth/components/step-title';
 import {
   walkDurationOptions,
   walkTimeOptions,
@@ -27,7 +27,7 @@ export function WalkStep({ walkTimes, walkDuration, onChangeWalkTimes, onChangeW
 
   return (
     <View>
-      <SurveyTitle title={'언제, 얼마나\n걷는 편인가요?'} description="산책길을 추천할 때 써요 · 여러 개 골라도 돼요" />
+      <StepTitle title={'언제, 얼마나\n걷는 편인가요?'} description="산책길을 추천할 때 써요 · 여러 개 골라도 돼요" />
 
       <AppText variant="subtitle03" style={styles.label}>
         주로 걷는 때
