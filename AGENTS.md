@@ -40,6 +40,13 @@ Docs: https://docs.expo.dev/eas/index.md
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
 
+### 라이브러리 추가 규칙 (KkoKko_Front)
+
+- Expo Go로 QR 테스트를 계속해야 하므로 **Expo Go에 포함된 모듈만** 쓴다. Expo SDK 공식 모듈을 먼저 찾고, 없으면 React Native Directory에서 Expo Go 지원 표시가 있는 것을 고른다.
+- 라이선스는 MIT, Apache-2.0, BSD, ISC만 쓴다. GPL·AGPL·라이선스 없음은 쓰지 않는다.
+- 설치는 `npx expo install`로 하고, README의 기술 스택 표에 추가한다.
+- 푸시 알림은 하지 않는다 (앱 안 알림 목록만). `expo-notifications`를 넣지 않고 휴대폰 알림 권한도 묻지 않는다.
+
 ## 우리 팀 규칙 (KkoKko_Front)
 
 이 프로젝트는 해커톤 심사에서 **코드 가독성, 아키텍처 설계, 문서화**를 평가받는다. 코드를 쓸 때 아래를 지킨다.

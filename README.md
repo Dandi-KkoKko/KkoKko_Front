@@ -72,6 +72,8 @@ npx tsc --noEmit
 | 언어 | TypeScript |
 | 화면 이동 | Expo Router (파일 기반 라우팅) |
 | 이미지 | expo-image |
+| 위치 | expo-location |
+| 카메라 | expo-camera |
 | 글꼴 | Pretendard (SIL Open Font License 1.1) |
 | 코드 검사 | ESLint (eslint-config-expo), TypeScript 타입 검사 |
 
@@ -201,7 +203,6 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 
 - [ ] 카메라 연결 (`expo-camera`): 촬영, 카메라 전환 → `features/upload/components/camera-viewfinder.tsx`, `features/upload/screens/camera-screen.tsx`
 - [x] 권한 안내 화면에서 실제 위치·카메라 권한 요청 → `features/auth/utils/request-app-permissions.ts`
-- [ ] 알림 권한 요청 (알림 기능을 붙일 때) → `features/auth/utils/request-app-permissions.ts`
 - [ ] 로그인 여부에 따라 첫 화면 정하기 (지금은 항상 소개 화면) → `src/app/index.tsx`
 - [ ] 설정의 권한 상태를 실제 값으로 → `features/my/screens/settings-screen.tsx`
 - [ ] 화면이 없는 메뉴: 내 신고 내역, 이용약관·개인정보 처리방침, 회원 탈퇴, 비밀번호 찾기
@@ -231,7 +232,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 
 ### 정해야 할 것
 
-- [ ] 푸시 알림을 할지 (Expo Go에서는 안 돼서 지금은 앱 안 알림 목록으로 대신함)
+- [x] 푸시 알림은 하지 않고, 앱 안 알림 목록(`/my/notifications`)만 둔다. 그래서 휴대폰 알림 권한은 묻지 않는다.
 - [ ] `develop` 브랜치를 쓸지 (백엔드 레포와 맞추기)
 
 ## 디자인 시스템
@@ -300,6 +301,15 @@ npx expo install 패키지이름
 ```
 
 Expo Go에 포함되지 않은 네이티브 라이브러리를 넣으면 Expo Go로는 앱이 열리지 않아요. 설치 전에 팀원과 먼저 상의해요.
+
+### 라이브러리 고르는 기준
+
+1. **Expo 공식 모듈을 먼저** 찾아요 ([Expo SDK 목록](https://docs.expo.dev/versions/latest/)). Expo Go에 들어 있어서 QR로 바로 테스트할 수 있어요.
+2. 공식 모듈이 없으면 [React Native Directory](https://reactnative.directory/)에서 **"Expo Go" 표시가 있는 것**을 골라요.
+3. 라이선스는 **MIT, Apache-2.0, BSD, ISC**만 써요. GPL·AGPL처럼 우리 코드까지 공개해야 하는 라이선스나 라이선스가 없는 것은 쓰지 않아요.
+4. 설치한 라이브러리는 위 **기술 스택** 표에 적어요.
+
+지금 쓰는 라이브러리는 모두 Expo·React Native 공식 패키지(MIT)이고, 글꼴 Pretendard는 SIL OFL 1.1이에요.
 
 ## 환경 변수
 
