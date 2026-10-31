@@ -5,17 +5,21 @@ import { Icon } from '@/components/icon';
 import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
-import type { ClusterRecord } from '@/features/map/constants/preview-cluster';
+/** 목록 한 줄에 필요한 것만. 묶음 기록과 지도 기록(PhotoMarker) 모두 이 모양을 가진다. */
+type ListedRecord = {
+  id: string;
+  hashtags: string[];
+};
 
-type ClusterRecordListProps = {
-  records: ClusterRecord[];
-  onPress: (record: ClusterRecord) => void;
+type RecordListProps<Record extends ListedRecord> = {
+  records: Record[];
+  onPress: (record: Record) => void;
 };
 
 const thumbnailSize = 36;
 
-/** 묶음에 들어 있는 기록 목록: 작은 사진, 해시태그, 오른쪽 화살표. 줄 사이에 얇은 구분선을 둔다. */
-export function ClusterRecordList({ records, onPress }: ClusterRecordListProps) {
+/** 기록 목록: 작은 사진, 해시태그, 오른쪽 화살표. 묶음 기록과 길안내의 '범위 내 기록들'이 같이 쓴다. */
+export function RecordList<Record extends ListedRecord>({ records, onPress }: RecordListProps<Record>) {
   return (
     <View>
       {records.map((record, index) => (

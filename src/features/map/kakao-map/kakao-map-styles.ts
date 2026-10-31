@@ -42,6 +42,12 @@ export const routeLineStyle = {
   strokeStyle: 'solid',
 };
 
+/** 길안내 중 이미 걸어온 길. 남은 길과 구분되게 회색으로 그린다. */
+export const walkedRouteLineStyle = {
+  ...routeLineStyle,
+  strokeColor: colors.textDeactivated,
+};
+
 const shadow = `0 ${floatingShadow.shadowOffset.height}px ${floatingShadow.shadowRadius}px rgba(0, 0, 0, ${floatingShadow.shadowOpacity})`;
 
 export const kakaoMapCss = `

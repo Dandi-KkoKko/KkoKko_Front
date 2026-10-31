@@ -34,24 +34,25 @@ export function openPlaceOnHome({ name, address, coordinate }: HomePlace) {
   });
 }
 
-type WalkRouteRequest = {
+type NavigationRequest = {
   destinationName: string;
   destination: Coordinate;
-  hashtags: string[];
+  /** 경로 추천에서 고른 '들를 자리'. 길안내도 같은 자리를 들르도록 그대로 넘긴다. */
+  stopIds: string[];
 };
 
 /**
- * 산책 경로 화면으로 간다. 다음 화면이 경로를 만들 수 있도록 목적지와 고른 해시태그를 넘긴다.
- * 주소 파라미터는 문자열만 받아서 해시태그 목록은 쉼표로 이어 붙인다.
+ * '이 길로 걷기': 길안내 화면으로 간다.
+ * 주소 파라미터는 문자열만 받아서 들를 자리 목록은 쉼표로 이어 붙인다.
  */
-export function openWalkRoute({ destinationName, destination, hashtags }: WalkRouteRequest) {
+export function openNavigation({ destinationName, destination, stopIds }: NavigationRequest) {
   router.push({
-    pathname: '/map/walk',
+    pathname: '/map/navigation',
     params: {
       destinationName,
       latitude: String(destination.latitude),
       longitude: String(destination.longitude),
-      hashtags: hashtags.join(','),
+      stopIds: stopIds.join(','),
     },
   });
 }

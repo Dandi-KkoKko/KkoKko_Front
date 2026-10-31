@@ -19,7 +19,7 @@ import { usePlaceRoute } from '@/features/map/hooks/use-place-route';
 import { useResultsMap, type ResultsMapView } from '@/features/map/hooks/use-results-map';
 import { KakaoMapView } from '@/features/map/kakao-map/kakao-map-view';
 import type { MapMarker } from '@/features/map/types/home-map-marker';
-import { openWalkRoute } from '@/features/map/utils/open-search-result';
+import { openNavigation } from '@/features/map/utils/open-search-result';
 
 /** 장소를 고르지 않았을 때 useResultsMap에 넘기는 빈 상태 */
 const noPlaceView: ResultsMapView = { mode: 'list', items: [] };
@@ -67,7 +67,12 @@ export function MapScreen() {
 
   const walkThisRoute = () => {
     const plan = placeRoute.routePlan;
-    if (plan) openWalkRoute({ destinationName: plan.destinationName, destination: plan.destination, hashtags: plan.hashtags });
+    if (!plan) return;
+    openNavigation({
+      destinationName: plan.destinationName,
+      destination: plan.destination,
+      stopIds: placeRoute.stops.map(({ id }) => id),
+    });
   };
 
   return (

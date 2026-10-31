@@ -4,6 +4,7 @@ import {
   openRadiusCircleStyle,
   pretendardCssUrl,
   routeLineStyle,
+  walkedRouteLineStyle,
 } from '@/features/map/kakao-map/kakao-map-styles';
 
 type KakaoMapHtmlOptions = {
@@ -34,6 +35,7 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
     var myLocationOverlay = null;
     var openRadiusCircle = null;
     var routeLine = null;
+    var walkedRouteLine = null;
 
     function post(event) {
       window.ReactNativeWebView.postMessage(JSON.stringify(event));
@@ -125,14 +127,9 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
       },
       setRoute: function (command) {
         if (routeLine) routeLine.setMap(null);
-        routeLine = null;
-        if (!command.path) return;
-        var options = ${JSON.stringify(routeLineStyle)};
-        options.map = map;
-        options.path = command.path.map(toLatLng);
-        // 선이 핀을 가리지 않도록 마커(1)보다 아래에 둔다.
-        options.zIndex = 0;
-        routeLine = new kakao.maps.Polyline(options);
+        if (walkedRouteLine) walkedRouteLine.setMap(null);
+        routeLine = drawLine(command.path, ${JSON.stringify(routeLineStyle)});
+        walkedRouteLine = drawLine(command.walkedPath, ${JSON.stringify(walkedRouteLineStyle)});
       },
       moveTo: function (command) {
         map.panTo(toLatLng(command.coordinate));
@@ -151,6 +148,16 @@ export function buildKakaoMapHtml({ appKey, center, level }: KakaoMapHtmlOptions
         map.setBounds(bounds, p.top, p.right, p.bottom, p.left);
       },
     };
+
+    function drawLine(path, style) {
+      if (!path || path.length < 2) return null;
+      var options = style;
+      options.map = map;
+      options.path = path.map(toLatLng);
+      // 선이 핀을 가리지 않도록 마커(1)보다 아래에 둔다.
+      options.zIndex = 0;
+      return new kakao.maps.Polyline(options);
+    }
 
     window.receiveCommand = function (command) {
       if (map && handlers[command.type]) handlers[command.type](command);

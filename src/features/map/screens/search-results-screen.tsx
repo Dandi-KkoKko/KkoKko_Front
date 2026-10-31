@@ -19,7 +19,7 @@ import { useSearchResults } from '@/features/map/hooks/use-search-results';
 import { KakaoMapView } from '@/features/map/kakao-map/kakao-map-view';
 import type { SearchResultItem } from '@/features/map/types/search-result-item';
 import type { PhotoMarker } from '@/features/map/types/home-map-marker';
-import { openPlaceOnHome, openWalkRoute } from '@/features/map/utils/open-search-result';
+import { openNavigation, openPlaceOnHome } from '@/features/map/utils/open-search-result';
 import { sortByDistance } from '@/features/map/utils/to-search-result-items';
 
 /** 펼친 목록은 화면의 이만큼을 차지한다. Figma에서 지도와 목록이 거의 반씩이다. */
@@ -76,7 +76,11 @@ export function SearchResultsScreen() {
   const walkThisRoute = () => {
     const { routePlan } = selection;
     if (!routePlan) return;
-    openWalkRoute({ destinationName: routePlan.destinationName, destination: routePlan.destination, hashtags: routePlan.hashtags });
+    openNavigation({
+      destinationName: routePlan.destinationName,
+      destination: routePlan.destination,
+      stopIds: selection.routeStops.map(({ id }) => id),
+    });
   };
 
   const openRecordOnHome = (record: PhotoMarker, regionName: string) =>

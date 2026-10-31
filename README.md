@@ -178,7 +178,8 @@ assets/
 - 결과 하나를 누르면(목록이든 지도 표시든) 목록 대신 **경로 추천 카드**가 떠요. 지도에는 그곳만 핀으로 보이고, 카드에는 내 위치에서의 거리, 이 근처(300m) 남겨진 기록 수, 그 기록들의 해시태그가 나와요. 해시태그를 골라 '경로 추천'을 누르면 같은 화면에서 **AI 추천 경로**가 그려져요.
   - 들를 자리: 고른 해시태그가 붙은 기록 중 내 위치→목적지 직선에서 250m 안쪽인 것을 최대 3곳, 걸어가며 만나는 순서로 골라요 (`features/map/utils/pick-route-stops.ts`). AI 추천 API가 나오면 이 규칙을 바꿔요.
   - 경로 선: TMAP 보행자 경로 API로 실제 걷는 길을 받아요. 키가 없거나 실패하면 직선으로 이어요 (`features/map/api/get-walk-route.ts`).
-  - 카드는 손잡이로 접고 펼쳐요. '이 길로 걷기'를 누르면 산책 경로 화면(`/map/walk`)으로 목적지와 해시태그를 넘겨요.
+  - 카드는 손잡이로 접고 펼쳐요. '이 길로 걷기'를 누르면 **길안내 화면**(`/map/navigation`)으로 목적지와 들를 자리를 넘겨요.
+- **길안내**(`/map/navigation`)는 걸으면서 내 위치를 경로 위에 놓아 걸어온 길(회색)과 남은 길(주황)을 나눠 그리고, 위쪽 띠에 '다음 자리까지 N분'(다 들렀으면 목적지까지)을 보여줘요. 아래 '범위 내 기록들'은 내 열림 반경 안의 기록이에요 (`features/map/hooks/use-walk-navigation.ts`). '길안내 종료'를 누르면 지도 홈으로 돌아가요.
 - 해시태그 결과를 고르면 그 해시태그가 붙은 기록마다 핀이 찍히고, 핀을 누르면 그 기록이 남겨진 장소 카드가 떠요. 그 카드를 누르면 검색을 닫고 **지도 홈**에서 그 장소 카드를 띄워, 홈에서도 같은 방법으로 경로를 추천받아요. 장소는 주소(`/map?placeName=...`)에 실어 보내요 (`features/map/hooks/use-home-place.ts`). 검색 화면에서 결과를 누르면 검색결과 화면이 그 결과를 고른 채로 열려요.
 
 지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 사진이 열렸는지는 내 위치에서 **열림 반경**(`features/map/constants/map-config.ts`의 `openRadiusMeters`, 지금 100m) 안에 있는지로 정해요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
@@ -201,7 +202,7 @@ assets/
 | 주소 | 화면 파일 | 와이어프레임 |
 |---|---|---|
 | `/intro`, `/login`, `/signup`, `/permission`, `/survey` | `features/auth/screens/` | ⓪ 시작 |
-| `/map`, `/map/search`, `/map/results`, `/map/walk` | `features/map/screens/` | ① 지도 |
+| `/map`, `/map/search`, `/map/results`, `/map/navigation`, `/map/walk` | `features/map/screens/` | ① 지도 |
 | `/map/cluster/[id]` | `features/map/screens/` | ①-A |
 | `/map/spot/[id]`, `/opening/[id]`, `/map/opened/[id]`, `/report/[id]` | `features/map/screens/` | ①-A, ①-B |
 | `/record` | `features/record/screens/` | ② 기록 |

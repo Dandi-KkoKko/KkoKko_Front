@@ -77,6 +77,7 @@ export function useResultSelection({ items, allItems, initialKey, myLocation }: 
     mapView,
     card,
     routePlan: placeRoute.routePlan,
+    routeStops: placeRoute.stops,
     select,
     close,
     recommendRoute: placeRoute.recommendRoute,

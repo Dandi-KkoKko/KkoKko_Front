@@ -7,8 +7,8 @@ import { AppText } from '@/components/app-text';
 import { IconButton } from '@/components/icon-button';
 import { screenPaddingX, spacing } from '@/constants/layout';
 import { AiBadge } from '@/features/map/components/ai-badge';
-import { ClusterRecordList } from '@/features/map/components/cluster-record-list';
 import { MapBottomSheet } from '@/features/map/components/map-bottom-sheet';
+import { RecordList } from '@/features/map/components/record-list';
 import { getPreviewClusterRecords } from '@/features/map/constants/preview-cluster';
 import { useHomeMapMarkers } from '@/features/map/hooks/use-home-map-markers';
 import { useMyLocation } from '@/features/map/hooks/use-my-location';
@@ -68,7 +68,7 @@ export function ClusterScreen() {
           </View>
         }>
         {records.length > 0 ? (
-          <ClusterRecordList records={records} onPress={(record) => openRecord(record.id)} />
+          <RecordList records={records} onPress={(record) => openRecord(record.id)} />
         ) : (
           <AppText variant="caption01" color="textTertiary" style={styles.empty}>
             이 묶음의 기록을 찾지 못했어요

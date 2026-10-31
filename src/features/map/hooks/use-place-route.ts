@@ -56,6 +56,7 @@ export function usePlaceRoute(place: SearchResultItem | null, myLocation: Coordi
     mapView,
     nearby,
     routePlan: activePlan,
+    stops: walk.stops,
     isRouteExpanded,
     setIsRouteExpanded,
     recommendRoute,
