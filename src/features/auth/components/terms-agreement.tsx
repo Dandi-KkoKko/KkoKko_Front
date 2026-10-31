@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
@@ -15,7 +16,7 @@ type TermsAgreementProps = {
 
 /**
  * 회원가입 마지막 단계의 약관 동의 목록. 모두 필수라 전부 골라야 다음으로 간다.
- * 오른쪽 화살표는 약관 전문 화면이 생기면 연결한다.
+ * 줄을 누르면 동의가 바뀌고, 오른쪽 화살표를 누르면 약관 전문(/terms)을 본다.
  */
 export function TermsAgreement({ agreed, onChange }: TermsAgreementProps) {
   const toggle = (term: TermName) =>
@@ -26,20 +27,21 @@ export function TermsAgreement({ agreed, onChange }: TermsAgreementProps) {
       {requiredTerms.map((term) => {
         const selected = agreed.includes(term);
         return (
-          <Pressable
-            key={term}
-            accessibilityRole="checkbox"
-            accessibilityState={{ checked: selected }}
-            onPress={() => toggle(term)}
-            style={styles.row}>
-            <View style={styles.label}>
+          <View key={term} style={styles.row}>
+            <Pressable
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: selected }}
+              onPress={() => toggle(term)}
+              style={styles.label}>
               <Radio selected={selected} />
               <AppText variant="body01" color={selected ? 'textPrimary' : 'textTertiary'}>
                 [필수] {term}
               </AppText>
-            </View>
-            <Icon name="forwardSmall" />
-          </Pressable>
+            </Pressable>
+            <Pressable accessibilityLabel={`${term} 보기`} hitSlop={12} onPress={() => router.push('/terms')}>
+              <Icon name="forwardSmall" />
+            </Pressable>
+          </View>
         );
       })}
     </View>
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
   },
   label: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,

@@ -2,20 +2,23 @@ import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
+import { IconButton } from '@/components/icon-button';
 import { ScreenContainer } from '@/components/screen-container';
-import { colors } from '@/constants/colors';
-import { radius, spacing } from '@/constants/layout';
+import { spacing } from '@/constants/layout';
 import { MenuGroup, MenuRow } from '@/features/my/components/menu-group';
-import { AiReportTeaser, ProfileCard, StatsCard } from '@/features/my/components/profile-summary';
+import { ProfileCard, StatsCard } from '@/features/my/components/profile-summary';
 import { mockMyStats, mockProfile } from '@/mock/my-activity';
 
-/** 와이어프레임 ③ 마이 탭: 프로필, 내 숫자, AI 리포트(준비 중), 메뉴 */
+/** ③ 마이 탭: 프로필, 내 숫자, 메뉴. 알림은 오른쪽 위 종 버튼으로 들어간다. */
 export function MyScreen() {
   return (
     <ScreenContainer withBottomInset={false} background="gray">
-      <AppText variant="heading02" style={styles.title}>
-        마이
-      </AppText>
+      <View style={styles.titleRow}>
+        <AppText variant="heading02" style={styles.title}>
+          마이
+        </AppText>
+        <IconButton icon="bell" size={48} accessibilityLabel="알림" onPress={() => router.push('/my/notifications')} />
+      </View>
 
       <View style={styles.sections}>
         <ProfileCard {...mockProfile} />
@@ -26,49 +29,28 @@ export function MyScreen() {
             { label: '좋아요한 자리', value: mockMyStats.likedCount },
           ]}
         />
-        <AiReportTeaser />
-
         <MenuGroup>
-          <MenuRow icon="heart" label="좋아요 내역" onPress={() => router.push('/my/likes')} />
+          <MenuRow icon="heartSmall" label="좋아요 내역" onPress={() => router.push('/my/likes')} />
           <MenuRow icon="unlock" label="연 자리 기록" onPress={() => router.push('/my/opened-history')} />
-          <MenuRow
-            icon="bell"
-            label="다녀갔어요 알림"
-            trailing={<UnreadCount count={mockMyStats.unreadNotificationCount} />}
-            onPress={() => router.push('/my/notifications')}
-          />
-          <MenuRow icon="hashtag" label="사용자 기호 수정" onPress={() => router.push('/my/preferences')} />
-          <MenuRow icon="settings" label="설정" onPress={() => router.push('/my/settings')} isLast />
+          <MenuRow icon="hashtagSmall" label="사용자 기호 설정" onPress={() => router.push('/my/preferences')} />
+          <MenuRow icon="settings" label="설정" onPress={() => router.push('/my/settings')} />
         </MenuGroup>
       </View>
     </ScreenContainer>
   );
 }
 
-function UnreadCount({ count }: { count: number }) {
-  if (count === 0) return null;
-  return (
-    <View style={styles.unread}>
-      <AppText variant="caption03">{count}</AppText>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
-  title: {
-    marginTop: spacing.md,
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: spacing.lg,
   },
-  sections: {
-    gap: spacing.md,
+  title: {
+    paddingHorizontal: spacing.xs,
   },
-  unread: {
-    minWidth: 22,
-    height: 22,
-    paddingHorizontal: spacing.xxs,
-    borderRadius: radius.full,
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+  sections: {
+    gap: spacing.xl,
   },
 });

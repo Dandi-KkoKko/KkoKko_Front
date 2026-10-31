@@ -1,81 +1,65 @@
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Fragment, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
-import { PhotoPlaceholder } from '@/components/photo-placeholder';
+import { AreaMapView } from '@/components/area-map-view';
 import { ScreenContainer } from '@/components/screen-container';
 import { ScreenHeader } from '@/components/screen-header';
+import { SegmentedToggle } from '@/components/segmented-toggle';
 import { spacing } from '@/constants/layout';
-import { OpenedWeekCard, StatTile } from '@/features/my/components/opened-week-card';
-import { mockOpenedHistory, mockOpenedWeek } from '@/mock/my-activity';
+import { ListDivider, PhotoListRow } from '@/features/my/components/photo-list-row';
+import { mockLikedAreas, mockOpenedHistory } from '@/mock/my-activity';
+
+const viewModes = ['리스트', '지도'] as const;
+type ViewMode = (typeof viewModes)[number];
 
 /**
- * 와이어프레임 ③ 마이 탭: 연 자리 기록.
- * 게임처럼 보상을 주면 아무 사진이나 올리게 돼서, 순위·공개 경쟁 없이 나만 보는 조용한 기록만 남긴다.
+ * ③ 마이 탭: 연 자리 기록. 순위·공개 경쟁 없이 날짜별로 내가 연 자리만 모아 둔다.
+ * '지도' 보기는 Figma에서 보류라 와이어프레임 회색 지도를 그대로 두고, 구역 예시는 좋아요 내역 것을 같이 쓴다.
  */
 export function OpenedHistoryScreen() {
-  return (
-    <ScreenContainer withBottomInset={false} header={<ScreenHeader title="연 자리 기록" />}>
-      <AppText variant="subtitle03" style={styles.sectionTitle}>
-        조용한 발견
-      </AppText>
-      <OpenedWeekCard totalCount={mockOpenedWeek.totalCount} days={mockOpenedWeek.days} />
-      <View style={styles.tiles}>
-        <StatTile label="이 자리를 처음 연 사람" value={`${mockOpenedWeek.firstOpenerCount}곳`} />
-        <StatTile label="걸어서 다가간 거리" value={`${mockOpenedWeek.walkedKilometers}km`} />
-      </View>
-      <AppText variant="caption04" color="textTertiary">
-        순위나 공개 경쟁 없이, 나만 보는 기록이에요
-      </AppText>
+  const [viewMode, setViewMode] = useState<ViewMode>('리스트');
+  const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
 
-      <AppText variant="subtitle03" style={[styles.sectionTitle, styles.historyTitle]}>
-        열어 본 자리
-      </AppText>
-      {mockOpenedHistory.map((group) => (
-        <View key={group.dateLabel} style={styles.group}>
-          <AppText variant="caption04" color="textTertiary">
-            {group.dateLabel}
-          </AppText>
-          {group.items.map((item) => (
-            <Pressable key={item.spotId} style={styles.item} onPress={() => router.push(`/map/opened/${item.spotId}`)}>
-              <PhotoPlaceholder width={52} height={52} />
-              <View style={styles.itemTexts}>
-                <AppText variant="subtitle04">{item.oneLine}</AppText>
-                <AppText variant="caption04" color="textSecondary">
-                  {item.meta}
-                </AppText>
+  return (
+    <ScreenContainer
+      header={
+        <ScreenHeader
+          title="연 자리 기록"
+          right={<SegmentedToggle options={viewModes} selected={viewMode} onSelect={setViewMode} />}
+        />
+      }>
+      {viewMode === '리스트' ? (
+        <View style={styles.groups}>
+          {mockOpenedHistory.map((group) => (
+            <View key={group.dateLabel} style={styles.group}>
+              <AppText variant="caption02" color="textTertiary">
+                {group.dateLabel}
+              </AppText>
+              <View>
+                {group.items.map((item, index) => (
+                  <Fragment key={item.spotId}>
+                    {index > 0 && <ListDivider />}
+                    <PhotoListRow item={item} onPress={() => router.push(`/map/opened/${item.spotId}`)} />
+                  </Fragment>
+                ))}
               </View>
-            </Pressable>
+            </View>
           ))}
         </View>
-      ))}
+      ) : (
+        <AreaMapView areas={mockLikedAreas} selectedAreaId={selectedAreaId} onSelectArea={setSelectedAreaId} />
+      )}
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionTitle: {
-    marginBottom: spacing.sm,
-  },
-  tiles: {
-    flexDirection: 'row',
-    gap: spacing.xs,
-    marginVertical: spacing.sm,
-  },
-  historyTitle: {
-    marginTop: spacing.xxl,
+  groups: {
+    gap: spacing.xl,
   },
   group: {
-    gap: spacing.sm,
-    marginBottom: spacing.lg,
-  },
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  itemTexts: {
-    flex: 1,
     gap: spacing.xxs,
   },
 });

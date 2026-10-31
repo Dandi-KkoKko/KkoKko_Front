@@ -26,7 +26,7 @@ export function ScreenHeader({ title, center, right, showBack = true, onBack }: 
             <Icon name="back" />
           </Pressable>
         )}
-        {title && <AppText variant="subtitle03">{title}</AppText>}
+        {title && <AppText variant="heading02">{title}</AppText>}
       </View>
 
       {center && (
@@ -41,8 +41,9 @@ export function ScreenHeader({ title, center, right, showBack = true, onBack }: 
 }
 
 const styles = StyleSheet.create({
+  // Figma 화면 머리 높이 56
   container: {
-    height: 48,
+    height: 56,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
   left: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.xs,
+    gap: spacing.sm,
   },
   // 좌우 내용 길이와 상관없이 정확히 가운데 두려고 겹쳐 놓고, 뒤로가기·오른쪽 버튼 누르기를 막지 않게 터치는 통과시킨다
   center: {

@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { ScreenContainer } from '@/components/screen-container';
@@ -9,27 +9,38 @@ import { ScreenHeader } from '@/components/screen-header';
 import { Toggle } from '@/components/toggle';
 import { spacing } from '@/constants/layout';
 import { MenuGroup, MenuRow } from '@/features/my/components/menu-group';
-import { mockProfile } from '@/mock/my-activity';
+import { usePermissionLabels } from '@/features/my/hooks/use-permission-labels';
 
 /**
- * 와이어프레임 ③ 마이 탭: 설정.
- * 권한 상태는 지도·카메라 기능을 붙이면 실제 값으로 바꾼다. 지금은 와이어프레임 예시 값이다.
+ * ③ 마이 탭: 설정. 위치·카메라는 휴대폰의 실제 권한 상태를 보여주고, 허용이 안 됐으면 누르면 휴대폰 설정으로 간다.
+ * 스위치와 로그아웃·탈퇴는 계정 API가 나오면 서버에 저장한다.
  */
 export function SettingsScreen() {
+  const permissionLabels = usePermissionLabels();
   const [savesPhotoLocation, setSavesPhotoLocation] = useState(true);
   const [visitNotification, setVisitNotification] = useState(true);
+  const openPhoneSettings = permissionLabels.isAllGranted ? undefined : () => Linking.openSettings();
 
   return (
-    <ScreenContainer withBottomInset={false} background="gray" header={<ScreenHeader title="설정" />}>
+    <ScreenContainer background="gray" header={<ScreenHeader title="설정" />}>
       <View style={styles.groups}>
         <MenuGroup title="권한">
-          <MenuRow label="위치 권한" description="다가가면 열리려면 '앱 사용 중' 이상 필요" trailing={<Value text="앱 사용 중" />} />
-          <MenuRow label="카메라" description="앱 카메라로만 남길 수 있어요" trailing={<Value text="허용됨" />} />
+          <MenuRow
+            label="위치 권한"
+            description="다가가서 열리려면 '앱 사용 중' 이상 필요"
+            trailing={permissionLabels.location}
+            onPress={openPhoneSettings}
+          />
+          <MenuRow
+            label="카메라"
+            description="앱 카메라로만 남길 수 있어요"
+            trailing={permissionLabels.camera}
+            onPress={openPhoneSettings}
+          />
           <MenuRow
             label="사진 위치·시간 저장"
             description="꺼져 있으면 기록을 남길 수 없어요"
             trailing={<Toggle value={savesPhotoLocation} onChange={setSavesPhotoLocation} />}
-            isLast
           />
         </MenuGroup>
 
@@ -38,27 +49,25 @@ export function SettingsScreen() {
             label="다녀갔어요 알림"
             description="내 순간에 좋아요가 닿으면 조용히 알려요"
             trailing={<Toggle value={visitNotification} onChange={setVisitNotification} />}
-            isLast
           />
         </MenuGroup>
 
         <MenuGroup title="계정 · 안전">
-          <MenuRow label="로그인 계정" trailing={<Value text={mockProfile.loginProvider} />} />
-          <MenuRow label="내 신고 내역" onPress={() => {}} />
-          <MenuRow label="이용약관 · 개인정보 처리방침" onPress={() => {}} />
-          <MenuRow label="버전" trailing={<Value text={Constants.expoConfig?.version ?? '-'} />} isLast />
+          <MenuRow label="로그인 계정" trailing="이메일" />
+          <MenuRow label="이용약관 · 개인정보 처리방침" onPress={() => router.push('/terms')} />
+          <MenuRow label="버전" trailing={Constants.expoConfig?.version ?? '-'} />
         </MenuGroup>
       </View>
 
       <View style={styles.accountActions}>
-        <Pressable hitSlop={8} onPress={() => router.replace('/login')}>
-          <AppText variant="button04" color="textSecondary">
-            로그아웃
+        <Pressable hitSlop={8}>
+          <AppText variant="body02" color="textTertiary">
+            회원 탈퇴
           </AppText>
         </Pressable>
-        <Pressable hitSlop={8}>
-          <AppText variant="button04" color="textSecondary">
-            회원 탈퇴
+        <Pressable hitSlop={8} onPress={() => router.replace('/login')}>
+          <AppText variant="body02" color="error">
+            로그아웃
           </AppText>
         </Pressable>
       </View>
@@ -66,22 +75,14 @@ export function SettingsScreen() {
   );
 }
 
-function Value({ text }: { text: string }) {
-  return (
-    <AppText variant="body02" color="textSecondary">
-      {text}
-    </AppText>
-  );
-}
-
 const styles = StyleSheet.create({
   groups: {
-    gap: spacing.lg,
+    gap: spacing.xl,
   },
   accountActions: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: spacing.xxl,
+    gap: spacing.md,
     marginTop: spacing.xl,
   },
 });

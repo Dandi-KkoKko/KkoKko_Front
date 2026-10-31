@@ -48,3 +48,12 @@ export const photoShadow = {
   shadowOffset: { width: 0, height: 0 },
   elevation: 4,
 } as const;
+
+/** 리스트/지도 토글에서 고른 칸이 살짝 떠 보이게 (Figma drop shadow 0 0 8, 검정 8%) */
+export const toggleShadow = {
+  shadowColor: palette.gray.black,
+  shadowOpacity: 0.08,
+  shadowRadius: 8,
+  shadowOffset: { width: 0, height: 0 },
+  elevation: 2,
+} as const;

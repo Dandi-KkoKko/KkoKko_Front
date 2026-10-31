@@ -121,8 +121,8 @@ src/
     map/            지도, 검색, 검색한 장소, 묶음 목록, 자리 상세, 열린 자리, 산책 경로, 신고
     record/         내 기록
     upload/         남기기 (촬영, 한 줄, 위치 확인)
-    my/             마이, 좋아요 내역, 연 자리 기록, 기호 수정, 설정
-    notification/   다녀갔어요 알림
+    my/             마이, 좋아요 내역, 연 자리 기록, 기호 설정, 설정, 약관
+    notification/   알림 목록
   components/     두 개 이상의 기능이 같이 쓰는 부품
   constants/      디자인 시스템 (색상, 글꼴)
   hooks/          같이 쓰는 훅 (내 위치 가져오기 등)
@@ -132,7 +132,7 @@ src/
   types/          데이터 타입
 assets/
   fonts/          Pretendard 글꼴 파일
-  images/         앱 아이콘, 온보딩 일러스트 (onboarding/)
+  images/         앱 아이콘, 온보딩 일러스트 (onboarding/), 목록 예시 사진 (sample/)
 ```
 
 - `src/app/`에는 **화면 파일만** 둬요. 실제 UI와 로직은 `features/`에서 가져와요.
@@ -144,7 +144,7 @@ assets/
 
 와이어프레임의 모든 화면(⓪ 시작, ① 지도, ② 기록, ③ 마이)이 **회색 배치**로 만들어져 있어요. 버튼, 입력창, 글자 위치는 와이어프레임대로 맞췄고, 사진 자리는 회색 상자예요. GUI 디자인이 나오면 각 화면 파일에서 색과 그림만 바꾸면 돼요.
 
-GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소개 3장, 로그인(이메일), 회원가입 4단계(이메일 → 비밀번호 → 닉네임 → 약관), 권한 안내, 취향 설문 1/3~3/3과 완료.
+GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소개 3장, 로그인(이메일), 회원가입 4단계(이메일 → 비밀번호 → 닉네임 → 약관), 권한 안내, 취향 설문 1/3~3/3과 완료, 마이 탭(마이, 좋아요 내역, 연 자리 기록, 알림, 사용자 기호 설정, 설정, 약관).
 
 가짜 데이터는 `src/mock/`와 각 기능의 `constants/preview-*.ts`에 있어요. 백엔드 API가 나오면 이 값을 서버 데이터로 바꿔요.
 
@@ -159,7 +159,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 │                         → 묶음 목록, 자리 상세 → 열린 자리 → 신고(모달)
 │                         → 산책 경로 (추천 → 걷는 중)
 ├─ 기록  /record
-└─ 마이  /my             → 좋아요 내역, 연 자리 기록, 다녀갔어요 알림, 기호 수정, 설정
+└─ 마이  /my             → 알림(오른쪽 위 종), 좋아요 내역, 연 자리 기록, 사용자 기호 설정, 설정 → 약관
 
 남기기 (탭 바 없는 전체 화면)  /upload/camera → write → confirm → 내 기록
   지도의 카메라 버튼, 자리 상세, 열린 자리, 내 기록에서 들어와요.
@@ -175,6 +175,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 | `/upload/camera`, `/upload/write`, `/upload/confirm` | `features/upload/screens/` | ② 기록 |
 | `/my`, `/my/likes`, `/my/opened-history`, `/my/preferences`, `/my/settings` | `features/my/screens/` | ③ 마이 |
 | `/my/notifications` | `features/notification/screens/` | ③ 마이 |
+| `/terms` (회원가입 약관 화살표, 설정에서 들어옴) | `features/my/screens/terms-screen.tsx` | ③ 마이 |
 
 와이어프레임 여러 장이 한 화면의 여러 상태인 경우가 많아요. 예를 들어 지도 확대·축소, 맛보기, 빈 자리, 위치 권한 안내는 모두 `/map` 한 화면이고, AI 추천 산책길과 걷는 중은 `/map/walk` 한 화면이에요. 위치 권한 안내 화면을 보려면 `features/map/hooks/use-location-permission.ts`의 초기값을 `false`로 바꿔요.
 
@@ -205,8 +206,9 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 - [ ] 카메라 연결 (`expo-camera`): 촬영, 카메라 전환 → `features/upload/components/camera-viewfinder.tsx`, `features/upload/screens/camera-screen.tsx`
 - [x] 권한 안내 화면에서 실제 위치·카메라·알림 권한 요청 → `features/auth/utils/request-app-permissions.ts`
 - [ ] 로그인 여부에 따라 첫 화면 정하기 (지금은 항상 소개 화면) → `src/app/index.tsx`
-- [ ] 설정의 권한 상태를 실제 값으로 → `features/my/screens/settings-screen.tsx`
-- [ ] 화면이 없는 메뉴: 내 신고 내역, 이용약관·개인정보 처리방침, 회원 탈퇴, 비밀번호 찾기
+- [x] 설정의 권한 상태를 실제 값으로 → `features/my/hooks/use-permission-labels.ts`
+- [ ] 약관 실제 문장 확정 (Figma도 아직 제목만 있음) → `features/my/screens/terms-screen.tsx`
+- [ ] 회원 탈퇴 (계정 API가 나오면). 비밀번호 찾기는 Figma 보류
 
 ### 서버 연결 (백엔드·AI API가 나오면)
 
