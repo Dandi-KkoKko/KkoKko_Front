@@ -10,16 +10,22 @@ import { colors } from '@/constants/colors';
 import { radius, screenPaddingX, spacing } from '@/constants/layout';
 import { CameraViewfinder } from '@/features/upload/components/camera-viewfinder';
 import { useUploadDraft } from '@/features/upload/upload-draft';
+import { normalizePhoto } from '@/features/upload/utils/normalize-photo';
 
-const shutterSize = 76;
+// Figma Shutter: 바깥 주황 고리 72, 안쪽 흰 원 사이에 검은 틈
+const shutterSize = 72;
+const shutterRingWidth = 4;
+const shutterGap = 4;
+const flipButtonSize = 48;
 
 /**
- * 와이어프레임 ② 기록 탭: 남기기 1/3 촬영.
+ * ② 기록 탭: 남기기 1/3 촬영.
  * 갤러리는 일부러 막는다. 그 자리에서 앱 카메라로 찍은 사진만 남길 수 있어야 '가야 보이는' 지도가 된다.
- * 그래서 카메라 권한만 받고, 갤러리(사진 보관함) 권한은 받지 않는다. 찍은 사진은 draft에 넣어 다음 단계에서 보여준다.
+ * 그래서 카메라 권한만 받고, 갤러리(사진 보관함) 권한은 받지 않는다.
+ * 찍은 사진은 세로 3:4, 1080×1440으로 맞춘 뒤 draft에 넣어 다음 단계에서 보여준다.
  */
 export function CameraScreen() {
-  const { draft, updateDraft } = useUploadDraft();
+  const { updateDraft } = useUploadDraft();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const [facing, setFacing] = useState<CameraType>('back');
@@ -43,10 +49,11 @@ export function CameraScreen() {
     setHasFailed(false);
     try {
       const photo = await cameraRef.current.takePictureAsync({ quality: 0.8 });
-      updateDraft({ photoUri: photo.uri });
+      const photoUri = await normalizePhoto(photo);
+      updateDraft({ photoUri });
       router.push('/upload/write');
     } catch {
-      // 카메라가 잠깐 바쁘거나 전환 중이면 실패한다. 다시 누르면 되므로 안내만 바꾼다.
+      // 카메라가 잠깐 바쁘거나 전환 중이면 실패한다. 다시 누르면 되므로 안내만 띄운다.
       setHasFailed(true);
     } finally {
       isTakingRef.current = false;
@@ -63,17 +70,18 @@ export function CameraScreen() {
   return (
     <SafeAreaView style={styles.screen}>
       <View style={styles.header}>
-        <Pressable accessibilityLabel="닫기" hitSlop={12} onPress={() => router.back()}>
-          <Icon name="close" color="textInverse" />
+        <Pressable accessibilityLabel="뒤로" hitSlop={12} onPress={() => router.back()}>
+          <Icon name="back" color="textInverse" />
         </Pressable>
-        <AppText variant="subtitle04" color="textInverse">
-          1 / 3 · 촬영
+        <AppText variant="subtitle03" color="textInverse" style={styles.headerTitle}>
+          촬영
         </AppText>
-        <View style={styles.headerSpacer} />
+        <AppText variant="subtitle03" color="textInverse">
+          1/3
+        </AppText>
       </View>
 
       <CameraViewfinder
-        placeLabel={draft.placeLabel}
         cameraRef={cameraRef}
         facing={facing}
         hasPermission={permission?.granted ?? false}
@@ -81,14 +89,12 @@ export function CameraScreen() {
         onReady={() => setIsReady(true)}
       />
 
-      <AppText variant="caption02" color="textInverse" style={styles.notice}>
-        {hasFailed ? '사진을 찍지 못했어요. 다시 눌러 주세요' : '얼굴이 담기면 올릴 수 없어요 · 앱 카메라로만 남길 수 있어요'}
-      </AppText>
-
       <View style={styles.controls}>
-        <AppText variant="caption02" color="textDeactivated" style={styles.sideControl}>
-          {'갤러리\n사용 안 함'}
-        </AppText>
+        {hasFailed && (
+          <AppText variant="caption02" color="textInverse" style={styles.failNotice}>
+            사진을 찍지 못했어요. 다시 눌러 주세요
+          </AppText>
+        )}
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="사진 찍기"
@@ -97,14 +103,9 @@ export function CameraScreen() {
           style={styles.shutter}>
           <View style={styles.shutterInner} />
         </Pressable>
-        <View style={styles.sideControl}>
-          <Pressable
-            accessibilityLabel="카메라 전환"
-            onPress={flipCamera}
-            style={styles.flipButton}>
-            <Icon name="cameraSwitch" color="textInverse" />
-          </Pressable>
-        </View>
+        <Pressable accessibilityLabel="카메라 전환" onPress={flipCamera} style={styles.flipButton}>
+          <Icon name="cameraSwitch" />
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -116,51 +117,50 @@ const styles = StyleSheet.create({
     backgroundColor: colors.textPrimary,
   },
   header: {
-    height: 56,
+    height: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: screenPaddingX,
   },
-  headerSpacer: {
-    width: 24,
-  },
-  notice: {
+  // 좌우 버튼 길이와 상관없이 제목을 정확히 가운데 두려고 겹쳐 놓는다
+  headerTitle: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
     textAlign: 'center',
-    paddingVertical: spacing.md,
+    pointerEvents: 'none',
   },
+  // 남는 아래 공간 가운데에 셔터를 두고, 전환 버튼은 오른쪽 끝에 맞춘다
   controls: {
-    flexDirection: 'row',
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: screenPaddingX,
-    paddingVertical: spacing.xl,
+    justifyContent: 'center',
   },
-  sideControl: {
-    width: 72,
-    alignItems: 'center',
-    textAlign: 'center',
+  failNotice: {
+    position: 'absolute',
+    top: spacing.sm,
   },
   shutter: {
     width: shutterSize,
     height: shutterSize,
+    padding: shutterGap,
     borderRadius: radius.full,
-    borderWidth: 4,
-    borderColor: colors.background01,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderWidth: shutterRingWidth,
+    borderColor: colors.shutterRing,
   },
   shutterInner: {
-    width: shutterSize - 16,
-    height: shutterSize - 16,
+    flex: 1,
     borderRadius: radius.full,
     backgroundColor: colors.background01,
   },
   flipButton: {
-    width: 52,
-    height: 52,
+    position: 'absolute',
+    right: screenPaddingX,
+    width: flipButtonSize,
+    height: flipButtonSize,
     borderRadius: radius.full,
-    backgroundColor: colors.textSecondary,
+    backgroundColor: colors.textTertiary,
     alignItems: 'center',
     justifyContent: 'center',
   },

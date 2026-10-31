@@ -85,6 +85,8 @@ export const colors = {
   requiredMark: palette.error[3],
   // 흐린 사진 중 '내 취향' 사진의 주황 테두리 (Figma Primary/300)
   photoHighlightFrame: palette.primary[300],
+  // 카메라 셔터 바깥 고리 (Figma Shutter, Primary/300)
+  shutterRing: palette.primary[300],
 } as const;
 
 export type ColorName = keyof typeof colors;

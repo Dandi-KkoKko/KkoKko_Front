@@ -75,6 +75,7 @@ npx tsc --noEmit
 | 지도 | 카카오맵 JavaScript SDK (react-native-webview 안에 띄움) |
 | 위치 | expo-location |
 | 카메라 | expo-camera (카메라 권한만, 갤러리 권한 없음) |
+| 사진 자르기·줄이기 | expo-image-manipulator (모든 사진을 세로 3:4, 1080×1440으로) |
 | 알림 권한 | expo-notifications (권한 요청만. 푸시 알림은 아직 없음) |
 | 장소 검색 | 카카오 로컬 API (키워드 검색) |
 | 걷는 길 | TMAP 보행자 경로 API (키가 없으면 직선 경로로 대신) |
@@ -258,7 +259,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 ### 화면 담당
 
 - [x] 카메라 연결 (`expo-camera`): 촬영, 카메라 전환 → `features/upload/components/camera-viewfinder.tsx`, `features/upload/screens/camera-screen.tsx` (지도 담당이 '나도 이 자리에 남기기' 작업 중에 연결)
-- [ ] 카메라 화면 GUI, 찍은 사진을 가운데 4:3으로 자르고 1080×1440으로 줄이기 (`expo-image-manipulator`)
+- [x] 카메라 화면 GUI, 찍은 사진을 가운데 3:4로 자르고 1080×1440으로 줄이기 → `features/upload/utils/normalize-photo.ts`
 - [x] 권한 안내 화면에서 실제 위치·카메라·알림 권한 요청 → `features/auth/utils/request-app-permissions.ts`
 - [ ] 로그인 여부에 따라 첫 화면 정하기 (지금은 항상 소개 화면) → `src/app/index.tsx`
 - [x] 설정의 권한 상태를 실제 값으로 → `features/my/hooks/use-permission-labels.ts`

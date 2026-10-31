@@ -2,7 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from 'react';
 
 /** 남기기 1~3단계가 같이 쓰는 임시 기록. 마지막 단계에서 서버로 보낸 뒤 버린다. */
 export type UploadDraft = {
-  /** 찍은 사진. expo-camera를 붙이면 사진 파일 주소가 들어간다. */
+  /** 찍은 사진의 파일 주소. 세로 3:4, 1080×1440으로 맞춘 사진이다 (utils/normalize-photo.ts). */
   photoUri?: string;
   /** 사진을 찍은 곳 이름 (정확한 좌표가 아니라 반경으로 저장한다) */
   placeLabel: string;
