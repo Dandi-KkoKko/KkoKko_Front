@@ -22,7 +22,7 @@ export function SettingsScreen() {
   const openPhoneSettings = permissionLabels.isAllGranted ? undefined : () => Linking.openSettings();
 
   return (
-    <ScreenContainer withBottomInset={false} background="gray" header={<ScreenHeader title="설정" />}>
+    <ScreenContainer background="gray" header={<ScreenHeader title="설정" />}>
       <View style={styles.groups}>
         <MenuGroup title="권한">
           <MenuRow

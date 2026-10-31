@@ -25,7 +25,6 @@ export function LikesScreen() {
 
   return (
     <ScreenContainer
-      withBottomInset={false}
       header={
         <ScreenHeader
           title="좋아요 내역"

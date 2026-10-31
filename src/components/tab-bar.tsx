@@ -1,4 +1,4 @@
-import type { Tabs } from 'expo-router';
+import { useSegments, type Tabs } from 'expo-router';
 import type { ComponentProps } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
@@ -16,8 +16,19 @@ const tabIcons: Record<string, IconName> = {
   my: 'person',
 };
 
+// GUI에서 탭 첫 화면에만 탭 바가 있고 안쪽 화면(좋아요 내역, 설정 등)에는 없는 탭.
+// 지도 탭은 GUI가 화면마다 달라서 지도 담당이 정한 뒤에 추가한다.
+const tabsHidingBarOnInnerScreens = ['my'];
+
 /** Figma 홈탭 navigation_bar. 고른 탭 위에 주황 막대, 아이콘·글자는 검정, 나머지는 회색. */
 export function TabBar({ state, descriptors, navigateToTab, insets }: TabBarProps) {
+  // 지금 주소를 조각으로 받는다. 예: /my → ['(tabs)', 'my'], /my/likes → ['(tabs)', 'my', 'likes']
+  const segments = useSegments() as string[];
+  const [, tabName, innerScreen] = segments;
+  if (tabsHidingBarOnInnerScreens.includes(tabName) && innerScreen !== undefined) {
+    return null;
+  }
+
   return (
     <View style={[styles.bar, { paddingBottom: insets.bottom + spacing.xs }]}>
       {state.routes.map((route, index) => {

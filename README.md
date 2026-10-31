@@ -207,7 +207,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 - [x] 권한 안내 화면에서 실제 위치·카메라·알림 권한 요청 → `features/auth/utils/request-app-permissions.ts`
 - [ ] 로그인 여부에 따라 첫 화면 정하기 (지금은 항상 소개 화면) → `src/app/index.tsx`
 - [x] 설정의 권한 상태를 실제 값으로 → `features/my/hooks/use-permission-labels.ts`
-- [ ] 약관 실제 문장 확정 → `features/my/constants/terms-sections.ts`
+- [ ] 약관 실제 문장 확정 (Figma도 아직 제목만 있음) → `features/my/screens/terms-screen.tsx`
 - [ ] 회원 탈퇴 (계정 API가 나오면). 비밀번호 찾기는 Figma 보류
 
 ### 서버 연결 (백엔드·AI API가 나오면)

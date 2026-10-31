@@ -24,7 +24,6 @@ export function OpenedHistoryScreen() {
 
   return (
     <ScreenContainer
-      withBottomInset={false}
       header={
         <ScreenHeader
           title="연 자리 기록"
