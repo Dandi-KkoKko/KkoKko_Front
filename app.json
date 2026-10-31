@@ -50,6 +50,18 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "owner": "onna-app",
+    "extra": {
+      "eas": {
+        "projectId": "d994e46b-cab8-4ace-be98-6a5de573e8d9"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d994e46b-cab8-4ace-be98-6a5de573e8d9"
     }
   }
 }
