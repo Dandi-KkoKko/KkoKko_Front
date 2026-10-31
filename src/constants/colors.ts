@@ -63,6 +63,9 @@ export const colors = {
   selectedBackground: palette.primary[50],
   disabledBackground: palette.gray[100],
   placeholderBox: palette.gray[200],
+  // 아직 열리지 않은 사진을 가리는 흐린 회색 (Figma 공통 컴포넌트의 사진 자리). 가운데가 진하고 가장자리로 갈수록 옅다.
+  lockedPhotoCenter: palette.gray[400],
+  lockedPhotoEdge: palette.gray[300],
 
   // 진짜 지도를 붙이기 전 회색 지도 자리 (와이어프레임 지도 색)
   mapBackground: palette.gray[100],

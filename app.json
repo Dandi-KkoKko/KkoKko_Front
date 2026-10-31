@@ -26,23 +26,24 @@
     "plugins": [
       "expo-router",
       [
-        "expo-splash-screen",
+        "expo-camera",
         {
-          "backgroundColor": "#FB8C00"
+          "cameraPermission": "이 자리에서 바로 찍은 사진만 남길 수 있어서 카메라가 필요해요.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": false
         }
       ],
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "가까이 다가간 사진을 열려면 내 위치가 필요해요. 앱을 쓰는 동안에만 써요."
+          "locationWhenInUsePermission": "가까이 걸어가야 사진이 열리는 지도라서 지금 내 위치가 필요해요."
         }
       ],
       [
-        "expo-camera",
+        "expo-splash-screen",
         {
-          "cameraPermission": "그 자리의 순간을 앱 카메라로 남기려면 카메라가 필요해요.",
-          "microphonePermission": false,
-          "recordAudioAndroid": false
+          "backgroundColor": "#FB8C00"
         }
       ]
     ],

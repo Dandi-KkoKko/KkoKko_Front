@@ -4,11 +4,11 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Button } from '@/components/button';
-import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { ScreenContainer } from '@/components/screen-container';
 import { TextField } from '@/components/text-field';
 import { sectionGap, spacing } from '@/constants/layout';
 import { AiHashtagPicker } from '@/features/upload/components/ai-hashtag-picker';
+import { DraftPhoto } from '@/features/upload/components/draft-photo';
 import { UploadStepHeader } from '@/features/upload/components/upload-step-header';
 import { pickRandomQuestion } from '@/features/upload/constants/write-questions';
 import { useUploadDraft } from '@/features/upload/upload-draft';
@@ -35,7 +35,7 @@ export function WriteScreen() {
         <Button label="다음" variant="primary" disabled={!canGoNext} onPress={() => router.push('/upload/confirm')} />
       }>
       <View style={styles.title}>
-        <PhotoPlaceholder width={100} height={100} />
+        <DraftPhoto uri={draft.photoUri} width={100} height={100} />
         <AppText variant="heading03" style={styles.titleText}>
           {question}
         </AppText>

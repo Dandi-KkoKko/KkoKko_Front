@@ -27,6 +27,11 @@ export default function RootLayout() {
       <Stack.Screen name="upload" options={{ presentation: 'fullScreenModal' }} />
       <Stack.Screen name="opening/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
       <Stack.Screen name="report/[id]" options={{ presentation: 'modal' }} />
+      {/* 사진 카드는 지도 위를 어둡게 덮고 탭 바까지 가리는 투명 모달 */}
+      <Stack.Screen
+        name="photo/[id]"
+        options={{ presentation: 'transparentModal', animation: 'fade', contentStyle: { backgroundColor: 'transparent' } }}
+      />
     </Stack>
   );
 }
