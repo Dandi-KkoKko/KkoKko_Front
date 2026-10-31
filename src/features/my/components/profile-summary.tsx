@@ -1,29 +1,33 @@
+import { Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
-import { Badge } from '@/components/badge';
-import { Icon } from '@/components/icon';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
 
 type ProfileCardProps = {
   nickname: string;
-  school: string;
-  loginProvider: string;
+  badges: string[];
 };
 
-/** 닉네임은 내 화면에서만 보인다. 남긴 사진은 늘 익명이다. */
-export function ProfileCard({ nickname, school, loginProvider }: ProfileCardProps) {
+/** 닉네임과 칭호. 닉네임은 내 화면에서만 보이고, 남긴 사진은 늘 익명이다. */
+export function ProfileCard({ nickname, badges }: ProfileCardProps) {
   return (
     <View style={[styles.card, styles.profile]}>
-      <View style={styles.avatar}>
-        <Icon name="person" size={28} color="textTertiary" />
-      </View>
-      <View style={styles.profileTexts}>
-        <AppText variant="subtitle01">{nickname}</AppText>
-        <AppText variant="caption04" color="textTertiary">
-          {school} · {loginProvider} 로그인
+      <View style={styles.nameRow}>
+        <AppText variant="heading03">{nickname}</AppText>
+        <AppText variant="subtitle03" color="textTertiary">
+          님
         </AppText>
+      </View>
+      <View style={styles.badges}>
+        {badges.map((badge) => (
+          <View key={badge} style={styles.badge}>
+            <AppText variant="caption01" color="primary">
+              {badge}
+            </AppText>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -38,75 +42,59 @@ export function StatsCard({ stats }: StatsCardProps) {
   return (
     <View style={[styles.card, styles.stats]}>
       {stats.map((stat, index) => (
-        <View key={stat.label} style={[styles.stat, index > 0 && styles.statDivider]}>
-          <AppText variant="subtitle01">{stat.value}</AppText>
-          <AppText variant="caption04" color="textTertiary">
-            {stat.label}
-          </AppText>
-        </View>
+        <Fragment key={stat.label}>
+          {index > 0 && <View style={styles.statDivider} />}
+          <View style={styles.stat}>
+            <AppText variant="subtitle02">{stat.value}</AppText>
+            <AppText variant="caption04" color="textDeactivated">
+              {stat.label}
+            </AppText>
+          </View>
+        </Fragment>
       ))}
-    </View>
-  );
-}
-
-/** AI '숨은 좋아함' 리포트 자리. MVP에서는 빠져서 '준비 중'으로만 보여준다. */
-export function AiReportTeaser() {
-  return (
-    <View style={[styles.card, styles.report]}>
-      <View style={styles.reportHeader}>
-        <AppText variant="subtitle03">AI 리포트 · 숨은 좋아함</AppText>
-        <Badge label="준비 중" tone="muted" />
-      </View>
-      <AppText variant="caption02" color="textSecondary">
-        “너는 사람 냄새 나는 오래된 가게를 좋아하고 있었어” 같은 리포트가 곧 찾아와요
-      </AppText>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    padding: spacing.md,
-    borderRadius: radius.lg,
+    borderRadius: radius.md,
     backgroundColor: colors.background01,
   },
   profile: {
+    padding: spacing.lg,
+    gap: spacing.sm,
+  },
+  nameRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  avatar: {
-    width: 56,
-    height: 56,
-    borderRadius: radius.full,
-    backgroundColor: colors.disabledBackground,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileTexts: {
+    alignItems: 'flex-end',
     gap: spacing.xxs,
+  },
+  badges: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.xs,
+  },
+  badge: {
+    paddingHorizontal: spacing.xs,
+    paddingVertical: spacing.xxs,
+    borderRadius: radius.sm,
+    backgroundColor: colors.selectedBackground,
   },
   stats: {
     flexDirection: 'row',
+    alignItems: 'center',
+    padding: spacing.sm,
   },
   stat: {
     flex: 1,
     alignItems: 'center',
     gap: spacing.xxs,
+    paddingVertical: 6,
   },
   statDivider: {
-    borderLeftWidth: 1,
-    borderLeftColor: colors.disabledBackground,
-  },
-  report: {
-    gap: spacing.xs,
-    borderWidth: 1.5,
-    borderStyle: 'dashed',
-    borderColor: colors.borderDeactivated,
-  },
-  reportHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    width: 1,
+    height: 29,
+    backgroundColor: colors.disabledBackground,
   },
 });

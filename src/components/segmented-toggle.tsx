@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { colors } from '@/constants/colors';
-import { floatingShadow, radius, spacing } from '@/constants/layout';
+import { radius, spacing, toggleShadow } from '@/constants/layout';
 
 type SegmentedToggleProps<T extends string> = {
   options: readonly T[];
@@ -10,7 +10,7 @@ type SegmentedToggleProps<T extends string> = {
   onSelect: (option: T) => void;
 };
 
-/** 리스트 / 지도처럼 보기 방식을 바꾸는 작은 토글 */
+/** 리스트 / 지도처럼 보기 방식을 바꾸는 작은 토글 (Figma toggle_element) */
 export function SegmentedToggle<T extends string>({ options, selected, onSelect }: SegmentedToggleProps<T>) {
   return (
     <View style={styles.container}>
@@ -23,7 +23,7 @@ export function SegmentedToggle<T extends string>({ options, selected, onSelect 
             accessibilityState={{ selected: isSelected }}
             onPress={() => onSelect(option)}
             style={[styles.option, isSelected && styles.selected]}>
-            <AppText variant={isSelected ? 'button05' : 'button06'} color={isSelected ? 'textPrimary' : 'textTertiary'}>
+            <AppText variant={isSelected ? 'button03' : 'button04'} color={isSelected ? 'textPrimary' : 'textSecondary'}>
               {option}
             </AppText>
           </Pressable>
@@ -37,16 +37,17 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: spacing.xxs,
+    gap: spacing.xxs,
     borderRadius: radius.md,
-    backgroundColor: colors.background02,
+    backgroundColor: colors.disabledBackground,
   },
   option: {
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
     borderRadius: radius.sm,
   },
   selected: {
-    ...floatingShadow,
+    ...toggleShadow,
     backgroundColor: colors.background01,
   },
 });
