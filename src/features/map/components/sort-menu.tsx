@@ -16,10 +16,7 @@ type SortMenuProps = {
   onChange: (value: SortOrder) => void;
 };
 
-/**
- * '가까운순 ⌄' 정렬 버튼. 누르면 아래로 고를 수 있는 순서가 펼쳐진다.
- * 공통 아이콘에 아래 화살표가 없어서 오른쪽 화살표(forward)를 90도 돌려 쓴다.
- */
+/** '가까운순 ⌄' 정렬 버튼. 누르면 아래로 고를 수 있는 순서가 펼쳐진다. 펼치면 화살표가 위를 본다. */
 export function SortMenu({ value, onChange }: SortMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,8 +36,8 @@ export function SortMenu({ value, onChange }: SortMenuProps) {
         <AppText variant="caption01" color="textTertiary">
           {sortLabels[value]}
         </AppText>
-        <View style={isOpen ? styles.arrowUp : styles.arrowDown}>
-          <Icon name="forward" size={16} color="textTertiary" />
+        <View style={isOpen && styles.arrowUp}>
+          <Icon name="chevronDown" size={16} color="textTertiary" />
         </View>
       </Pressable>
 
@@ -77,11 +74,8 @@ const styles = StyleSheet.create({
     borderRadius: radius.sm,
     backgroundColor: colors.disabledBackground,
   },
-  arrowDown: {
-    transform: [{ rotate: '90deg' }],
-  },
   arrowUp: {
-    transform: [{ rotate: '-90deg' }],
+    transform: [{ rotate: '180deg' }],
   },
   menu: {
     ...floatingShadow,

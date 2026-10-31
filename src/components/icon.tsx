@@ -4,10 +4,17 @@ import { SymbolView } from 'expo-symbols';
 import { colors, type ColorName } from '@/constants/colors';
 
 /**
- * Figma '그래픽 아이콘'에서 받은 그림. 검은 그림 하나를 tintColor로 칠해서 검정·회색·흰색을 모두 낸다.
+ * Figma '그래픽 아이콘'·'기본 아이콘'에서 받은 그림. 검은 그림 하나를 tintColor로 칠해서 검정·회색·흰색을 모두 낸다.
  * 디자인에 그림이 있는 아이콘은 여기서 쓰고, 없는 것만 아래 시스템 아이콘을 쓴다.
  */
 const graphicIcons = {
+  back: require('@/assets/icons/back.png'),
+  forward: require('@/assets/icons/forward.png'),
+  chevronDown: require('@/assets/icons/chevron-down.png'),
+  close: require('@/assets/icons/close.png'),
+  check: require('@/assets/icons/check.png'),
+  refresh: require('@/assets/icons/refresh.png'),
+  cameraSwitch: require('@/assets/icons/camera-switch.png'),
   location: require('@/assets/icons/location.png'),
   myLocation: require('@/assets/icons/my-location.png'),
   route: require('@/assets/icons/route.png'),
@@ -21,6 +28,9 @@ const graphicIcons = {
   eye: require('@/assets/icons/eye.png'),
   eyeClosed: require('@/assets/icons/eye-closed.png'),
   report: require('@/assets/icons/report.png'),
+  // 아래 둘은 Figma에 16px 그림만 있어서 24px로 크게 쓰면 조금 흐릴 수 있다.
+  unlock: require('@/assets/icons/unlock.png'),
+  settings: require('@/assets/icons/settings.png'),
 };
 
 /**
@@ -28,19 +38,12 @@ const graphicIcons = {
  * 새 아이콘이 필요하면 Figma 그림을 assets/icons에 넣고 위에 추가하거나, 그림이 없으면 여기에 추가한다.
  */
 const symbolIcons = {
-  back: { ios: 'chevron.left', android: 'chevron_left', web: 'chevron_left' },
-  forward: { ios: 'chevron.right', android: 'chevron_right', web: 'chevron_right' },
-  close: { ios: 'xmark', android: 'close', web: 'close' },
   plus: { ios: 'plus', android: 'add', web: 'add' },
   minus: { ios: 'minus', android: 'remove', web: 'remove' },
-  check: { ios: 'checkmark', android: 'check', web: 'check' },
   lock: { ios: 'lock', android: 'lock', web: 'lock' },
   flag: { ios: 'flag', android: 'flag', web: 'flag' },
   clock: { ios: 'clock', android: 'schedule', web: 'schedule' },
-  unlock: { ios: 'lock.open', android: 'lock_open', web: 'lock_open' },
   hashtag: { ios: 'number', android: 'tag', web: 'tag' },
-  settings: { ios: 'gearshape', android: 'settings', web: 'settings' },
-  cameraSwitch: { ios: 'arrow.triangle.2.circlepath.camera', android: 'cameraswitch', web: 'cameraswitch' },
 } as const;
 
 type GraphicIconName = keyof typeof graphicIcons;
