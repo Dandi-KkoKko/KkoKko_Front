@@ -48,7 +48,8 @@ export function CameraScreen() {
     setIsTaking(true);
     setHasFailed(false);
     try {
-      const photo = await cameraRef.current.takePictureAsync({ quality: 0.8 });
+      // 셔터 소리는 끄되, 폰 회사 정책으로 강제로 나는 기기(일부 한국 폰)에서는 그대로 날 수 있다.
+      const photo = await cameraRef.current.takePictureAsync({ quality: 0.8, shutterSound: false });
       const photoUri = await normalizePhoto(photo);
       updateDraft({ photoUri });
       router.push('/upload/write');
