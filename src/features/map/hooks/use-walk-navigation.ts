@@ -19,6 +19,9 @@ type NavigationParams = {
 /** 들를 자리·목적지에 이만큼(m) 다가오면 도착한 것으로 본다. GPS 오차를 생각한 값이다. */
 const arrivalMeters = 25;
 
+/** 목적지에서 이 거리 안에 남겨진 기록을 '이 자리의 기록'으로 보고, 도착하면 연다. */
+const unlockMatchMeters = 50;
+
 const isPhoto = (marker: { kind: string }): marker is PhotoMarker => marker.kind === 'photo';
 
 /**
@@ -91,6 +94,16 @@ export function useWalkNavigation(myLocation: Coordinate | null) {
     [records, current],
   );
 
+  // 도착하면 목적지에 가장 가까이 남겨진 기록 하나가 열린다 (Figma '사진 해금 UI'). 없으면 열 기록이 없다.
+  const unlockedRecord = useMemo(() => {
+    if (!progress?.hasArrived || !destination) return null;
+    const nearest = records
+      .map((record) => ({ record, distance: getDistanceMeters(destination, record.coordinate) }))
+      .filter(({ distance }) => distance <= unlockMatchMeters)
+      .sort((a, b) => a.distance - b.distance)[0];
+    return nearest?.record ?? null;
+  }, [progress?.hasArrived, destination, records]);
+
   return {
     destinationName: params.destinationName ?? '',
     destination,
@@ -98,5 +111,6 @@ export function useWalkNavigation(myLocation: Coordinate | null) {
     fullPath: route?.path ?? null,
     progress,
     recordsInRange,
+    unlockedRecord,
   };
 }

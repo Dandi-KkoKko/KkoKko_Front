@@ -3,13 +3,11 @@ import { useMemo, useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { AppText } from '@/components/app-text';
 import { screenPaddingX, spacing } from '@/constants/layout';
-import { AiBadge } from '@/features/map/components/ai-badge';
 import { CameraButton } from '@/features/map/components/map-action-buttons';
-import { MapBottomSheet } from '@/features/map/components/map-bottom-sheet';
 import { NavigationBanner } from '@/features/map/components/navigation-banner';
-import { RecordList } from '@/features/map/components/record-list';
+import { PhotoUnlockOverlay } from '@/features/map/components/photo-unlock-overlay';
+import { RecordsInRangeSheet } from '@/features/map/components/records-in-range-sheet';
 import { openRadiusMeters } from '@/features/map/constants/map-config';
 import { useMyLocation } from '@/features/map/hooks/use-my-location';
 import { useWalkNavigation } from '@/features/map/hooks/use-walk-navigation';
@@ -31,9 +29,10 @@ function getBannerMessage(progress: ReturnType<typeof useWalkNavigation>['progre
 }
 
 /**
- * Figma '지도 길안내 UI'. '이 길로 걷기'를 누르면 온다.
+ * Figma '지도 길안내 UI', '지도 목적지 도착 및 사진 해금 UI'. '이 길로 걷기'를 누르면 온다.
  * 지도에는 걸어온 길(회색)과 남은 길(주황), 내 열림 반경, 목적지를 그리고,
  * 위쪽 띠에 다음 자리까지 남은 시간을, 아래 패널에 열림 반경 안의 기록('범위 내 기록들')을 보여준다.
+ * 목적지에 닿으면 패널을 내리고, 그 자리의 기록이 열렸다는 화면('열렸어요')을 띄운다.
  */
 export function NavigationScreen() {
   const insets = useSafeAreaInsets();
@@ -41,9 +40,12 @@ export function NavigationScreen() {
   const { location } = useMyLocation();
   const navigation = useWalkNavigation(location);
   const [isSheetExpanded, setIsSheetExpanded] = useState(true);
+  const [isUnlockDismissed, setIsUnlockDismissed] = useState(false);
+  const hasArrived = navigation.progress?.hasArrived ?? false;
 
   const sheetHeight = Math.round(windowHeight * expandedSheetRatio);
-  const bottomInset = isSheetExpanded ? sheetHeight : collapsedSheetHeight;
+  // Figma '목적지 도착 UI'에는 아래 패널이 없다.
+  const bottomInset = hasArrived ? 0 : isSheetExpanded ? sheetHeight : collapsedSheetHeight;
 
   const markers = useMemo<MapMarker[]>(
     () =>
@@ -81,31 +83,32 @@ export function NavigationScreen() {
       </View>
 
       {/* Figma: 목록을 접으면 카메라 버튼이 목록 위에 나온다. */}
-      {!isSheetExpanded && (
+      {!hasArrived && !isSheetExpanded && (
         <View style={[styles.camera, { bottom: collapsedSheetHeight + spacing.md }]}>
           <CameraButton />
         </View>
       )}
 
-      <MapBottomSheet
-        height={sheetHeight}
-        isExpanded={isSheetExpanded}
-        onExpandedChange={setIsSheetExpanded}
-        label="범위 내 기록들"
-        header={
-          <View style={styles.titleRow}>
-            <AppText variant="subtitle01">범위 내 기록들</AppText>
-            <AiBadge label="AI 추천순" />
-          </View>
-        }>
-        {navigation.recordsInRange.length > 0 ? (
-          <RecordList records={navigation.recordsInRange} onPress={(record) => openRecord(record.id)} />
-        ) : (
-          <AppText variant="caption01" color="textTertiary" style={styles.empty}>
-            지금 열림 반경 안에 남겨진 기록이 없어요
-          </AppText>
-        )}
-      </MapBottomSheet>
+      {!hasArrived && (
+        <RecordsInRangeSheet
+          height={sheetHeight}
+          records={navigation.recordsInRange}
+          isExpanded={isSheetExpanded}
+          onExpandedChange={setIsSheetExpanded}
+          onPressRecord={(record) => openRecord(record.id)}
+        />
+      )}
+
+      {navigation.unlockedRecord && !isUnlockDismissed && (
+        <PhotoUnlockOverlay
+          onOpen={() => {
+            // 해금 화면은 Modal이라 닫지 않고 넘어가면 다음 화면 위에 남는다.
+            setIsUnlockDismissed(true);
+            router.push(`/map/opened/${navigation.unlockedRecord?.id}`);
+          }}
+          onDismiss={() => setIsUnlockDismissed(true)}
+        />
+      )}
     </View>
   );
 }
@@ -122,14 +125,5 @@ const styles = StyleSheet.create({
   camera: {
     position: 'absolute',
     right: screenPaddingX,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  empty: {
-    textAlign: 'center',
-    paddingVertical: spacing.xl,
   },
 });
