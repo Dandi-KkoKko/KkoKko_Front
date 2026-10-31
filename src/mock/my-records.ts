@@ -1,48 +1,62 @@
-import type { MapArea } from '@/types/map-area';
+/** 백엔드 '내 기록' API가 나오기 전 쓰는 가짜 데이터. GUI ② 기록 탭 예시 그대로. */
 
-/** 백엔드 '내 기록' API가 나오기 전 쓰는 가짜 데이터. 와이어프레임 ② 기록 탭 예시 그대로. */
+import { samplePhotos } from '@/mock/sample-photos';
+import type { MapArea } from '@/types/map-area';
+import type { PhotoSource } from '@/types/photo-source';
 
 export type MyRecord = {
   id: string;
-  oneLine: string;
+  title: string;
+  /** 한 줄 코멘트 */
+  comment: string;
   hashtags: string[];
-  placeLabel: string;
   dateLabel: string;
-  /** 업로드 직후 2~3시간 동안은 아직 다른 사람 지도에 안 뜬다 */
-  isPending?: boolean;
-  /** 누군가 좋아요를 눌렀는지 (몇 명인지는 보여주지 않는다) */
-  wasVisited?: boolean;
+  /** 내 기록에 닿은 좋아요 수. 나만 본다. */
+  likeCount: number;
+  photo: PhotoSource;
 };
 
 export const mockMyRecords: MyRecord[] = [
   {
     id: 'r1',
-    oneLine: '공강마다 앉는 그 벤치, 오늘도 비어 있었다.',
-    hashtags: ['#공강벤치', '#단골자리'],
-    placeLabel: '러브로드',
-    dateLabel: '오늘 14:20',
-    isPending: true,
+    title: '하버브릿지',
+    comment: '사람들의 행복한 표정을 보며',
+    hashtags: ['#연인', '#포옹', '#온정'],
+    dateLabel: '2026.08.28',
+    likeCount: 6,
+    photo: samplePhotos.harbourBridge,
   },
   {
     id: 'r2',
-    oneLine: '이모가 떡볶이 국물 더 부어줌. 말은 없었다.',
-    hashtags: ['#덤', '#학교앞분식'],
-    placeLabel: '정문 앞',
-    dateLabel: '10월 22일',
-    wasVisited: true,
+    title: '오페라하우스',
+    comment: '노을 질 때 다 같이 사진 찍어주던 사람들',
+    hashtags: ['#말없이챙겨준', '#노을'],
+    dateLabel: '2026.08.22',
+    likeCount: 4,
+    photo: samplePhotos.operaHouse,
   },
   {
     id: 'r3',
-    oneLine: '경비 아저씨가 우산 빌려주심. 돌려드리러 감.',
-    hashtags: ['#말없이챙겨준'],
-    placeLabel: '중앙도서관',
-    dateLabel: '10월 18일',
+    title: '아침 창문',
+    comment: '아름다운 풍경',
+    hashtags: ['#창밖풍경', '#아침'],
+    dateLabel: '2026.08.13',
+    likeCount: 2,
+    photo: samplePhotos.morningWindow,
+  },
+  {
+    id: 'r4',
+    title: '비둘기',
+    comment: '뚱뚱한 비둘기 앉아서 쉬는중',
+    hashtags: ['#동물친구', '#퉁퉁'],
+    dateLabel: '2026.08.02',
+    likeCount: 6,
+    photo: samplePhotos.pigeon,
   },
 ];
 
 export const mockMyRecordSummary = {
   totalCount: 12,
-  thisWeekCount: 3,
 };
 
 /** 내 기록 지도: 구역별로 묶인 내 기록 */
