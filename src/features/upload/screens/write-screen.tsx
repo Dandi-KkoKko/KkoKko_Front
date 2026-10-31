@@ -14,8 +14,8 @@ import { pickRandomQuestion } from '@/features/upload/constants/write-questions'
 import { useUploadDraft } from '@/features/upload/upload-draft';
 import { mockAiHashtags } from '@/mock/ai-hashtags';
 
-// 입력 부담을 줄이려고 제목은 짧게, 한 줄은 한 문장 길이까지만 받는다 (GUI 7/10, 22/40)
-const maxTitleLength = 10;
+// 입력 부담을 줄이려고 제목은 짧게, 한 줄은 한 문장 길이까지만 받는다 (GUI 0/15, 22/40)
+const maxTitleLength = 15;
 const maxOneLineLength = 40;
 
 /**
@@ -47,7 +47,7 @@ export function WriteScreen() {
           required
           value={draft.title}
           onChangeText={(title) => updateDraft({ title })}
-          placeholder="이 자리의 이름을 지어주세요"
+          placeholder="제목을 입력해 주세요"
           maxLength={maxTitleLength}
           showCount
         />
@@ -56,7 +56,7 @@ export function WriteScreen() {
           required
           value={draft.oneLine}
           onChangeText={(oneLine) => updateDraft({ oneLine })}
-          placeholder="공강마다 앉는 그 벤치, 오늘도 비어 있었다"
+          placeholder="한줄 코멘트를 적어주세요"
           maxLength={maxOneLineLength}
           showCount
         />
