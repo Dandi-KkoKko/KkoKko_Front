@@ -85,6 +85,8 @@ export const colors = {
   requiredMark: palette.error[3],
   // 흐린 사진 중 '내 취향' 사진의 주황 테두리 (Figma Primary/300)
   photoHighlightFrame: palette.primary[300],
+  // 회색 칸 위에 얹는 옅은 동그라미 버튼 (Figma reload_circle, Gray/200 40%)
+  softCircleButton: 'rgba(225, 225, 225, 0.4)',
   // 카메라 셔터 바깥 고리 (Figma Shutter, Primary/300)
   shutterRing: palette.primary[300],
 } as const;
