@@ -4,12 +4,12 @@ import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Button } from '@/components/button';
-import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { ScreenContainer } from '@/components/screen-container';
 import { ScreenHeader } from '@/components/screen-header';
 import { TextField } from '@/components/text-field';
 import { spacing } from '@/constants/layout';
 import { AiHashtagPicker, maxHashtagCount, minHashtagCount } from '@/features/upload/components/ai-hashtag-picker';
+import { DraftPhoto } from '@/features/upload/components/draft-photo';
 import { useUploadDraft } from '@/features/upload/upload-draft';
 import { mockAiHashtagSets } from '@/mock/ai-hashtags';
 
@@ -40,7 +40,7 @@ export function WriteScreen() {
         <Button label="다음" variant="primary" disabled={!canGoNext} onPress={() => router.push('/upload/confirm')} />
       }>
       <View style={styles.title}>
-        <PhotoPlaceholder width={64} height={80} />
+        <DraftPhoto uri={draft.photoUri} width={64} height={80} />
         <AppText variant="heading03" style={styles.titleText}>
           {'이 자리에서\n어떤 마음을 받았나요?'}
         </AppText>

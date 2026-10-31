@@ -26,6 +26,15 @@
     "plugins": [
       "expo-router",
       [
+        "expo-camera",
+        {
+          "cameraPermission": "이 자리에서 바로 찍은 사진만 남길 수 있어서 카메라가 필요해요.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "barcodeScannerEnabled": false
+        }
+      ],
+      [
         "expo-location",
         {
           "locationWhenInUsePermission": "가까이 걸어가야 사진이 열리는 지도라서 지금 내 위치가 필요해요."

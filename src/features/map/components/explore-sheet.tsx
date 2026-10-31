@@ -1,4 +1,3 @@
-import { router } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
@@ -8,6 +7,7 @@ import { colors } from '@/constants/colors';
 import { floatingShadow, radius, spacing } from '@/constants/layout';
 import { useVerticalSwipe } from '@/features/map/hooks/use-vertical-swipe';
 import type { PhotoMarker } from '@/features/map/types/home-map-marker';
+import { openRecord } from '@/features/map/utils/open-search-result';
 
 type ExploreSheetProps = {
   nearestPhoto: PhotoMarker | null;
@@ -50,7 +50,7 @@ function NearestRecord({ photo }: { photo: PhotoMarker | null }) {
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`가장 가까운 기록 ${photo.hashtags.join(' ')}`}
-      onPress={() => router.push(`/map/spot/${photo.id}`)}
+      onPress={() => openRecord(photo.id)}
       style={styles.record}>
       <PhotoPlaceholder width={60} height={60} />
       <View style={styles.texts}>

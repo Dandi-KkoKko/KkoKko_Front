@@ -25,6 +25,8 @@ export type PhotoMarker = {
   isOpen: boolean;
   /** 기록이 남겨진 장소 이름 ('영남대학교 정문'). 서버가 주는 값이다. */
   placeName?: string;
+  /** 남긴 사람의 한 줄. 열린 기록에서만 보여준다. */
+  comment?: string;
 };
 
 export type HomeMapMarker = ClusterMarker | PhotoMarker;

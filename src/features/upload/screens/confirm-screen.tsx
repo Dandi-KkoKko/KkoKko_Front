@@ -6,11 +6,11 @@ import { Badge } from '@/components/badge';
 import { Button } from '@/components/button';
 import { Icon } from '@/components/icon';
 import { MapPlaceholder } from '@/components/map-placeholder';
-import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { ScreenContainer } from '@/components/screen-container';
 import { ScreenHeader } from '@/components/screen-header';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
+import { DraftPhoto } from '@/features/upload/components/draft-photo';
 import { UploadChecklist } from '@/features/upload/components/upload-checklist';
 import { useUploadDraft } from '@/features/upload/upload-draft';
 
@@ -42,7 +42,7 @@ export function ConfirmScreen() {
       </View>
 
       <View style={styles.preview}>
-        <PhotoPlaceholder width={56} height={70} />
+        <DraftPhoto uri={draft.photoUri} width={56} height={70} />
         <View style={styles.previewTexts}>
           <AppText variant="subtitle04">{draft.oneLine || '한 줄을 아직 쓰지 않았어요'}</AppText>
           <AppText variant="caption02" color="textSecondary">

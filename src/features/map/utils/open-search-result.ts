@@ -2,9 +2,9 @@ import { router } from 'expo-router';
 
 import type { Coordinate } from '@/features/map/types/home-map-marker';
 
-/** 기록 하나(자리 상세)로 간다. */
+/** 기록 하나의 사진 카드를 띄운다 (Figma '지도 사진 남기기 UI'). */
 export function openRecord(recordId: string) {
-  router.push(`/map/spot/${recordId}`);
+  router.push(`/photo/${recordId}`);
 }
 
 /** 검색결과 화면으로 간다. selectKey를 주면 그 결과를 고른 상태(경로 추천 카드)로 연다. */

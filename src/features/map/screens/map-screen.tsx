@@ -19,14 +19,14 @@ import { usePlaceRoute } from '@/features/map/hooks/use-place-route';
 import { useResultsMap, type ResultsMapView } from '@/features/map/hooks/use-results-map';
 import { KakaoMapView } from '@/features/map/kakao-map/kakao-map-view';
 import type { MapMarker } from '@/features/map/types/home-map-marker';
-import { openNavigation } from '@/features/map/utils/open-search-result';
+import { openNavigation, openRecord } from '@/features/map/utils/open-search-result';
 
 /** 장소를 고르지 않았을 때 useResultsMap에 넘기는 빈 상태 */
 const noPlaceView: ResultsMapView = { mode: 'list', items: [] };
 
 function openMarker(marker: MapMarker) {
   if (marker.kind === 'cluster') router.push(`/map/cluster/${marker.id}`);
-  else if (marker.kind === 'photo') router.push(`/map/spot/${marker.id}`);
+  else if (marker.kind === 'photo') openRecord(marker.id);
 }
 
 /**

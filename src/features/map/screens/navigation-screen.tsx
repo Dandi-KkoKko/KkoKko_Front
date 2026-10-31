@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,6 +10,7 @@ import { PhotoUnlockOverlay } from '@/features/map/components/photo-unlock-overl
 import { RecordsInRangeSheet } from '@/features/map/components/records-in-range-sheet';
 import { openRadiusMeters } from '@/features/map/constants/map-config';
 import { useMyLocation } from '@/features/map/hooks/use-my-location';
+import { unlockRecord } from '@/features/map/hooks/use-record-memory';
 import { useWalkNavigation } from '@/features/map/hooks/use-walk-navigation';
 import { KakaoMapView } from '@/features/map/kakao-map/kakao-map-view';
 import type { MapMarker } from '@/features/map/types/home-map-marker';
@@ -42,6 +43,12 @@ export function NavigationScreen() {
   const [isSheetExpanded, setIsSheetExpanded] = useState(true);
   const [isUnlockDismissed, setIsUnlockDismissed] = useState(false);
   const hasArrived = navigation.progress?.hasArrived ?? false;
+  const unlockedRecordId = navigation.unlockedRecord?.id;
+
+  // 한 번 연 기록은 멀어져도 다시 잠기지 않게 이 폰에 기억해 둔다.
+  useEffect(() => {
+    if (unlockedRecordId) unlockRecord(unlockedRecordId);
+  }, [unlockedRecordId]);
 
   const sheetHeight = Math.round(windowHeight * expandedSheetRatio);
   // Figma '목적지 도착 UI'에는 아래 패널이 없다.
@@ -104,7 +111,7 @@ export function NavigationScreen() {
           onOpen={() => {
             // 해금 화면은 Modal이라 닫지 않고 넘어가면 다음 화면 위에 남는다.
             setIsUnlockDismissed(true);
-            router.push(`/map/opened/${navigation.unlockedRecord?.id}`);
+            if (unlockedRecordId) openRecord(unlockedRecordId);
           }}
           onDismiss={() => setIsUnlockDismissed(true)}
         />

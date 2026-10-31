@@ -66,6 +66,7 @@ npx tsc --noEmit
 | 이미지 | expo-image |
 | 지도 | 카카오맵 JavaScript SDK (react-native-webview 안에 띄움) |
 | 위치 | expo-location |
+| 카메라 | expo-camera (카메라 권한만, 갤러리 권한 없음) |
 | 장소 검색 | 카카오 로컬 API (키워드 검색) |
 | 걷는 길 | TMAP 보행자 경로 API (키가 없으면 직선 경로로 대신) |
 | 기기 저장 | @react-native-async-storage/async-storage (최근 검색기록) |
@@ -179,7 +180,9 @@ assets/
   - 들를 자리: 고른 해시태그가 붙은 기록 중 내 위치→목적지 직선에서 250m 안쪽인 것을 최대 3곳, 걸어가며 만나는 순서로 골라요 (`features/map/utils/pick-route-stops.ts`). AI 추천 API가 나오면 이 규칙을 바꿔요.
   - 경로 선: TMAP 보행자 경로 API로 실제 걷는 길을 받아요. 키가 없거나 실패하면 직선으로 이어요 (`features/map/api/get-walk-route.ts`).
   - 카드는 손잡이로 접고 펼쳐요. '이 길로 걷기'를 누르면 **길안내 화면**(`/map/navigation`)으로 목적지와 들를 자리를 넘겨요.
-- **길안내**(`/map/navigation`)는 걸으면서 내 위치를 경로 위에 놓아 걸어온 길(회색)과 남은 길(주황)을 나눠 그리고, 위쪽 띠에 '다음 자리까지 N분'(다 들렀으면 목적지까지)을 보여줘요. 아래 '범위 내 기록들'은 내 열림 반경 안의 기록이에요 (`features/map/hooks/use-walk-navigation.ts`). '길안내 종료'를 누르면 지도 홈으로 돌아가요. 목적지(25m 안)에 닿으면 아래 패널을 내리고, 목적지 50m 안에 남겨진 기록이 있으면 **'열렸어요'(사진 해금)** 화면을 띄워요. '사진과 한 줄 보기'를 누르면 그 기록의 열린 자리(`/map/opened/[id]`)로 가요.
+- **길안내**(`/map/navigation`)는 걸으면서 내 위치를 경로 위에 놓아 걸어온 길(회색)과 남은 길(주황)을 나눠 그리고, 위쪽 띠에 '다음 자리까지 N분'(다 들렀으면 목적지까지)을 보여줘요. 아래 '범위 내 기록들'은 내 열림 반경 안의 기록이에요 (`features/map/hooks/use-walk-navigation.ts`). '길안내 종료'를 누르면 지도 홈으로 돌아가요. 목적지(25m 안)에 닿으면 아래 패널을 내리고, 목적지 50m 안에 남겨진 기록이 있으면 **'열렸어요'(사진 해금)** 화면을 띄워요. '사진과 한 줄 보기'를 누르면 그 기록의 사진 카드가 떠요.
+- **사진 카드**(`/photo/[id]`, 탭 바까지 덮는 투명 모달)는 지도 위 사진, 묶음 기록, 범위 내 기록, '사진과 한 줄 보기'에서 열려요. 열린 기록(지금 열림 반경 안이거나 한 번 연 기록)이면 한 줄, 좋아요, 신고, '나도 이 자리에 남기기'가 보이고, 아니면 '한줄 코멘트는 가까이 가면 열려요'만 보여요. 한 번 연 기록과 좋아요는 폰에 저장돼요 (`features/map/hooks/use-record-memory.ts`).
+- **'나도 이 자리에 남기기'**는 남기기 촬영 화면(`/upload/camera`)으로 가요. 촬영 화면은 `expo-camera`로 실제 카메라를 띄우고, **카메라 권한만** 받아요. 갤러리(사진 보관함) 권한은 받지 않고, 찍은 사진은 앱 안에만 두고 갤러리에 저장하지 않아요. 찍은 사진은 다음 단계(한 줄, 위치 확인)의 회색 사진 자리에 나와요.
 - 해시태그 결과를 고르면 그 해시태그가 붙은 기록마다 핀이 찍히고, 핀을 누르면 그 기록이 남겨진 장소 카드가 떠요. 그 카드를 누르면 검색을 닫고 **지도 홈**에서 그 장소 카드를 띄워, 홈에서도 같은 방법으로 경로를 추천받아요. 장소는 주소(`/map?placeName=...`)에 실어 보내요 (`features/map/hooks/use-home-place.ts`). 검색 화면에서 결과를 누르면 검색결과 화면이 그 결과를 고른 채로 열려요.
 
 지도 홈 마커는 `features/map/constants/preview-markers.ts`의 가짜 데이터예요. 어디서 앱을 켜도 보이도록 **처음 받은 내 위치 주변**에 놓여요. 사진이 열렸는지는 내 위치에서 **열림 반경**(`features/map/constants/map-config.ts`의 `openRadiusMeters`, 지금 100m) 안에 있는지로 정해요. 나머지 지도 화면의 마커와 경로 위치는 `features/map/constants/preview-*.ts`의 화면 좌표예요.
@@ -241,7 +244,7 @@ assets/
 
 ### 화면 담당
 
-- [ ] 카메라 연결 (`expo-camera`): 촬영, 카메라 전환 → `features/upload/components/camera-viewfinder.tsx`, `features/upload/screens/camera-screen.tsx`
+- [x] 카메라 연결 (`expo-camera`): 촬영, 카메라 전환 → `features/upload/components/camera-viewfinder.tsx`, `features/upload/screens/camera-screen.tsx` (지도 담당이 '나도 이 자리에 남기기' 작업 중에 연결)
 - [ ] 권한 안내 화면에서 실제 위치·카메라·알림 권한 요청 → `features/auth/screens/permission-screen.tsx`
 - [ ] 로그인 여부에 따라 첫 화면 정하기 (지금은 항상 소개 화면) → `src/app/index.tsx`
 - [ ] 설정의 권한 상태를 실제 값으로 → `features/my/screens/settings-screen.tsx`
