@@ -1,57 +1,58 @@
+import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Badge } from '@/components/badge';
 import { Button } from '@/components/button';
-import { Icon } from '@/components/icon';
-import { MapPlaceholder } from '@/components/map-placeholder';
+import { IconButton } from '@/components/icon-button';
 import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { ScreenContainer } from '@/components/screen-container';
-import { ScreenHeader } from '@/components/screen-header';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
 import { UploadChecklist } from '@/features/upload/components/upload-checklist';
+import { UploadStepHeader } from '@/features/upload/components/upload-step-header';
 import { useUploadDraft } from '@/features/upload/upload-draft';
 
-const radiusCircleSize = 96;
+const locationPin = require('@/assets/icons/location-pick.svg');
 
 /**
- * 와이어프레임 ② 기록 탭: 남기기 3/3 위치 확인.
- * 집 위치 같은 개인정보가 드러나지 않게 정확한 좌표 대신 반경으로 저장한다는 것을 보여준다.
- * 업로드 API가 나오면 '남기기 완료'에서 draft를 서버로 보낸다.
+ * ② 기록 탭: 남기기 3/3 위치 확인.
+ * 집 위치 같은 개인정보가 드러나지 않게 정확한 좌표 대신 장소 이름(반경)으로 저장한다.
+ * 지도 API가 정해지면 회색 칸을 작은 지도로 바꾸고, 새로고침 버튼으로 위치를 다시 잡는다.
+ * 업로드 API가 나오면 '기록 완료'에서 draft를 서버로 보낸다.
  */
 export function ConfirmScreen() {
   const { draft } = useUploadDraft();
 
   return (
     <ScreenContainer
-      header={<ScreenHeader
-          center={
-            <AppText variant="subtitle04" color="textTertiary">
-              3 / 3 · 위치 확인
-            </AppText>
-          }
-        />}
-      footer={<Button label="남기기 완료" variant="primary" onPress={() => router.dismissTo('/record')} />}>
+      header={<UploadStepHeader title="위치 확인" step={3} />}
+      footer={<Button label="기록 완료" variant="primary" onPress={() => router.dismissTo('/record')} />}>
       <AppText variant="heading03" style={styles.title}>
         이 자리에 남길게요
       </AppText>
 
       <View style={styles.mapBox}>
-        <MapPlaceholder>
-          <View style={styles.radiusCircle}>
-            <Icon name="location" size={28} />
-          </View>
-          <Badge label={`${draft.placeLabel} · 정확한 좌표 대신 반경으로 저장`} style={styles.mapLabel} />
-        </MapPlaceholder>
+        <View style={styles.reload}>
+          <IconButton icon="reload" size={48} accessibilityLabel="위치 다시 찾기" />
+        </View>
+        <View style={styles.pin}>
+          <Badge label={draft.placeLabel} tone="dark" />
+          <Image source={locationPin} style={styles.pinImage} contentFit="contain" />
+        </View>
       </View>
 
       <View style={styles.preview}>
-        <PhotoPlaceholder width={56} height={70} />
+        <PhotoPlaceholder width={100} height={100} />
         <View style={styles.previewTexts}>
-          <AppText variant="subtitle04">{draft.oneLine || '한 줄을 아직 쓰지 않았어요'}</AppText>
-          <AppText variant="caption04" color="textSecondary">
+          <AppText variant="subtitle02" numberOfLines={1}>
+            {draft.title || '제목'}
+          </AppText>
+          <AppText variant="body01" numberOfLines={2}>
+            {draft.oneLine || '한 줄을 아직 쓰지 않았어요'}
+          </AppText>
+          <AppText variant="caption04" color="textTertiary">
             {draft.hashtags.join(' ')}
           </AppText>
         </View>
@@ -64,46 +65,40 @@ export function ConfirmScreen() {
 
 const styles = StyleSheet.create({
   title: {
-    marginTop: spacing.xs,
-    marginBottom: spacing.lg,
+    paddingHorizontal: spacing.xs,
+    marginBottom: spacing.xl,
   },
   mapBox: {
-    height: 170,
+    height: 145,
     borderRadius: radius.lg,
-    overflow: 'hidden',
-  },
-  radiusCircle: {
-    position: 'absolute',
-    top: '15%',
-    left: '50%',
-    width: radiusCircleSize,
-    height: radiusCircleSize,
-    marginLeft: -radiusCircleSize / 2,
-    borderRadius: radius.full,
-    borderWidth: 1.5,
-    borderStyle: 'dashed',
-    borderColor: colors.borderStrong,
-    backgroundColor: colors.selectedBackground,
+    backgroundColor: colors.mapBackground,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  mapLabel: {
+  reload: {
     position: 'absolute',
-    left: spacing.sm,
-    bottom: spacing.sm,
+    top: spacing.md,
+    right: spacing.md,
+  },
+  pin: {
+    alignItems: 'center',
+  },
+  // Figma location_pick은 그림자까지 포함한 크기라 핀 본체(38x45)보다 조금 크다
+  pinImage: {
+    width: 45,
+    height: 53,
   },
   preview: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.sm,
-    marginVertical: spacing.lg,
-    padding: spacing.md,
+    gap: spacing.md,
+    marginVertical: spacing.xl,
+    padding: spacing.sm,
     borderRadius: radius.lg,
     borderWidth: 1,
-    borderColor: colors.disabledBackground,
+    borderColor: colors.borderDeactivated,
   },
   previewTexts: {
     flex: 1,
-    gap: spacing.xxs,
   },
 });

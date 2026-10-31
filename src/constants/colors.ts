@@ -78,6 +78,8 @@ export const colors = {
   primaryText: palette.primary[900],
   // 필수 권한 아이콘 동그라미 배경 (Figma Primary/100)
   primarySoft: palette.primary[100],
+  // 필수 입력칸 이름 뒤 * (Figma Error/03)
+  requiredMark: palette.error[3],
   // 흐린 사진 중 '내 취향' 사진의 주황 테두리 (Figma Primary/300)
   photoHighlightFrame: palette.primary[300],
 } as const;

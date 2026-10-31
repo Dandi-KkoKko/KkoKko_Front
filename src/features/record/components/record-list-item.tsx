@@ -1,55 +1,83 @@
-import { StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
-import { Badge } from '@/components/badge';
 import { Icon } from '@/components/icon';
-import { PhotoPlaceholder } from '@/components/photo-placeholder';
-import { colors } from '@/constants/colors';
-import { spacing } from '@/constants/layout';
+import { radius, spacing } from '@/constants/layout';
 import type { MyRecord } from '@/mock/my-records';
 
-/** 내 기록 한 줄: 사진, 한 줄, 해시태그, 장소·날짜. 아직 공개 전이면 안내 배지, 누가 좋아요하면 조용한 표시. */
-export function RecordListItem({ record }: { record: MyRecord }) {
+type RecordListItemProps = {
+  record: MyRecord;
+  onPress: () => void;
+};
+
+/** 내 기록 한 줄 (Figma list): 사진, 제목, 한 줄, 해시태그, 날짜, 받은 좋아요 수 */
+export function RecordListItem({ record, onPress }: RecordListItemProps) {
   return (
-    <View style={styles.row}>
-      <PhotoPlaceholder width={76} height={96} />
-      <View style={styles.texts}>
-        {record.isPending && <Badge label="2시간 뒤 다른 지도에 건네져요" tone="highlight" />}
-        <AppText variant="subtitle04">{record.oneLine}</AppText>
-        <AppText variant="caption04" color="textSecondary">
-          {record.hashtags.join(' ')}
-        </AppText>
-        <AppText variant="caption04" color="textTertiary">
-          {record.placeLabel} · {record.dateLabel}
-        </AppText>
-        {record.wasVisited && (
-          <View style={styles.visited}>
-            <Icon name="heart" size={12} color="textSecondary" />
-            <AppText variant="caption04" color="textSecondary">
-              누군가 다녀갔어요
+    <Pressable accessibilityRole="button" onPress={onPress} style={styles.row}>
+      <Image source={record.photo} style={styles.photo} contentFit="cover" />
+      <View style={styles.body}>
+        <View style={styles.top}>
+          <View style={styles.texts}>
+            <AppText variant="subtitle02" numberOfLines={1}>
+              {record.title}
+            </AppText>
+            <AppText variant="body01" numberOfLines={1}>
+              {record.comment}
+            </AppText>
+            <AppText variant="caption02" color="textTertiary" style={styles.hashtags}>
+              {record.hashtags.join(' ')}
             </AppText>
           </View>
-        )}
+          <AppText variant="caption02" color="textDeactivated" style={styles.date}>
+            {record.dateLabel}
+          </AppText>
+        </View>
+        <View style={styles.likes}>
+          <Icon name="heartSmall" size={16} color="textDeactivated" />
+          <AppText variant="caption02" color="textDeactivated">
+            {record.likeCount}
+          </AppText>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    gap: spacing.sm,
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.background02,
+    gap: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  photo: {
+    width: 120,
+    height: 120,
+    borderRadius: radius.md,
+  },
+  // 좋아요 수를 사진 아래쪽 끝에 맞추려고 위·아래로 벌린다
+  body: {
+    flex: 1,
+    justifyContent: 'space-between',
+    paddingTop: spacing.xxs,
+  },
+  top: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   texts: {
     flex: 1,
-    gap: spacing.xxs,
   },
-  visited: {
+  hashtags: {
+    marginTop: spacing.xxs,
+  },
+  date: {
+    paddingLeft: spacing.xs,
+  },
+  likes: {
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'flex-end',
     gap: spacing.xxs,
   },
 });

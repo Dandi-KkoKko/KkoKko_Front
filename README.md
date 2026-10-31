@@ -119,7 +119,7 @@ src/
   features/       기능별 코드 (각 폴더의 screens/에 실제 화면)
     auth/           소개, 로그인, 회원가입, 권한, 취향 설문
     map/            지도, 검색, 검색한 장소, 묶음 목록, 자리 상세, 열린 자리, 산책 경로, 신고
-    record/         내 기록
+    record/         내 기록 목록, 기록 상세
     upload/         남기기 (촬영, 한 줄, 위치 확인)
     my/             마이, 좋아요 내역, 연 자리 기록, 기호 설정, 설정, 약관
     notification/   알림 목록
@@ -144,7 +144,7 @@ assets/
 
 와이어프레임의 모든 화면(⓪ 시작, ① 지도, ② 기록, ③ 마이)이 **회색 배치**로 만들어져 있어요. 버튼, 입력창, 글자 위치는 와이어프레임대로 맞췄고, 사진 자리는 회색 상자예요. GUI 디자인이 나오면 각 화면 파일에서 색과 그림만 바꾸면 돼요.
 
-GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소개 3장, 로그인(이메일), 회원가입 4단계(이메일 → 비밀번호 → 닉네임 → 약관), 권한 안내, 취향 설문 1/3~3/3과 완료, 마이 탭(마이, 좋아요 내역, 연 자리 기록, 알림, 사용자 기호 설정, 설정, 약관).
+GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소개 3장, 로그인(이메일), 회원가입 4단계(이메일 → 비밀번호 → 닉네임 → 약관), 권한 안내, 취향 설문 1/3~3/3과 완료, 마이 탭(마이, 좋아요 내역, 연 자리 기록, 알림, 사용자 기호 설정, 설정, 약관), 기록 탭(내 기록, 기록 상세, 한 줄 남기기, 위치 확인). 카메라 화면은 지도 담당 브랜치의 카메라 기능이 합쳐진 뒤에 입힌다.
 
 가짜 데이터는 `src/mock/`와 각 기능의 `constants/preview-*.ts`에 있어요. 백엔드 API가 나오면 이 값을 서버 데이터로 바꿔요.
 
@@ -158,11 +158,11 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 ├─ 지도  /map            → 검색 → 검색한 장소 → 걸어서 가기(자리 상세)
 │                         → 묶음 목록, 자리 상세 → 열린 자리 → 신고(모달)
 │                         → 산책 경로 (추천 → 걷는 중)
-├─ 기록  /record
+├─ 기록  /record         → 기록 상세 /record/[id]
 └─ 마이  /my             → 알림(오른쪽 위 종), 좋아요 내역, 연 자리 기록, 사용자 기호 설정, 설정 → 약관
 
 남기기 (탭 바 없는 전체 화면)  /upload/camera → write → confirm → 내 기록
-  지도의 카메라 버튼, 자리 상세, 열린 자리, 내 기록에서 들어와요.
+  지도의 카메라 버튼, 자리 상세, 열린 자리에서 들어와요.
 ```
 
 | 주소 | 화면 파일 | 와이어프레임 |
@@ -171,7 +171,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 | `/map`, `/map/search`, `/map/place/[id]`, `/map/walk` | `features/map/screens/` | ① 지도 |
 | `/map/cluster/[id]` | `features/map/screens/` | ①-A |
 | `/map/spot/[id]`, `/opening/[id]`, `/map/opened/[id]`, `/report/[id]` | `features/map/screens/` | ①-A, ①-B |
-| `/record` | `features/record/screens/` | ② 기록 |
+| `/record`, `/record/[id]` | `features/record/screens/` | ② 기록 |
 | `/upload/camera`, `/upload/write`, `/upload/confirm` | `features/upload/screens/` | ② 기록 |
 | `/my`, `/my/likes`, `/my/opened-history`, `/my/preferences`, `/my/settings` | `features/my/screens/` | ③ 마이 |
 | `/my/notifications` | `features/notification/screens/` | ③ 마이 |
@@ -221,7 +221,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 - [ ] 검색 → `features/map/screens/search-screen.tsx` (지금은 검색어와 상관없이 같은 결과)
 - [ ] 좋아요, 신고 보내기 → `opened-spot-screen.tsx`, `report-screen.tsx`
 - [ ] 사진 업로드 (얼굴 감지 결과 포함) → `features/upload/screens/confirm-screen.tsx`
-- [ ] AI 해시태그 추천 → `features/upload/screens/write-screen.tsx` (지금은 정해진 2묶음)
+- [ ] AI 해시태그 추천 → `features/upload/screens/write-screen.tsx` (지금은 정해진 4개)
 - [ ] AI '내 취향 순' 정렬, 다른 산책길 추천 → `cluster-screen.tsx`, `walk-screen.tsx`
 - [ ] 내 기록, 좋아요 내역, 연 자리 기록, 알림 목록 불러오기 → `features/record/`, `features/my/`, `features/notification/`
 

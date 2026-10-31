@@ -10,6 +10,8 @@ import { typography } from '@/constants/typography';
 type TextFieldProps = Omit<TextInputProps, 'secureTextEntry'> & {
   /** 입력창 위 이름. 없으면 입력창만 보여준다. */
   label?: string;
+  /** 꼭 써야 하는 칸이면 이름 뒤에 빨간 * 를 붙인다 */
+  required?: boolean;
   /** 입력창 아래 작은 안내 문구 */
   helper?: string;
   /** 있으면 빨간 테두리와 빨간 안내 문구로 보여준다 */
@@ -28,6 +30,7 @@ type TextFieldProps = Omit<TextInputProps, 'secureTextEntry'> & {
  */
 export function TextField({
   label,
+  required = false,
   helper,
   error,
   accessory,
@@ -48,6 +51,7 @@ export function TextField({
       {label && (
         <AppText variant="caption01" color="textSecondary" style={styles.label}>
           {label}
+          {required && <AppText variant="caption01" color="requiredMark">*</AppText>}
         </AppText>
       )}
       <View style={styles.row}>
@@ -83,7 +87,7 @@ export function TextField({
             {bottomText}
           </AppText>
           {count && (
-            <AppText variant="caption02" color="textTertiary">
+            <AppText variant="caption04" color="textDeactivated">
               {count}
             </AppText>
           )}
