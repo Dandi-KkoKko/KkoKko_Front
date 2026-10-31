@@ -32,7 +32,7 @@ export function PhotoDetailCard({ record, photoHeight, onClose, onReport, onLeav
         </AppText>
         {record.isUnlocked && (
           <Pressable accessibilityRole="button" accessibilityLabel="신고" onPress={onReport} style={styles.headerButton}>
-            <Icon name="flag" size={20} color="error" />
+            <Icon name="report" size={20} color="error" />
           </Pressable>
         )}
         <Pressable accessibilityRole="button" accessibilityLabel="닫기" onPress={onClose} style={styles.headerButton}>

@@ -146,6 +146,7 @@ src/
   types/          데이터 타입
 assets/
   fonts/          Pretendard 글꼴 파일
+  icons/          Figma '그래픽 아이콘' 그림 (검은 그림 하나를 색만 바꿔 씀)
   images/         앱 아이콘, 시작 화면 이미지
 ```
 
@@ -236,7 +237,7 @@ assets/
 - [ ] 남기기 화면에서도 내 위치가 필요하면 `use-my-location.ts`를 `src/hooks/`로 옮기기
 - [x] 지도 홈 탐색 모드 (열림 반경, 가장 가까운 기록 패널) → `features/map/components/explore-sheet.tsx`
 - [ ] 열림 반경 실제 값 정하기 (캠퍼스에서 걸어보기) → `features/map/constants/map-config.ts`
-- [ ] 탐색 모드 스위치에 눈 아이콘 넣기 → `features/map/components/explore-mode-toggle.tsx`
+- [x] 탐색 모드 스위치에 눈 아이콘 넣기 → `features/map/components/explore-mode-toggle.tsx`
 - [ ] 거리 계산 함수 → `src/utils/`
 - [ ] 거리에 따라 열림 단계가 자동으로 바뀌게 하기. 캠퍼스에서 걸어보고 거리 값 정하기 → `features/map/constants/approach-stages.ts`
 - [ ] 걸어서 길 안내, AI 산책 경로 받아와서 그리기 (TMAP 보행자 경로 등)
@@ -270,7 +271,7 @@ assets/
 
 - [ ] 회색 사진 자리를 실제 흐린 사진으로 (`expo-image`의 `blurRadius`) → `components/photo-placeholder.tsx`
 - [ ] 흐림이 걷히는 애니메이션 → `features/map/screens/opening-screen.tsx`
-- [ ] 아래 탭 아이콘 → `src/app/(tabs)/_layout.tsx`
+- [x] 아래 탭 바 Figma 디자인 (아이콘, 고른 탭 위 주황 막대) → `components/app-tab-bar.tsx`
 - [ ] 와이어프레임 때문에 임시로 추가한 색 4개 맞추기 → `src/constants/colors.ts` 아래쪽
 - [ ] 소개 화면 일러스트, 앱 아이콘, 시작 화면(스플래시) 이미지 → `assets/images/`
 
@@ -301,7 +302,8 @@ Figma `디자인 시스템` 페이지의 값을 코드로 옮겨 두었어요.
 | `Button` | 큰 버튼 (`primary` 강조 / `dark` 기본 / `outline` 보조) |
 | `TextField` | 라벨이 있는 입력창 |
 | `Checkbox` | 체크박스 |
-| `Icon` | 아이콘 (iOS·Android 이름 차이를 맞춰 둠) |
+| `Icon` | 아이콘. Figma 그림이 있으면 그 그림(`assets/icons`)을, 없으면 시스템 아이콘(iOS·Android 이름 차이를 맞춰 둠)을 쓴다 |
+| `AppTabBar` | 아래 탭 바 (지도·기록·마이, 고른 탭 위 주황 막대) |
 | `PhotoPlaceholder` | 사진이 붙기 전 회색 사진 자리 |
 | `Chip` | 해시태그·필터·최근 검색어 같은 동그란 작은 버튼 |
 | `Badge` | 맛보기, 곧 열려요, AI 추천 같은 작은 상태 표시 |

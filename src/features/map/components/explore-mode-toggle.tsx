@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
+import { Icon } from '@/components/icon';
 import { colors } from '@/constants/colors';
 import { floatingShadow, radius, spacing } from '@/constants/layout';
 
@@ -13,8 +14,7 @@ const knobSize = 22;
 
 /**
  * 지도 오른쪽 위 '탐색 모드' 스위치.
- * Figma에는 스위치 안에 눈 아이콘(감은 눈 / 뜬 눈)이 있다. 공통 아이콘(components/icon.tsx)에 눈 아이콘이 추가되면
- * 손잡이 반대편 빈 자리(iconSlot)에 넣는다.
+ * 손잡이 반대편에 눈 아이콘을 둔다: 꺼지면 감은 눈(회색), 켜지면 뜬 눈(주황 바탕에 흰색).
  */
 export function ExploreModeToggle({ value, onChange }: ExploreModeToggleProps) {
   return (
@@ -27,7 +27,9 @@ export function ExploreModeToggle({ value, onChange }: ExploreModeToggleProps) {
       style={styles.container}>
       <View style={[styles.track, value && styles.trackOn]}>
         <View style={styles.knob} />
-        <View style={styles.iconSlot} />
+        <View style={styles.iconSlot}>
+          <Icon name={value ? 'eye' : 'eyeClosed'} size={20} color={value ? 'textInverse' : 'textDeactivated'} />
+        </View>
       </View>
       <AppText variant="caption03" color={value ? 'primary' : 'textDeactivated'}>
         탐색 모드
@@ -64,5 +66,7 @@ const styles = StyleSheet.create({
   iconSlot: {
     width: knobSize,
     height: knobSize,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
