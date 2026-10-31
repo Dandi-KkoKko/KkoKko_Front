@@ -40,15 +40,15 @@ export function RouteStartCard({ item, nearby, onClose, onRecommend, onLayout }:
       <View style={styles.summary}>
         <PhotoPlaceholder width={photoSize} height={photoSize} style={styles.photo} />
         <View style={styles.texts}>
-          <AppText variant="subtitle03" numberOfLines={1}>
+          <AppText variant="heading03" numberOfLines={1}>
             {item.title}
           </AppText>
           {details.length > 0 && (
-            <AppText variant="caption01" color="textTertiary" numberOfLines={1}>
+            <AppText variant="caption02" color="textTertiary" numberOfLines={1}>
               {details}
             </AppText>
           )}
-          <AppText variant="caption01" color="textTertiary">
+          <AppText variant="button03" color="primary">
             이 근처 남겨진 기록 {nearby.recordCount}곳
           </AppText>
         </View>

@@ -31,6 +31,8 @@ type SelectedResultCardProps = {
   onRecommend: (hashtags: string[]) => void;
   onRouteExpandedChange: (isExpanded: boolean) => void;
   onWalk: () => void;
+  /** 기록 카드를 누름: 그 장소로 지도 홈에서 경로를 추천받으러 간다. 기록 카드가 뜨는 검색결과 화면만 넘긴다. */
+  onOpenRecord?: (record: PhotoMarker, regionName: string) => void;
 };
 
 export function SelectedResultCard({
@@ -41,6 +43,7 @@ export function SelectedResultCard({
   onRecommend,
   onRouteExpandedChange,
   onWalk,
+  onOpenRecord,
 }: SelectedResultCardProps) {
   switch (state.mode) {
     case 'place':
@@ -92,6 +95,7 @@ export function SelectedResultCard({
           regionName={state.regionName}
           distanceMeters={state.distanceMeters}
           onClose={onClose}
+          onOpen={() => onOpenRecord?.(state.record, state.regionName)}
           onLayout={onLayout}
         />
       );

@@ -45,7 +45,7 @@ export function useResultsMap(view: ResultsMapView, bottomInset: number) {
     }
   }, [view]);
 
-  const focus = useMemo(() => {
+  const rawFocus = useMemo(() => {
     switch (view.mode) {
       case 'list':
         return { coordinates: view.items.map((item) => item.coordinate), padding: paddingAbove(bottomInset, true) };
@@ -59,6 +59,11 @@ export function useResultsMap(view: ResultsMapView, bottomInset: number) {
           : { coordinates: view.records.map((record) => record.coordinate), padding: paddingAbove(bottomInset, true) };
     }
   }, [view, bottomInset]);
+
+  // 걸을 때마다 거리 글자가 바뀌어 view가 새로 만들어져도, 맞출 영역이 같으면 지도를 다시 맞추지 않는다.
+  // 다시 맞추면 사용자가 지도를 옮겨 보는 중에 화면이 튄다.
+  const focusKey = JSON.stringify(rawFocus);
+  const focus = useMemo(() => JSON.parse(focusKey) as typeof rawFocus, [focusKey]);
 
   const routePath = view.mode === 'route' ? view.path : null;
   return { markers, focus, routePath };

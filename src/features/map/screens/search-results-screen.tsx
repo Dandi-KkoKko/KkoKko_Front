@@ -18,7 +18,8 @@ import { useResultsMap } from '@/features/map/hooks/use-results-map';
 import { useSearchResults } from '@/features/map/hooks/use-search-results';
 import { KakaoMapView } from '@/features/map/kakao-map/kakao-map-view';
 import type { SearchResultItem } from '@/features/map/types/search-result-item';
-import { openWalkRoute } from '@/features/map/utils/open-search-result';
+import type { PhotoMarker } from '@/features/map/types/home-map-marker';
+import { openPlaceOnHome, openWalkRoute } from '@/features/map/utils/open-search-result';
 import { sortByDistance } from '@/features/map/utils/to-search-result-items';
 
 /** 펼친 목록은 화면의 이만큼을 차지한다. Figma에서 지도와 목록이 거의 반씩이다. */
@@ -78,6 +79,9 @@ export function SearchResultsScreen() {
     openWalkRoute({ destinationName: routePlan.destinationName, destination: routePlan.destination, hashtags: routePlan.hashtags });
   };
 
+  const openRecordOnHome = (record: PhotoMarker, regionName: string) =>
+    openPlaceOnHome({ name: record.placeName ?? regionName, address: regionName, coordinate: record.coordinate });
+
   return (
     <View style={styles.screen}>
       <View style={[styles.header, { paddingTop: insets.top + spacing.xs }]}>
@@ -104,6 +108,7 @@ export function SearchResultsScreen() {
             onRecommend={selection.recommendRoute}
             onRouteExpandedChange={selection.setIsRouteExpanded}
             onWalk={walkThisRoute}
+            onOpenRecord={openRecordOnHome}
           />
         ) : (
           <SearchResultsSheet

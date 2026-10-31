@@ -12,6 +12,28 @@ export function openSearchResults(query: string, selectKey?: string) {
   router.push({ pathname: '/map/results', params: selectKey ? { query, select: selectKey } : { query } });
 }
 
+type HomePlace = {
+  name: string;
+  address: string;
+  coordinate: Coordinate;
+};
+
+/**
+ * 검색을 닫고 지도 홈으로 돌아가, 그 장소를 고른 상태(장소 카드)로 연다.
+ * Figma '지도 해시태그 검색 시 경로 추천 UI': 해시태그 검색에서 찾은 기록의 장소로 홈에서 경로를 추천받는다.
+ */
+export function openPlaceOnHome({ name, address, coordinate }: HomePlace) {
+  router.dismissTo({
+    pathname: '/map',
+    params: {
+      placeName: name,
+      placeAddress: address,
+      latitude: String(coordinate.latitude),
+      longitude: String(coordinate.longitude),
+    },
+  });
+}
+
 type WalkRouteRequest = {
   destinationName: string;
   destination: Coordinate;
