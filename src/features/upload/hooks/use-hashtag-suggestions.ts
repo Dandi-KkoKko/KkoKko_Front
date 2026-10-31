@@ -8,7 +8,6 @@ import { fetchHashtagSuggestions } from '@/api/hashtag-suggestions';
  */
 export function useHashtagSuggestions() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   // 같은 한 줄로 다시 묻지 않으려고 마지막으로 보낸 내용을 기억한다
   const lastRequestedRef = useRef('');
   // 응답이 오기 전에 한 줄을 또 고치면, 늦게 온 옛날 응답은 버려야 해서 요청마다 번호를 붙인다
@@ -20,13 +19,8 @@ export function useHashtagSuggestions() {
 
     lastRequestedRef.current = text;
     const requestId = ++requestIdRef.current;
-    setIsLoading(true);
-    try {
-      const result = await fetchHashtagSuggestions(text);
-      if (requestId === requestIdRef.current) setSuggestions(result);
-    } finally {
-      if (requestId === requestIdRef.current) setIsLoading(false);
-    }
+    const result = await fetchHashtagSuggestions(text);
+    if (requestId === requestIdRef.current) setSuggestions(result);
   };
 
   /** 한 줄을 고치기 시작하면 옛 후보는 맞지 않으니 지운다 */
@@ -34,8 +28,7 @@ export function useHashtagSuggestions() {
     requestIdRef.current += 1;
     lastRequestedRef.current = '';
     setSuggestions([]);
-    setIsLoading(false);
   };
 
-  return { suggestions, isLoading, requestSuggestions, clearSuggestions };
+  return { suggestions, requestSuggestions, clearSuggestions };
 }

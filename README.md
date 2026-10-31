@@ -278,7 +278,7 @@ GUI 디자인을 입힌 화면: 시작 화면(스플래시, 주황 배경), 소�
 - [x] 해시태그 검색 → `features/map/hooks/use-hashtag-search.ts` (지금은 가짜 기록에서 찾아요. 서버가 나오면 기록만 서버 데이터로 바꿔요)
 - [ ] 좋아요, 신고 보내기 → `opened-spot-screen.tsx`, `report-screen.tsx`
 - [ ] 사진 업로드 (얼굴 감지 결과 포함) → `features/upload/screens/confirm-screen.tsx`
-- [ ] AI 해시태그 추천 → `src/api/hashtag-suggestions.ts` 안만 서버 요청으로 바꾸면 돼요. 한 줄 코멘트를 다 쓰고 입력칸을 벗어나면 요청하고, 지금은 정해진 4개를 0.6초 뒤에 돌려줘요
+- [ ] AI 해시태그 추천 → `src/api/hashtag-suggestions.ts` 안만 서버 요청으로 바꾸면 돼요. 한 줄 코멘트를 다 쓰고 입력칸을 벗어나면 요청하고, 받으면 해시태그 칸이 나타나요. 지금은 정해진 4개를 0.6초 뒤에 돌려줘요
 - [ ] AI '내 취향 순' 정렬, 다른 산책길 추천 → `cluster-screen.tsx`, `walk-screen.tsx`
 - [ ] 내 기록, 좋아요 내역, 연 자리 기록, 알림 목록 불러오기 → `features/record/`, `features/my/`, `features/notification/`
 

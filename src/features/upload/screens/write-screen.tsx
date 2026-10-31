@@ -27,8 +27,7 @@ export function WriteScreen() {
   const { draft, updateDraft } = useUploadDraft();
   // 화면에 들어올 때 한 번만 고른다. 글자를 칠 때마다 질문이 바뀌면 안 되기 때문이다.
   const [question] = useState(pickRandomQuestion);
-  const { suggestions, isLoading, requestSuggestions, clearSuggestions } = useHashtagSuggestions();
-  const showHashtags = isLoading || suggestions.length > 0;
+  const { suggestions, requestSuggestions, clearSuggestions } = useHashtagSuggestions();
 
   // 한 줄을 고치면 그 한 줄로 고른 해시태그도 더는 맞지 않으니 함께 지운다
   const changeOneLine = (oneLine: string) => {
@@ -71,10 +70,10 @@ export function WriteScreen() {
           maxLength={maxOneLineLength}
           showCount
         />
-        {showHashtags && (
+        {/* 후보를 받아 오기 전에는 칸을 아예 숨긴다 */}
+        {suggestions.length > 0 && (
           <AiHashtagPicker
             suggestions={suggestions}
-            isLoading={isLoading}
             selected={draft.hashtags}
             onChange={(hashtags) => updateDraft({ hashtags })}
           />
