@@ -1,11 +1,11 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Badge } from '@/components/badge';
 import { Button } from '@/components/button';
-import { IconButton } from '@/components/icon-button';
+import { Icon } from '@/components/icon';
 import { ScreenContainer } from '@/components/screen-container';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
@@ -34,9 +34,9 @@ export function ConfirmScreen() {
       </AppText>
 
       <View style={styles.mapBox}>
-        <View style={styles.reload}>
-          <IconButton icon="reload" size={48} accessibilityLabel="위치 다시 찾기" />
-        </View>
+        <Pressable accessibilityRole="button" accessibilityLabel="위치 다시 찾기" style={styles.reload}>
+          <Icon name="reload" />
+        </Pressable>
         <View style={styles.pin}>
           <Badge label={draft.placeLabel} tone="dark" />
           <Image source={locationPin} style={styles.pinImage} contentFit="contain" />
@@ -75,10 +75,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // 지도 위 떠 있는 버튼(IconButton)과 달리 그림자 없이 옅은 회색 동그라미 (Figma reload_circle)
   reload: {
     position: 'absolute',
     top: spacing.md,
     right: spacing.md,
+    width: 48,
+    height: 48,
+    borderRadius: radius.full,
+    backgroundColor: colors.softCircleButton,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   pin: {
     alignItems: 'center',
