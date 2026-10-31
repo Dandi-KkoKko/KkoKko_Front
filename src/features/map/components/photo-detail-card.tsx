@@ -5,6 +5,7 @@ import { Icon } from '@/components/icon';
 import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { colors, palette } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
+import { sheetCornerRadius } from '@/features/map/constants/map-layout';
 import type { RecordDetail } from '@/features/map/hooks/use-record-detail';
 
 const headerButtonSize = 36;
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
   card: {
     gap: spacing.md,
     padding: spacing.lg,
-    borderRadius: radius.xl + spacing.xs,
+    borderRadius: sheetCornerRadius,
     backgroundColor: colors.background01,
   },
   header: {

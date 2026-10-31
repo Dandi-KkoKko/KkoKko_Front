@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { getWalkRoute } from '@/features/map/api/get-walk-route';
 import { defaultMapCenter, openRadiusMeters, walkingSpeedMetersPerSecond } from '@/features/map/constants/map-config';
 import { useHomeMapMarkers } from '@/features/map/hooks/use-home-map-markers';
-import type { Coordinate, PhotoMarker } from '@/features/map/types/home-map-marker';
+import type { Coordinate } from '@/features/map/types/home-map-marker';
 import type { WalkRoute } from '@/features/map/types/walk-route';
 import { getDistanceMeters } from '@/features/map/utils/get-distance-meters';
 import { locateOnRoute, splitRoute } from '@/features/map/utils/route-progress';
@@ -22,15 +22,13 @@ const arrivalMeters = 25;
 /** 목적지에서 이 거리 안에 남겨진 기록을 '이 자리의 기록'으로 보고, 도착하면 연다. */
 const unlockMatchMeters = 50;
 
-const isPhoto = (marker: { kind: string }): marker is PhotoMarker => marker.kind === 'photo';
-
 /**
  * 길안내 (Figma '지도 길안내 UI'). 경로 추천에서 넘겨받은 목적지와 들를 자리로 걷는 길을 받고,
  * 내 위치가 바뀔 때마다 경로 위 어디쯤인지, 다음 자리까지 몇 분인지, 열림 반경 안에 어떤 기록이 있는지 다시 센다.
  */
 export function useWalkNavigation(myLocation: Coordinate | null) {
   const params = useLocalSearchParams<NavigationParams>();
-  const { markers } = useHomeMapMarkers(myLocation);
+  const { records } = useHomeMapMarkers(myLocation);
 
   const destination = useMemo<Coordinate | null>(
     () =>
@@ -39,7 +37,6 @@ export function useWalkNavigation(myLocation: Coordinate | null) {
         : null,
     [params.latitude, params.longitude],
   );
-  const records = useMemo(() => markers.filter(isPhoto), [markers]);
   const stops = useMemo(() => {
     const ids = params.stopIds ? params.stopIds.split(',') : [];
     return ids.map((id) => records.find((record) => record.id === id)).filter((stop) => stop !== undefined);

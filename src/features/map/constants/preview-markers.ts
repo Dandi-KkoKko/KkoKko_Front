@@ -9,7 +9,7 @@
 
 import { getPreviewClusterRecords } from '@/features/map/constants/preview-cluster';
 import type { Coordinate, HomeMapMarker } from '@/features/map/types/home-map-marker';
-import { offsetCoordinate } from '@/features/map/utils/offset-coordinate';
+import { offsetCoordinate } from '@/features/map/utils/local-plane';
 
 export function getPreviewHomeMarkers(origin: Coordinate): HomeMapMarker[] {
   const at = (northMeters: number, eastMeters: number) => offsetCoordinate(origin, northMeters, eastMeters);

@@ -29,15 +29,18 @@ function isPlaceQuery(query: string) {
 export function usePlaceSearch(query: string, myLocation: Coordinate | null) {
   const keyword = query.trim();
   const [result, setResult] = useState<SearchResult>(emptyResult);
+  // 검색 기준점은 처음 받은 위치로 고정한다. 걸을 때마다 다시 검색하면 고른 결과가 목록에서 사라질 수 있다.
+  const [searchCenter, setSearchCenter] = useState<Coordinate | null>(myLocation);
+  if (!searchCenter && myLocation) setSearchCenter(myLocation);
 
   useEffect(() => {
     if (!isPlaceQuery(keyword)) return;
 
     const controller = new AbortController();
     const timer = setTimeout(() => {
-      searchPlaces({ query: keyword, near: myLocation ?? defaultMapCenter, signal: controller.signal })
+      searchPlaces({ query: keyword, near: searchCenter ?? defaultMapCenter, signal: controller.signal })
         .then((places) => {
-          const visiblePlaces = myLocation ? places : places.map((place) => ({ ...place, distanceMeters: null }));
+          const visiblePlaces = searchCenter ? places : places.map((place) => ({ ...place, distanceMeters: null }));
           setResult({ query: keyword, places: visiblePlaces, errorMessage: null });
         })
         .catch((error: unknown) => {
@@ -52,7 +55,7 @@ export function usePlaceSearch(query: string, myLocation: Coordinate | null) {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [keyword, myLocation]);
+  }, [keyword, searchCenter]);
 
   if (!isPlaceQuery(keyword)) {
     return { places: [], isSearching: false, errorMessage: null };

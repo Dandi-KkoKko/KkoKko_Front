@@ -5,6 +5,7 @@ import { Icon } from '@/components/icon';
 import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { colors } from '@/constants/colors';
 import { floatingShadow, radius, spacing } from '@/constants/layout';
+import { SheetHandle } from '@/features/map/components/sheet-handle';
 import { useVerticalSwipe } from '@/features/map/hooks/use-vertical-swipe';
 import type { PhotoMarker } from '@/features/map/types/home-map-marker';
 import { openRecord } from '@/features/map/utils/open-search-result';
@@ -30,7 +31,7 @@ export function ExploreSheet({ nearestPhoto, isExpanded, onExpandedChange }: Exp
         hitSlop={spacing.sm}
         onPress={() => onExpandedChange(!isExpanded)}
         style={styles.handleArea}>
-        <View style={styles.handle} />
+        <SheetHandle />
       </Pressable>
       {isExpanded && <NearestRecord photo={nearestPhoto} />}
     </View>
@@ -80,12 +81,6 @@ const styles = StyleSheet.create({
   handleArea: {
     alignItems: 'center',
     paddingVertical: spacing.sm,
-  },
-  handle: {
-    width: 44,
-    height: spacing.xxs,
-    borderRadius: radius.full,
-    backgroundColor: colors.borderDeactivated,
   },
   record: {
     flexDirection: 'row',

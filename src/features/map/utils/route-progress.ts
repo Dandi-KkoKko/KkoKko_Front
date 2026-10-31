@@ -1,15 +1,5 @@
 import type { Coordinate } from '@/features/map/types/home-map-marker';
-
-const metersPerLatitudeDegree = 111_320;
-
-/** 경로 첫 점을 원점으로 둔 평면 좌표(m). 걸어서 갈 거리라 지구를 평면으로 본다. */
-function toLocalMeters(origin: Coordinate, point: Coordinate) {
-  const metersPerLongitudeDegree = metersPerLatitudeDegree * Math.cos((origin.latitude * Math.PI) / 180);
-  return {
-    x: (point.longitude - origin.longitude) * metersPerLongitudeDegree,
-    y: (point.latitude - origin.latitude) * metersPerLatitudeDegree,
-  };
-}
+import { toLocalMeters } from '@/features/map/utils/local-plane';
 
 /** 경로 위에서 어떤 점과 가장 가까운 곳. alongMeters는 출발점부터 경로를 따라 잰 거리다. */
 type RoutePosition = {

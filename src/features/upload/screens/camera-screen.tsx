@@ -25,6 +25,9 @@ export function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [isReady, setIsReady] = useState(false);
   const [isTaking, setIsTaking] = useState(false);
+  const [hasFailed, setHasFailed] = useState(false);
+  // 같은 순간에 두 번 누르면 state는 아직 바뀌기 전이라 둘 다 통과한다. 그래서 바로 바뀌는 ref로 막는다.
+  const isTakingRef = useRef(false);
 
   const askPermission = () => {
     // 한 번 거절해서 다시 물을 수 없으면 시스템 창이 뜨지 않으므로 설정 화면으로 보낸다.
@@ -34,15 +37,27 @@ export function CameraScreen() {
 
   const takePhoto = async () => {
     // 카메라가 준비되기 전에 찍으면 실패하고, 두 번 누르면 두 장이 찍혀서 막는다.
-    if (!cameraRef.current || !isReady || isTaking) return;
+    if (!cameraRef.current || !isReady || isTakingRef.current) return;
+    isTakingRef.current = true;
     setIsTaking(true);
+    setHasFailed(false);
     try {
       const photo = await cameraRef.current.takePictureAsync({ quality: 0.8 });
       updateDraft({ photoUri: photo.uri });
       router.push('/upload/write');
+    } catch {
+      // 카메라가 잠깐 바쁘거나 전환 중이면 실패한다. 다시 누르면 되므로 안내만 바꾼다.
+      setHasFailed(true);
     } finally {
+      isTakingRef.current = false;
       setIsTaking(false);
     }
+  };
+
+  // 앞·뒤 카메라를 바꾸면 카메라가 다시 켜지므로, 다시 준비될 때까지 셔터를 막는다.
+  const flipCamera = () => {
+    setIsReady(false);
+    setFacing((current) => (current === 'back' ? 'front' : 'back'));
   };
 
   return (
@@ -67,7 +82,7 @@ export function CameraScreen() {
       />
 
       <AppText variant="caption02" color="textInverse" style={styles.notice}>
-        얼굴이 담기면 올릴 수 없어요 · 앱 카메라로만 남길 수 있어요
+        {hasFailed ? '사진을 찍지 못했어요. 다시 눌러 주세요' : '얼굴이 담기면 올릴 수 없어요 · 앱 카메라로만 남길 수 있어요'}
       </AppText>
 
       <View style={styles.controls}>
@@ -85,7 +100,7 @@ export function CameraScreen() {
         <View style={styles.sideControl}>
           <Pressable
             accessibilityLabel="카메라 전환"
-            onPress={() => setFacing((current) => (current === 'back' ? 'front' : 'back'))}
+            onPress={flipCamera}
             style={styles.flipButton}>
             <Icon name="cameraSwitch" color="textInverse" />
           </Pressable>

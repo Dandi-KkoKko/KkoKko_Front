@@ -28,7 +28,11 @@ export function useResultSelection({ items, allItems, initialKey, myLocation }: 
   const [selectedKey, setSelectedKey] = useState<string | null>(initialKey);
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
 
-  const selectedItem = allItems.find((item) => item.key === selectedKey) ?? null;
+  // 고른 결과를 기억해 둔다. 검색이 다시 돌아 목록이 바뀌어도 열어 둔 카드가 갑자기 사라지지 않게 한다.
+  const [rememberedItem, setRememberedItem] = useState<SearchResultItem | null>(null);
+  const foundItem = allItems.find((item) => item.key === selectedKey) ?? null;
+  if (foundItem && foundItem !== rememberedItem) setRememberedItem(foundItem);
+  const selectedItem = foundItem ?? (rememberedItem?.key === selectedKey ? rememberedItem : null);
   const place = selectedItem?.kind === 'place' ? selectedItem : null;
   const placeRoute = usePlaceRoute(place, myLocation);
 

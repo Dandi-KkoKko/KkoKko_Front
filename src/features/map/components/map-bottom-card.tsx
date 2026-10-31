@@ -4,6 +4,8 @@ import { Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-nativ
 import { Icon } from '@/components/icon';
 import { colors } from '@/constants/colors';
 import { radius, screenPaddingX, spacing } from '@/constants/layout';
+import { SheetHandle } from '@/features/map/components/sheet-handle';
+import { sheetCornerRadius } from '@/features/map/constants/map-layout';
 import { useVerticalSwipe } from '@/features/map/hooks/use-vertical-swipe';
 
 const closeButtonSize = 36;
@@ -34,12 +36,10 @@ export function MapBottomCard({ onLayout, collapse, children }: MapBottomCardPro
           hitSlop={spacing.sm}
           onPress={() => collapse.onExpandedChange(!collapse.isExpanded)}
           style={styles.handleArea}>
-          <View style={styles.handle} />
+          <SheetHandle />
         </Pressable>
       ) : (
-        <View style={styles.handleArea}>
-          <View style={styles.handle} />
-        </View>
+        <SheetHandle />
       )}
       {children}
     </View>
@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
     paddingBottom: spacing.xxl,
     paddingHorizontal: screenPaddingX,
-    borderTopLeftRadius: radius.xl + spacing.xs,
-    borderTopRightRadius: radius.xl + spacing.xs,
+    borderTopLeftRadius: sheetCornerRadius,
+    borderTopRightRadius: sheetCornerRadius,
     backgroundColor: colors.background01,
     shadowColor: colors.textPrimary,
     shadowOpacity: 0.1,
@@ -77,12 +77,6 @@ const styles = StyleSheet.create({
   },
   handleArea: {
     alignItems: 'center',
-  },
-  handle: {
-    width: 44,
-    height: spacing.xxs,
-    borderRadius: radius.full,
-    backgroundColor: colors.borderDeactivated,
   },
   close: {
     alignSelf: 'flex-start',

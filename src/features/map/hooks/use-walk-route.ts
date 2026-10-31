@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { getWalkRoute } from '@/features/map/api/get-walk-route';
 import { maxRouteStops, routeCorridorMeters } from '@/features/map/constants/map-config';
 import { useHomeMapMarkers } from '@/features/map/hooks/use-home-map-markers';
-import type { Coordinate, PhotoMarker } from '@/features/map/types/home-map-marker';
+import type { Coordinate } from '@/features/map/types/home-map-marker';
 import type { WalkRoute } from '@/features/map/types/walk-route';
 import { pickRouteStops } from '@/features/map/utils/pick-route-stops';
 
@@ -18,18 +18,16 @@ export type WalkRoutePlan = {
   hashtags: string[];
 };
 
-const isPhoto = (marker: { kind: string }): marker is PhotoMarker => marker.kind === 'photo';
-
 /** 계획으로 들를 자리를 고르고, 그 자리를 지나는 걷는 길을 받는다. 계획이 없으면 아무것도 하지 않는다. */
 export function useWalkRoute(plan: WalkRoutePlan | null, myLocation: Coordinate | null) {
-  const { markers } = useHomeMapMarkers(myLocation);
+  const { records } = useHomeMapMarkers(myLocation);
   const [result, setResult] = useState<{ plan: WalkRoutePlan; route: WalkRoute } | null>(null);
 
   const stops = useMemo(
     () =>
       plan
         ? pickRouteStops({
-            records: markers.filter(isPhoto),
+            records,
             start: plan.start,
             destination: plan.destination,
             hashtags: plan.hashtags,
@@ -37,7 +35,7 @@ export function useWalkRoute(plan: WalkRoutePlan | null, myLocation: Coordinate 
             maxStops: maxRouteStops,
           })
         : [],
-    [plan, markers],
+    [plan, records],
   );
 
   useEffect(() => {

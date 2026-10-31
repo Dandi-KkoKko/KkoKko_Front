@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { openRadiusMeters } from '@/features/map/constants/map-config';
 import { getPreviewClusterRecords, previewClusterPlaceName } from '@/features/map/constants/preview-cluster';
 import { useHomeMapMarkers } from '@/features/map/hooks/use-home-map-markers';
-import { useLikedRecordIds, useUnlockedRecordIds } from '@/features/map/hooks/use-record-memory';
-import type { Coordinate } from '@/features/map/types/home-map-marker';
+import { unlockRecord, useLikedRecordIds, useUnlockedRecordIds } from '@/features/map/hooks/use-record-memory';
+import type { Coordinate, HomeMapMarker } from '@/features/map/types/home-map-marker';
 import { getDistanceMeters } from '@/features/map/utils/get-distance-meters';
 
 /** 사진 카드에 필요한 기록 한 건 */
@@ -16,6 +16,8 @@ export type RecordDetail = {
   /** 다가가서 열었거나 지금 열림 반경 안이면 한 줄과 버튼을 보여준다 */
   isUnlocked: boolean;
   isLiked: boolean;
+  /** 지금 열림 반경 안이면 true */
+  isNearby: boolean;
 };
 
 /**
@@ -27,17 +29,8 @@ export function useRecordDetail(recordId: string, myLocation: Coordinate | null)
   const unlockedIds = useUnlockedRecordIds();
   const likedIds = useLikedRecordIds();
 
-  return useMemo(() => {
-    const photo = markers.find((marker) => marker.kind === 'photo' && marker.id === recordId);
-    const cluster = markers.find((marker) => marker.kind === 'cluster');
-    const clusterRecord = cluster ? getPreviewClusterRecords(cluster.id).find((record) => record.id === recordId) : undefined;
-
-    const found =
-      photo?.kind === 'photo'
-        ? { coordinate: photo.coordinate, placeName: photo.placeName ?? '', hashtags: photo.hashtags, comment: photo.comment ?? '' }
-        : clusterRecord && cluster
-          ? { coordinate: cluster.coordinate, placeName: previewClusterPlaceName, hashtags: clusterRecord.hashtags, comment: clusterRecord.comment ?? '' }
-          : null;
+  const detail = useMemo(() => {
+    const found = findRecord(markers, recordId);
     if (!found) return null;
 
     const isNearby = myLocation !== null && getDistanceMeters(myLocation, found.coordinate) <= openRadiusMeters;
@@ -46,8 +39,33 @@ export function useRecordDetail(recordId: string, myLocation: Coordinate | null)
       placeName: found.placeName,
       hashtags: found.hashtags,
       comment: found.comment,
+      isNearby,
       isUnlocked: isNearby || unlockedIds.includes(recordId),
       isLiked: likedIds.includes(recordId),
     };
   }, [markers, recordId, myLocation, unlockedIds, likedIds]);
+
+  // 가까이 와서 열린 기록은 멀어져도 다시 잠기지 않게 이 폰에 기억해 둔다.
+  const shouldRemember = detail?.isNearby === true && !unlockedIds.includes(recordId);
+  useEffect(() => {
+    if (shouldRemember) unlockRecord(recordId);
+  }, [shouldRemember, recordId]);
+
+  return detail;
+}
+
+/** 지도 홈의 사진 기록이나, 어느 묶음 안의 기록에서 찾는다. 묶음 안 기록은 묶음 자리에 있다고 본다. */
+function findRecord(markers: HomeMapMarker[], recordId: string) {
+  for (const marker of markers) {
+    if (marker.kind === 'photo' && marker.id === recordId) {
+      return { coordinate: marker.coordinate, placeName: marker.placeName ?? '', hashtags: marker.hashtags, comment: marker.comment ?? '' };
+    }
+    if (marker.kind === 'cluster') {
+      const record = getPreviewClusterRecords(marker.id).find(({ id }) => id === recordId);
+      if (record) {
+        return { coordinate: marker.coordinate, placeName: previewClusterPlaceName, hashtags: record.hashtags, comment: record.comment ?? '' };
+      }
+    }
+  }
+  return null;
 }

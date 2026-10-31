@@ -3,6 +3,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { colors } from '@/constants/colors';
 import { radius, screenPaddingX, spacing } from '@/constants/layout';
+import { SheetHandle } from '@/features/map/components/sheet-handle';
 import { useVerticalSwipe } from '@/features/map/hooks/use-vertical-swipe';
 
 type MapBottomSheetProps = {
@@ -33,7 +34,7 @@ export function MapBottomSheet({ height, isExpanded, onExpandedChange, label, he
           accessibilityLabel={`${label} ${isExpanded ? '접기' : '펼치기'}`}
           onPress={() => onExpandedChange(!isExpanded)}
           style={styles.handleArea}>
-          <View style={styles.handle} />
+          <SheetHandle />
         </Pressable>
         <View style={styles.header}>{header}</View>
       </View>
@@ -66,12 +67,6 @@ const styles = StyleSheet.create({
   handleArea: {
     alignItems: 'center',
     paddingVertical: spacing.sm,
-  },
-  handle: {
-    width: 44,
-    height: spacing.xxs,
-    borderRadius: radius.full,
-    backgroundColor: colors.borderDeactivated,
   },
   header: {
     paddingHorizontal: screenPaddingX,

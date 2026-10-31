@@ -1,15 +1,5 @@
 import type { Coordinate, PhotoMarker } from '@/features/map/types/home-map-marker';
-
-const metersPerLatitudeDegree = 111_320;
-
-/** 출발점을 원점으로 둔 평면 좌표(m). 캠퍼스 안 정도의 거리라 지구를 평면으로 본다. */
-function toLocalMeters(origin: Coordinate, point: Coordinate) {
-  const metersPerLongitudeDegree = metersPerLatitudeDegree * Math.cos((origin.latitude * Math.PI) / 180);
-  return {
-    x: (point.longitude - origin.longitude) * metersPerLongitudeDegree,
-    y: (point.latitude - origin.latitude) * metersPerLatitudeDegree,
-  };
-}
+import { toLocalMeters } from '@/features/map/utils/local-plane';
 
 type PickRouteStopsOptions = {
   records: PhotoMarker[];

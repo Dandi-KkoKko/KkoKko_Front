@@ -31,6 +31,9 @@ export type PhotoMarker = {
 
 export type HomeMapMarker = ClusterMarker | PhotoMarker;
 
+/** 지도 홈 마커 중 사진 기록만 고를 때 쓴다 (묶음은 하나의 기록이 아니라서 뺀다). */
+export const isPhotoMarker = (marker: { kind: string }): marker is PhotoMarker => marker.kind === 'photo';
+
 /** 검색결과 지도의 작은 표시. 결과 목록과 같은 순서로 놓인다. */
 type ResultMarker = {
   kind: 'result';

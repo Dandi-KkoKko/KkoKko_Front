@@ -25,8 +25,9 @@ const toCacheKey = ({ latitude, longitude }: Coordinate) => `${latitude.toFixed(
  */
 export async function getRegionName(coordinate: Coordinate, signal?: AbortSignal): Promise<string> {
   const key = toCacheKey(coordinate);
+  // 동네 이름이 없는 곳('')도 기억해 둔 값이라, 값이 있는지가 아니라 기억했는지로 본다.
   const cached = cache.get(key);
-  if (cached) return cached;
+  if (cached !== undefined) return cached;
   if (!kakaoRestApiKey) throw new MissingKakaoRestKeyError();
 
   const params = new URLSearchParams({ x: String(coordinate.longitude), y: String(coordinate.latitude) });

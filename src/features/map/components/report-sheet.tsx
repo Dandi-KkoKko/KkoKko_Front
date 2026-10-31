@@ -6,7 +6,9 @@ import { Button } from '@/components/button';
 import { Icon } from '@/components/icon';
 import { Radio } from '@/components/radio';
 import { colors } from '@/constants/colors';
-import { radius, screenPaddingX, spacing } from '@/constants/layout';
+import { screenPaddingX, spacing } from '@/constants/layout';
+import { SheetHandle } from '@/features/map/components/sheet-handle';
+import { sheetCornerRadius } from '@/features/map/constants/map-layout';
 import { reportReasons, type ReportReasonId } from '@/features/map/constants/report-reasons';
 
 type ReportSheetProps = {
@@ -30,7 +32,7 @@ export function ReportSheet({ onClose, onSubmit }: ReportSheetProps) {
 
   return (
     <View style={styles.sheet}>
-      <View style={styles.handle} />
+      <SheetHandle />
       <View style={styles.titleRow}>
         <AppText variant="subtitle01">{isSubmitted ? '신고가 접수됐어요' : '어떤 점이 불편했나요?'}</AppText>
         <Pressable accessibilityRole="button" accessibilityLabel="신고 닫기" hitSlop={spacing.xs} onPress={onClose}>
@@ -80,16 +82,9 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
     paddingBottom: spacing.xxl,
     paddingHorizontal: screenPaddingX,
-    borderTopLeftRadius: radius.xl + spacing.xs,
-    borderTopRightRadius: radius.xl + spacing.xs,
+    borderTopLeftRadius: sheetCornerRadius,
+    borderTopRightRadius: sheetCornerRadius,
     backgroundColor: colors.background01,
-  },
-  handle: {
-    alignSelf: 'center',
-    width: 44,
-    height: spacing.xxs,
-    borderRadius: radius.full,
-    backgroundColor: colors.borderDeactivated,
   },
   titleRow: {
     flexDirection: 'row',

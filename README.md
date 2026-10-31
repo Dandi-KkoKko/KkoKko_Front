@@ -233,7 +233,7 @@ assets/
 - [x] 지도 홈을 카카오맵으로 바꾸기 → `features/map/kakao-map/`
 - [ ] 나머지 지도 화면의 회색 지도를 카카오맵으로 바꾸기 → `components/map-placeholder.tsx`를 쓰는 화면들
 - [ ] 마커·경로를 화면 좌표에서 위도·경도로 바꾸기 → `features/map/constants/preview-*.ts`는 서버 데이터가 오면 지우기
-- [x] 위치 권한 확인·요청, 내 위치 가져오기 → `features/map/hooks/use-my-location.ts`
+- [x] 위치 권한 확인·요청, 내 위치 가져오기 (앱 전체가 GPS 하나를 같이 씀) → `features/map/hooks/use-my-location.ts`
 - [ ] 남기기 화면에서도 내 위치가 필요하면 `use-my-location.ts`를 `src/hooks/`로 옮기기
 - [x] 지도 홈 탐색 모드 (열림 반경, 가장 가까운 기록 패널) → `features/map/components/explore-sheet.tsx`
 - [ ] 열림 반경 실제 값 정하기 (캠퍼스에서 걸어보기) → `features/map/constants/map-config.ts`
