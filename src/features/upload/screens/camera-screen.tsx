@@ -131,15 +131,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     pointerEvents: 'none',
   },
-  // 남는 아래 공간 가운데에 셔터를 두고, 전환 버튼은 오른쪽 끝에 맞춘다
+  // 셔터를 카메라 칸 바로 아래(Figma 간격 48)에 붙여서 사진과 한 덩어리로 보이게 한다.
+  // 화면이 긴 폰은 남는 공간이 셔터 아래 검은 부분으로 간다. 전환 버튼은 같은 줄 오른쪽 끝.
   controls: {
-    flex: 1,
+    height: shutterSize,
+    marginTop: spacing.xxxl,
     alignItems: 'center',
     justifyContent: 'center',
   },
   failNotice: {
     position: 'absolute',
-    top: spacing.sm,
+    top: shutterSize + spacing.md,
   },
   shutter: {
     width: shutterSize,
