@@ -8,6 +8,8 @@ export const maxHashtagCount = 3;
 
 type AiHashtagPickerProps = {
   suggestions: string[];
+  /** AI가 한 줄을 읽는 중이면 후보 대신 안내 문구를 보여준다 */
+  isLoading?: boolean;
   selected: string[];
   onChange: (selected: string[]) => void;
 };
@@ -16,7 +18,7 @@ type AiHashtagPickerProps = {
  * AI가 한 줄을 읽고 고른 해시태그 중 최대 3개를 고른다.
  * 직접 쓰지 않고 AI 추천 안에서만 고르게 해서 한 줄과 상관없는 해시태그가 붙는 것을 막는다.
  */
-export function AiHashtagPicker({ suggestions, selected, onChange }: AiHashtagPickerProps) {
+export function AiHashtagPicker({ suggestions, isLoading = false, selected, onChange }: AiHashtagPickerProps) {
   const toggle = (hashtag: string) => {
     if (selected.includes(hashtag)) {
       onChange(selected.filter((item) => item !== hashtag));
@@ -35,11 +37,17 @@ export function AiHashtagPicker({ suggestions, selected, onChange }: AiHashtagPi
           최대 {maxHashtagCount}개 선택
         </AppText>
       </View>
-      <View style={styles.chips}>
-        {suggestions.map((hashtag) => (
-          <Chip key={hashtag} label={hashtag} selected={selected.includes(hashtag)} onPress={() => toggle(hashtag)} />
-        ))}
-      </View>
+      {isLoading ? (
+        <AppText variant="caption02" color="textTertiary">
+          한 줄을 읽고 있어요…
+        </AppText>
+      ) : (
+        <View style={styles.chips}>
+          {suggestions.map((hashtag) => (
+            <Chip key={hashtag} label={hashtag} selected={selected.includes(hashtag)} onPress={() => toggle(hashtag)} />
+          ))}
+        </View>
+      )}
     </View>
   );
 }
