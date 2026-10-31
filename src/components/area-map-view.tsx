@@ -36,7 +36,7 @@ export function AreaMapView({ areas, selectedAreaId, onSelectArea }: AreaMapView
                 accessibilityLabel={`${area.name} ${area.count}개`}
                 style={[styles.marker, area.position]}
                 onPress={() => onSelectArea(isSelected ? null : area.id)}>
-                <PhotoPlaceholder width={48} height={48} highlighted={isSelected} />
+                <PhotoPlaceholder width={48} height={48} bordered highlighted={isSelected} />
                 <View style={styles.count}>
                   <AppText variant="caption03" color="textInverse">
                     {area.count}

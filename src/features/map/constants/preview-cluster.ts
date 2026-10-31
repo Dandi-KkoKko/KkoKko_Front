@@ -1,30 +1,34 @@
 /**
- * 와이어프레임 ①-A '이 묶음의 자리 12개' 예시. 묶음 API가 나오면 서버 데이터로 바뀐다.
- * 첫 사진은 좋아요가 가장 많은 구역 대표 사진이라 맛보기(흐리지 않음)로 보여준다.
+ * Figma '지도 묶음 기록 표시 UI'의 '이 묶음의 기록 12개' 예시. 묶음 API가 나오면 서버 데이터로 바뀐다.
+ * 순서는 서버가 AI 추천순으로 정렬해 준다고 보고, 받은 순서 그대로 보여준다.
  */
 
-export type ClusterSpot = {
-  spotId: string;
-  hashtag: string;
-  distanceMeters: number;
-  isRepresentative?: boolean;
+export type ClusterRecord = {
+  id: string;
+  hashtags: string[];
+  comment?: string;
 };
 
-export const previewCluster = {
-  areaLabel: 'E동 근처',
-  distanceMeters: 150,
-  spots: [
-    { spotId: '4', hashtag: '#말없이챙겨준', distanceMeters: 150, isRepresentative: true },
-    { spotId: '2', hashtag: '#덤', distanceMeters: 140 },
-    { spotId: '6', hashtag: '#공강벤치', distanceMeters: 90 },
-    { spotId: '5', hashtag: '#과방', distanceMeters: 160 },
-    { spotId: '8', hashtag: '#국밥집', distanceMeters: 210 },
-    { spotId: '7', hashtag: '#자판기', distanceMeters: 120 },
-    { spotId: '10', hashtag: '#혼자만의자리', distanceMeters: 230 },
-    { spotId: '11', hashtag: '#노을', distanceMeters: 250 },
-    { spotId: '12', hashtag: '#단골자리', distanceMeters: 180 },
-    { spotId: '13', hashtag: '#밥뭇나', distanceMeters: 270 },
-    { spotId: '14', hashtag: '#학교앞분식', distanceMeters: 300 },
-    { spotId: '15', hashtag: '#골목', distanceMeters: 320 },
-  ] satisfies ClusterSpot[],
+/** 묶음 기록이 남겨진 곳. 묶음 마커 자리에 함께 모여 있다. */
+export const previewClusterPlaceName = '천마아트센터 앞 광장';
+
+const previewClusterRecords: Record<string, ClusterRecord[]> = {
+  '1': [
+    { id: '21', hashtags: ['#따스한 햇빛', '#엄마같은'], comment: '햇빛 드는 계단에서 받은 따뜻한 커피' },
+    { id: '22', hashtags: ['#서비스', '#엄마같은'], comment: '밥을 더 퍼 주시던 식당 이모님' },
+    { id: '23', hashtags: ['#단골자리', '#공강벤치'] },
+    { id: '24', hashtags: ['#공강벤치', '#혼자만의자리'] },
+    { id: '25', hashtags: ['#단골자리', '#덤', '#국밥집'] },
+    { id: '26', hashtags: ['#자판기', '#과방', '#공강벤치'] },
+    { id: '27', hashtags: ['#노을', '#단골자리'] },
+    { id: '28', hashtags: ['#밥뭇나', '#백반집', '#덤'] },
+    { id: '29', hashtags: ['#학교앞분식', '#단골자리'] },
+    { id: '30', hashtags: ['#골목', '#고양이'] },
+    { id: '31', hashtags: ['#말없이챙겨준', '#단골자리'] },
+    { id: '32', hashtags: ['#공강벤치', '#햇살'] },
+  ],
 };
+
+export function getPreviewClusterRecords(clusterId: string): ClusterRecord[] {
+  return previewClusterRecords[clusterId] ?? [];
+}

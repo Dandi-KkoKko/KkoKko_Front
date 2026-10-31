@@ -6,10 +6,10 @@ import { AppText } from '@/components/app-text';
 import { Badge } from '@/components/badge';
 import { Button } from '@/components/button';
 import { IconButton } from '@/components/icon-button';
-import { PhotoPlaceholder } from '@/components/photo-placeholder';
 import { ScreenContainer } from '@/components/screen-container';
 import { colors } from '@/constants/colors';
 import { radius, spacing } from '@/constants/layout';
+import { DraftPhoto } from '@/features/upload/components/draft-photo';
 import { UploadChecklist } from '@/features/upload/components/upload-checklist';
 import { UploadStepHeader } from '@/features/upload/components/upload-step-header';
 import { useUploadDraft } from '@/features/upload/upload-draft';
@@ -44,7 +44,7 @@ export function ConfirmScreen() {
       </View>
 
       <View style={styles.preview}>
-        <PhotoPlaceholder width={100} height={100} />
+        <DraftPhoto uri={draft.photoUri} width={100} height={100} />
         <View style={styles.previewTexts}>
           <AppText variant="subtitle02" numberOfLines={1}>
             {draft.title || '제목'}

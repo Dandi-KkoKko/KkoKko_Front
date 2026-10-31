@@ -21,7 +21,7 @@ type PhotoMarkerProps = MarkerPosition & {
 export function PhotoMarker({ top, left, hashtag, status, onPress }: PhotoMarkerProps) {
   return (
     <Pressable style={[styles.marker, { top, left }]} onPress={onPress}>
-      <PhotoPlaceholder width={56} height={56} highlighted={status === 'opening'} />
+      <PhotoPlaceholder width={56} height={56} bordered highlighted={status === 'opening'} />
       {status === 'preview' && <Badge label="맛보기" tone="highlight" />}
       {status === 'opening' && <Badge label="곧 열려요" tone="dark" />}
       {hashtag && <Badge label={hashtag} />}
@@ -46,9 +46,9 @@ export function ClusterMarker({ top, left, label, moreCount, highlighted, select
     <Pressable style={[styles.marker, { top, left }]} onPress={onPress}>
       <View style={selected && styles.selectedRing}>
         <View style={styles.stack}>
-          <PhotoPlaceholder width={48} height={48} style={styles.stackBack} />
-          <PhotoPlaceholder width={48} height={48} style={styles.stackMiddle} />
-          <PhotoPlaceholder width={48} height={48} highlighted={highlighted} />
+          <PhotoPlaceholder width={48} height={48} bordered style={styles.stackBack} />
+          <PhotoPlaceholder width={48} height={48} bordered style={styles.stackMiddle} />
+          <PhotoPlaceholder width={48} height={48} bordered highlighted={highlighted} />
         </View>
       </View>
       {label && <AppText variant="caption03">{label}</AppText>}
